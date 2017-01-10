@@ -1,0 +1,42 @@
+<ion-view
+  hide-back-button="true">
+  <ion-header-bar class="bar bar-positive">
+    <h1 class="title">{{vm.loginTarget}} Login</h1>
+  </ion-header-bar>
+  <ion-content padding="true"
+               scroll="false">
+    <div ng-show="vm.getPassword">
+      <!-- Form with floating labels -->
+      <form ng-submit="vm.login()"
+            novalidate="novalidate"
+            name="loginForm">
+        <ion-list>
+          <label class="item item-input item-floating-label">
+            <span class="input-label">PIC</span>
+            <input type="text"
+                   placeholder="PIC"
+                   ng-model="vm.formData.pic" capitalize
+                   name="pic"
+                   ng-required="true">
+          </label>
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Password</span>
+            <input type="password"
+                   placeholder="Password"
+                   ng-model="vm.formData.password"
+                   name="password"
+                   ng-required="true">
+          </label>
+        </ion-list>
+        <button ng-disabled="loginForm.$invalid" class="button button-dark button-block"
+                type="submit">Login
+        </button>
+      </form>
+      <p ng-if="vm.errorMsg" style="color: red;">{{vm.errorMsg}}</p>
+    </div>
+    <div ng-hide="vm.getPassword" style="text-align: center;">
+      <p>Validating User Crendentials..</p>
+      <ion-spinner></ion-spinner>
+    </div>
+  </ion-content>
+</ion-view>
