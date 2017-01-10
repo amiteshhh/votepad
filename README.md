@@ -1,25 +1,26 @@
 Ionic App Base
 =====================
 
-A starting project for Ionic that optionally supports using custom SCSS.
+A starting project inspired by John Papa [style guide](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md) for [Ionic Side Menu](http://ionicframework.com/docs/api/directive/ionSideMenus/) that supports SCSS.
+
+## Getting Started##
+
+Once you clone/checkout the repo in your local, run `npm install` in project directory to install the required node modules. 
+
+>Ensure that node, cordova and ionic is installed in your system. Follow [Ionic Getting Started](http://ionicframework.com/getting-started/) to troubleshoot.
+
+Run `ionic serve` to launch the app in web browser.
 
 ## Using this project
 
-We recommend using the [Ionic CLI](https://github.com/driftyco/ionic-cli) to create new Ionic projects that are based on this project but use a ready-made starter template.
+The app is divided into three main folder resides under `app` folder.
 
-For example, to start a new Ionic project with the default tabs interface, make sure the `ionic` utility is installed:
+1. __auth__: contains authenticated related stuff
+2. __core__: provides layout to the app and contains app/global codes
+3. __main__: contains app components like home, bout etc
+ 1. __common__: contains the common components to be used across app
 
-```bash
-$ npm install -g ionic
-```
 
-Then run: 
+## Additional optional libraries included in the project
 
-```bash
-$ ionic start myProject tabs
-```
-
-More info on this can be found on the Ionic [Getting Started](http://ionicframework.com/getting-started) page and the [Ionic CLI](https://github.com/driftyco/ionic-cli) repo.
-
-## Issues
-Issues have been disabled on this repo, if you do find an issue or have a question consider posting it on the [Ionic Forum](http://forum.ionicframework.com/).  Or else if there is truly an error, follow our guidelines for [submitting an issue](http://ionicframework.com/submit-issue/) to the main Ionic repository.
+* __ngstorage__ : An AngularJS module that makes Web Storage working in the Angular Way. Visit https://github.com/gsklee/ngStorage
