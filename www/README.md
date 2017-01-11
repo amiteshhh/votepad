@@ -1,32 +1,26 @@
-This is an addon starter template for the [Ionic Framework](http://ionicframework.com/).
+Votepad Ionic App
+=====================
 
-## How to use this template
+To be updated...
 
-*This template does not work on its own*. It is missing the Ionic library, and AngularJS.
+## Getting Started##
 
-To use this, either create a new ionic project using the ionic node.js utility, or copy and paste this into an existing Cordova project and download a release of Ionic separately.
+Once you clone/checkout the repo in your local, run `npm install` in project directory to install the required node modules. 
 
-### With the Ionic tool:
+>Ensure that node, cordova and ionic is installed in your system. Follow [Ionic Getting Started](http://ionicframework.com/getting-started/) to troubleshoot.
 
-Take the name after `ionic-starter-`, and that is the name of the template to be used when using the `ionic start` command below:
+Run `ionic serve` to launch the app in web browser.
 
-```bash
-$ sudo npm install -g ionic cordova
-$ ionic start myApp sidemenu
-```
+## Using this project
 
-Then, to run it, cd into `myApp` and run:
+The app is divided into three main folder resides under `app` folder.
 
-```bash
-$ ionic platform add ios
-$ ionic build ios
-$ ionic emulate ios
-```
+1. __auth__: contains authenticated related stuff
+2. __core__: provides layout to the app and contains app/global codes
+3. __main__: contains app components like home, bout etc
+3. __common__: contains the common components to be used across app
 
-Substitute ios for android if not on a Mac, but if you can, the ios development toolchain is a lot easier to work with until you need to do anything custom to Android.
 
-## Demo
-http://plnkr.co/edit/0RXSDB?p=preview
+## Additional optional libraries included in the project
 
-## Issues
-Issues have been disabled on this repo, if you do find an issue or have a question consider posting it on the [Ionic Forum](http://forum.ionicframework.com/).  Or else if there is truly an error, follow our guidelines for [submitting an issue](http://ionicframework.com/contribute/#issues) to the main Ionic repository. On the other hand, pull requests are welcome here!
+* __ngstorage__ : An AngularJS module that makes Web Storage working in the Angular Way. Visit https://github.com/gsklee/ngStorage
