@@ -2,21 +2,24 @@
     'use strict';
 
     var moduleName = 'app',
-            requires = [
-                                
-                // app core
-                'app.core',
+        requires = [
 
-                // auth module
-                'app.auth',
+            // app core
+            'app.core',
 
-                // home module
-                "app.home",
+            // auth module
+            'app.auth',
 
-                //Common Module
-                "app.common"
+            //Common Module
+            "app.common",
 
-            ];
+            // home module
+            "app.home",
+
+            // event module
+            "app.event"
+
+        ];
 
     angular.module(moduleName, requires);
 

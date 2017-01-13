@@ -5,8 +5,8 @@
 
     angular.module(moduleName)
         .value('APP_CONFIG', {
-            SERVER_URL: 'http://localhost',
-            REST_ENDPOINT: '/rs',
+            SERVER_URL: 'http://localhost:1337',
+            REST_ENDPOINT: '',
         });
 
 })();
