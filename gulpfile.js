@@ -13,6 +13,11 @@ var paths = {
 
 gulp.task('default', ['sass']);
 
+/* Ionic CLI for v2 sass fix */
+gulp.task('serve:before', ['default','watch']);
+gulp.task('run:before', ['default']);
+/* Ionic CLI for v2 sass fix */
+
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
     .pipe(sass())
