@@ -13,6 +13,12 @@
             //Common Module
             "app.common",
 
+            //Dashboard Module
+            "app.dashboard",
+
+            // registration module
+            "app.participents",
+
             // home module
             "app.home",
 

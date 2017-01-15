@@ -6,11 +6,27 @@
     angular.module(moduleName)
         .controller('EventCtrl', Ctrl);
 
-    Ctrl.$inject = ['$injector', '$rootScope'];
-    function Ctrl($injector, $rootScope) {
+    Ctrl.$inject = ['$injector', '$rootScope', '$scope', '$ionicModal'];
+    function Ctrl($injector, $rootScope, $scope, $ionicModal) {
         var vm = this;
         var EventSvc = $injector.get('EventSvc');
+
         init();
+
+        vm.viewDetail = function () {
+            $ionicModal.fromTemplateUrl('app/main/common/templates/event-detail-template.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function (modal) {
+                vm.modal = modal;
+                modal.show();
+            });
+        }
+
+        // Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function () {
+            vm.modal.remove();
+        });
 
         function init() {
             _find();

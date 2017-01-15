@@ -8,6 +8,8 @@
 
     Ctrl.$inject = [];
     function Ctrl() {
-       
+       var vm = this;
+
+       vm.host = false;
     }
 })();
