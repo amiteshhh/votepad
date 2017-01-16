@@ -11,9 +11,11 @@
         $urlRouterProvider.otherwise(function ($injector) {
             var $state = $injector.get('$state');
             var $stateParams = $injector.get('$stateParams');
-            if (true) {
-                $state.go('app.home');//default nav for now
+            var $localStorage = $injector.get('$localStorage');
+            if ($localStorage.signUpInfo || $localStorage.signInInfo) {
+                $state.go('app.dashboard');//default nav for now
             } else {
+                $state.go('auth');
             }
         });
     }

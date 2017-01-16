@@ -1,0 +1,39 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-positive">
+        <h1 class="title">VotePad</h1>
+        <button class="button button-clear" ng-click="vm.closeSignInModal()">Cancel</button>
+    </ion-header-bar>
+    <ion-content padding="true" scroll="false">
+        <div>
+            <!-- Form with floating labels -->
+            <form name="signinForm" ng-submit="vm.signInUser()">
+                <ion-list>
+                    <label class="item item-input item-floating-label">
+            <span class="input-label">Username</span>
+            <input type="text"
+                   placeholder="Username"
+                   name="username"
+                   ng-model="vm.signInForm.username"
+                   ng-required="true">
+          </label>
+                    <label class="item item-input item-floating-label">
+            <span class="input-label">Password</span>
+            <input type="password"
+                   placeholder="Password"
+                   name="password"
+                   ng-model="vm.signInForm.password"
+                   ng-required="true">
+          </label>
+                </ion-list>
+                <button ng-disabled="signinForm.$invalid" class="button button-dark button-block" type="submit" ng-click="vm.signInUser()">Sign In
+        </button>
+            </form>
+        </div>
+        <div style="text-align: center;margin-top: 40px;">
+<p>or Login Using</p>
+<button style="" class="button button-block icon-left ion-social-facebook button-positive"> Facebook</button>
+</div>
+<div>
+</div>
+</ion-content>
+</ion-modal-view>

@@ -1,0 +1,47 @@
+<ion-view title="Create an Event">
+  <!--<ion-nav-buttons side="left">
+    <button menu-toggle="left"class="button button-icon icon ion-android-menu"></button>
+  </ion-nav-buttons>
+  <ion-content class="has-header">
+    <h1>Home</h1>
+  </ion-content>-->
+
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="has-header padding">
+    <div class="list">
+      <label class="item item-input">
+        <input type="text" placeholder="Event Name">
+      </label>
+      <label class="item item-input">
+        <input type="text" placeholder="Event Description">
+      </label>
+    </div>
+
+    <button class="button button-block button-positive" ng-click="vm.openResponseFormat()">
+      Configure Question
+    </button>
+
+    <!-- <div class="list list-inset">
+      <label ng-if="ques" class="item item-text-wrap">
+        {{ques}}
+      </label>
+      <label class="item item-input">
+        <input type="text" ng-model="ques" placeholder="Reply here...">
+      </label>
+    </div>
+    
+    <ion-list>
+      <ion-radio ng-model="choice" ng-value="'A'">Yes</ion-radio>
+      <ion-radio ng-model="choice" ng-value="'B'">No</ion-radio> 
+    </ion-list> -->
+
+    <!--<ion-list>-->
+    <!--  <ion-radio ng-model="choice" ng-value="'A'">Yes</ion-radio>-->
+    <!--</ion-list>-->
+
+
+  </ion-content>
+</ion-view>

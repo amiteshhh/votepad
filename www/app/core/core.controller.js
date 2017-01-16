@@ -6,10 +6,17 @@
     angular.module(moduleName)
         .controller('AppCtrl', Ctrl);
 
-    Ctrl.$inject = [];
-    function Ctrl() {
-       var vm = this;
+    Ctrl.$inject = ['$state', '$localStorage'];
+    function Ctrl($state, $localStorage) {
+        var vm = this;
 
-       vm.host = false;
+        vm.host = false;
+        console.log("Inside AppCtrl");
+
+        vm.logout = function () {
+            delete $localStorage.signInInfo;
+            delete $localStorage.signUpInfo;
+            $state.go('auth');
+        };
     }
 })();

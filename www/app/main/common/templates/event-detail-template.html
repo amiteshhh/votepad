@@ -1,6 +1,6 @@
 <ion-modal-view>
     <ion-header-bar class="bar bar-positive">
-        <button class="button button-icon icon ion-android-arrow-back" ng-click="vm.modal.hide();"></button>
+        <button class="button button-icon icon ion-android-arrow-back" ng-click="vm.backToRegisteredEvents();"></button>
         <h1 class="title">Cognizant Internal Services</h1>
     </ion-header-bar>
 
@@ -22,7 +22,7 @@
                     of an image and paragraph text. The footer consists of tabs, icons aligned left, within the card-footer.
                 </p>
                 <hr>
-                <a class="subdued" ng-click="vm.showLikesData($event)">1 Like</a>
+                <a class="subdued" ng-click="vm.showLikesData()">1 Like</a>
                 <a class="subdued">5 Comments</a>
                 <a class="subdued">Share</a>
             </div>

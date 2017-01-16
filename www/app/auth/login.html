@@ -5,12 +5,13 @@
   <ion-content padding="true" scroll="false">
     <div>
       <!-- Form with floating labels -->
-      <form name="loginForm" ng-submit="vm.validateRegistration()">
+      <form name="userSignUpForm" ng-submit="vm.validateRegistration()">
         <ion-list>
           <label class="item item-input item-floating-label">
             <span class="input-label">Name</span>
             <input type="text"
                    placeholder="Name"
+                   ng-model="vm.signUpForm.username"
                    name="Name"
                    ng-required="true">
           </label>
@@ -19,6 +20,7 @@
             <span class="input-label">Company Name</span>
             <input type="text"
                    placeholder="Company Name"
+                   ng-model="vm.signUpForm.company"
                    name="comapny"
                    ng-required="true">
           </label>
@@ -27,7 +29,7 @@
             <span class="input-label">Mobile</span>
             <input type="text"
                    placeholder="Mobile No."
-                   ng-model="vm.mobileNo"
+                   ng-model="vm.signUpForm.mobileNo"
                    name="mobile"
                    ng-required="true">
           </label>
@@ -36,10 +38,11 @@
             <span class="input-label">Password</span>
             <input type="password"
                    placeholder="Password"
+                   ng-model="vm.signUpForm.password"
                    name="password"
                    ng-required="true">
           </label>
-
+<!--ng-disabled="userSignUpForm.$invalid" -->
         </ion-list>
         <button class="button button-royal button-block" type="submit" ng-click="vm.validateRegistration()">Sign Up</button>
       </form>
@@ -50,87 +53,8 @@
 <button class="button button-block icon-left ion-social-facebook button-positive"> Facebook</button>
 <!--<ion-spinner></ion-spinner>-->
 </div>
-<button class="button button-positive button-block" type="submit" ng-click="vm.signIn()">Sign In
+<button class="button button-positive button-block" type="submit" ng-click="vm.openSignInModal()">Sign In
         </button>
 
 </ion-content>
 </ion-view>
-
-<script id="signIn-modal.html" type="text/ng-template">
-<ion-modal-view>
-  <ion-header-bar class="bar bar-positive">
-    <h1 class="title">VotePad</h1>
-    <button class="button button-clear" ng-click="vm.closeSignInModal()">Cancel</button>
-  </ion-header-bar>
-  <ion-content padding="true"
-               scroll="false">
-    <div >
-      <!-- Form with floating labels -->
-      <form name="signinForm" ng-submit="vm.signInUser()">
-        <ion-list>
-          <label class="item item-input item-floating-label">
-            <span class="input-label">Username</span>
-            <input type="text"
-                   placeholder="Username"
-                   name="username"
-                   ng-model="vm.signinForm.username"
-                   ng-required="true">
-          </label>
-          <label class="item item-input item-floating-label">
-            <span class="input-label">Password</span>
-            <input type="password"
-                   placeholder="Password"
-                   name="password"
-                   ng-model="vm.signinForm.password"
-                   ng-required="true">
-          </label>
-        </ion-list>
-        <button ng-disabled="signinForm.$invalid" 
-                class="button button-dark button-block"
-                type="submit"
-                ng-click="vm.signInUser()">Sign In
-        </button>
-      </form>
-    </div>
-    <div style="text-align: center;margin-top: 40px;">
-      <p>or Login Using</p>
-      <button style="" class="button button-block icon-left ion-social-facebook button-positive"> Facebook</button>
-    </div>
-    <div>      
-    </div>
-  </ion-content>
-  </ion-modal-view>
-</script>
-
-<script id="validate-otp-modal.html" type="text/ng-template">
-<ion-modal-view>
-<ion-header-bar class="bar bar-positive">
-    <h1 class="title">OTP Authentication</h1>
-    <button class="button button-clear" ng-click="vm.closeOtpModal()">Cancel</button>
-  </ion-header-bar>
-  <ion-content padding="true"
-               scroll="false">
-    <div >
-      <!-- Form with floating labels -->
-      <form name="OtpForm" ng-submit="vm.validateOTP()">
-        <ion-list>
-          <label class="item item-input item-floating-label">
-            <span class="input-label">OTP</span>
-            <input type="number"
-                   placeholder="OTP"
-                   name="otp"
-                   ng-model="vm.userOTP"
-                   ng-required="true">
-          </label>
-        </ion-list>
-        <button ng-disabled="OtpForm.$invalid" 
-                class="button button-dark button-block"
-                type="submit"
-                ng-click="vm.validateOTP()">Validate
-        </button>
-      </form>
-    </div>
-  </ion-content>
-
-</ion-modal-view>
-</script>

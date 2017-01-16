@@ -20,7 +20,7 @@
             "app.participents",
 
             // home module
-            "app.home",
+            "app.createEvent",
 
             // event module
             "app.event"
