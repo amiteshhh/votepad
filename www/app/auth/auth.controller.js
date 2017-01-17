@@ -6,10 +6,11 @@
     angular.module(moduleName)
         .controller('AuthCtrl', AuthCtrl);
 
-    AuthCtrl.$inject = ['$state', '$scope', '$ionicModal', '$localStorage', '$http'];
-    function AuthCtrl($state, $scope, $ionicModal, $localStorage, $http) {
+    AuthCtrl.$inject = ['$state', '$scope', '$ionicModal', '$localStorage', '$http', '$injector'];
+    function AuthCtrl($state, $scope, $ionicModal, $localStorage, $http, $injector) {
         console.log("inside User Registration Controller");
         var vm = this;
+        var AuthSvc = $injector.get('AuthSvc');
 
         vm.openSignInModal = function () {
             $ionicModal.fromTemplateUrl('app/common/templates/signIn-modal-template.html', {
@@ -35,22 +36,29 @@
         };
 
         vm.signInUser = function () {
-            vm.signInModal.hide();
-            $localStorage.signInInfo = vm.signInForm;
-            $state.go('app.dashboard');
+            AuthSvc.verifyUser(vm.signInForm).then(function (data) {
+                console.log("verifyUser: " + JSON.stringify(data));
+                vm.signInModal.hide();
+                $localStorage.signInInfo = vm.signInForm;
+                $state.go('app.dashboard');
+            }, handleServiceError);
         };
 
         vm.validateRegistration = function () {
-            $ionicModal.fromTemplateUrl('app/common/templates/validate-otp-modal-template.html', {
-                scope: $scope,
-                animation: 'slide-in-up'
-            }).then(function (modal) {
-                vm.validateOtpModal = modal;
-                modal.show();
-            });
-            console.log("validateRegistration Mobile No - " + vm.signUpForm.mobileNo); // validate mobile number 10 digit for isd code etc..
-            $localStorage.signUpInfo = vm.signUpForm;
-
+            AuthSvc.createUser(vm.signUpForm).then(function (data) {
+                console.log("createUser: " + JSON.stringify(data));
+                $ionicModal.fromTemplateUrl('app/common/templates/validate-otp-modal-template.html', {
+                    scope: $scope,
+                    animation: 'slide-in-up'
+                }).then(function (modal) {
+                    vm.validateOtpModal = modal;
+                    modal.show();
+                });
+                
+                $localStorage.signUpInfo = vm.signUpForm;
+                console.log("validateRegistration Mobile No - " + vm.signUpForm.mobileNo); // validate mobile number 10 digit for isd code etc..
+            }, handleServiceError);
+            
             /*// Simple GET request example:
             $http({
                 method: 'GET',
@@ -106,6 +114,11 @@
             vm.signInModal.remove();
             vm.validateOtpModal.remove();
         });*/
+        
+        function handleServiceError(err) {
+            console.log('Error occurred with service', err);
+            //$rootScope.$broadcast('notify-service-error', err);
+        }
 
     }
 })();
