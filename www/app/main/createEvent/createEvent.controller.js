@@ -48,15 +48,13 @@
         vm.deleteSingleSelectOption = function(item) {
 
             console.log(vm.singleSelectOptions);
-            /*var startDecrimentingArrayIndexFrom = vm.singleSelectOptions.indexOf(item) + 1;
+            var startDecrimentingArrayIndexFrom = vm.singleSelectOptions.indexOf(item) + 1;
+            console.log(startDecrimentingArrayIndexFrom);
             for(var i = startDecrimentingArrayIndexFrom; i < vm.singleSelectOptions.length; i++ ) {
-                i = i - 1;
-            };*/
+                vm.singleSelectOptions[i].index -= 1; 
+            };
 
-
-
-            //vm.singleSelectOptions.splice(item, 1);
-            //console.log(vm.singleSelectOptions); 
+            vm.singleSelectOptions.splice(item, 1);
         } 
         // -------------------------------------------------------------------
 

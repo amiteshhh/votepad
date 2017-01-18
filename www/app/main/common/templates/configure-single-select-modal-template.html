@@ -31,7 +31,7 @@
         <div class="list list-inset" ng-if="vm.singleSelectQuestion && vm.singleSelectEventName">
             <div class="item positive item-button-right">
                 Polling Preview
-                <button class="button button-clear button-positive" ng-click="vm.showSingleSelectOptionDelete = !vm.showSingleSelectOptionDelete">Edit</button>
+                <button class="button button-clear button-positive" ng-if="vm.singleSelectOptions.length !== 0" ng-click="vm.showSingleSelectOptionDelete = !vm.showSingleSelectOptionDelete">Edit</button>
             </div>
             <label class="item item-text-wrap">
                 Question: {{vm.singleSelectQuestion}}
