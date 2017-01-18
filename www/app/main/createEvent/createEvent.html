@@ -11,18 +11,7 @@
   </ion-nav-buttons>
 
   <ion-content class="has-header padding">
-    <!--<div class="list">
-      <label class="item item-input">
-        <input type="text" placeholder="Event Name">
-      </label>
-      <label ng-if="vm.question" class="item item-text-wrap">
-          {{vm.question}}
-        </label>
-      <label class="item item-input">
-          <input type="text" ng-model="vm.question" placeholder="Place your question here...">
-        </label>
-    </div>-->
-
+    
     <div class="list list-inset">
       <div class="item item-divider item-icon-right" ng-click="vm.showInbuiltQues = !vm.showInbuiltQues">
         Inbuilt Question Templates
@@ -31,7 +20,6 @@
       <div ng-if="vm.showInbuiltQues">
         <a class="item item-icon-left" href="#">
           <i class="icon ion-compose"></i> Text Answer
-          <!--<i class="icon ion-android-done"></i>-->
         </a>
         <a class="item item-icon-left" href="#">
           <i class="icon ion-help-circled"></i> Yes/No
@@ -57,11 +45,7 @@
       </div>
     </div>
 
-    <button class="button button-block button-positive" ng-click="vm.openResponseFormat()">
-      Configure Question
-    </button>
-
-    <div class="list list-inset" ng-if="vm.singleSelectOptions.length !== 0 || !vm.showInbuiltQues || !vm.showCustomQues">
+    <!--<div class="list list-inset" ng-if="vm.singleSelectOptions.length !== 0 || !vm.showInbuiltQues || !vm.showCustomQues">
       <div class="item item-button-right">
         Polling Preview
         <button class="button button-dark" ng-click="vm.configureSingleSelect()">
@@ -80,26 +64,7 @@
       <button class="button button-block button-dark" ng-click="vm.launchPoll()">
           Launch this poll
         </button>
-    </div>
-
-    <!-- <div class="list list-inset">
-      <label ng-if="ques" class="item item-text-wrap">
-        {{ques}}
-      </label>
-      <label class="item item-input">
-        <input type="text" ng-model="ques" placeholder="Reply here...">
-      </label>
-    </div>
-    
-    <ion-list>
-      <ion-radio ng-model="choice" ng-value="'A'">Yes</ion-radio>
-      <ion-radio ng-model="choice" ng-value="'B'">No</ion-radio> 
-    </ion-list> -->
-
-    <!--<ion-list>-->
-    <!--  <ion-radio ng-model="choice" ng-value="'A'">Yes</ion-radio>-->
-    <!--</ion-list>-->
-
+    </div>-->
 
   </ion-content>
 </ion-view>

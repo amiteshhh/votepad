@@ -11,9 +11,59 @@
         var vm = this;
 
         vm.singleSelectOptions = [];
+        vm.showSingleSelectOptionDelete = false;
+        
         vm.showInbuiltQues = true;
         vm.showCustomQues = true;
+
+        
+        vm.createOption = [];
         var question;
+
+        //FINALIZED CODE FOR SINGLE SELECT -----------------------------------
+
+        vm.configureSingleSelect = function () {            
+            
+            $ionicModal.fromTemplateUrl('app/main/common/templates/configure-single-select-modal-template.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function (modal) {
+                vm.configSingleSelect = modal;
+                modal.show();
+            });
+        };
+
+        vm.addSingleSelectOption = function () {
+            
+            vm.optionItem = {
+                index: vm.singleSelectOptions.length + 1,
+                value: vm.option
+            };
+            vm.singleSelectOptions.push(vm.optionItem);
+            vm.optionItem = {};
+            vm.option = '';
+            console.log(vm.singleSelectOptions);
+        };
+
+        vm.deleteSingleSelectOption = function(item) {
+
+            console.log(vm.singleSelectOptions);
+            /*var startDecrimentingArrayIndexFrom = vm.singleSelectOptions.indexOf(item) + 1;
+            for(var i = startDecrimentingArrayIndexFrom; i < vm.singleSelectOptions.length; i++ ) {
+                i = i - 1;
+            };*/
+
+
+
+            //vm.singleSelectOptions.splice(item, 1);
+            //console.log(vm.singleSelectOptions); 
+        } 
+        // -------------------------------------------------------------------
+
+
+
+
+
 
         vm.openResponseFormat = function () {
             $ionicModal.fromTemplateUrl('app/main/common/templates/configure-question-modal-template.html', {
@@ -25,25 +75,7 @@
             });
         };
 
-        vm.configureSingleSelect = function () {
-            /*f (!vm.question) {
-                var alertPopup = $ionicPopup.alert({
-                    title: 'Field Required!',
-                    template: 'Please enter a valid question.'
-                });
-                return;
-            }*/
 
-            vm.previewQuestion = vm.question;
-
-            $ionicModal.fromTemplateUrl('app/main/common/templates/configure-single-select-modal-template.html', {
-                scope: $scope,
-                animation: 'slide-in-up'
-            }).then(function (modal) {
-                vm.configSingleSelect = modal;
-                modal.show();
-            });
-        };
 
         vm.reconfigureEvent = function () {
             $ionicModal.fromTemplateUrl('app/main/common/templates/reconfigure-event-modal-template.html', {
@@ -63,16 +95,11 @@
             console.log(vm.singleSelectOptions);
         };
 
-        vm.addOptionForSingleSelect = function () {
-            vm.optionItem = {
-                index: vm.singleSelectOptions.length + 1,
-                value: vm.option
-            };
-            vm.singleSelectOptions.push(vm.optionItem);
-            vm.optionItem = {};
-            vm.option = '';
-            console.log(vm.singleSelectOptions);
-        };
+        vm.itemIndex = function (item) {
+            return vm.createOption.indexOf(item);
+        }
+
+        
 
         vm.backFromSingleSelect = function () {
             vm.configSingleSelect.hide();

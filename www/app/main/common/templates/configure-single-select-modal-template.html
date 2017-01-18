@@ -7,40 +7,48 @@
 
         <div class="list">
             <label class="item item-input">
-                <input type="text" placeholder="Event Name">
+                <input type="text" ng-model="vm.singleSelectEventName" placeholder="Event Name">
             </label>
             <label class="item item-input">
-                <input type="text" ng-model="vm.question" placeholder="Place your question here...">
+                <input type="text" ng-model="vm.singleSelectQuestion" placeholder="Place your question here...">
             </label>
         </div>
-
 
         <div class="list list-inset">
             <div class="item item-input">
                 <input type="text" ng-model="vm.option" placeholder="Untitled Option">
             </div>
-            <button class="button button-block button-positive" ng-disabled="!vm.option" ng-click="vm.addOptionForSingleSelect()">
+            <button class="button button-block button-positive" ng-disabled="!vm.singleSelectQuestion || !vm.singleSelectEventName || !vm.option"
+                ng-click="vm.addSingleSelectOption()">
           Add Option
         </button>
-            <button class="button button-block button-positive" ng-disabled="vm.singleSelectOptions.length < 2" ng-click="vm.singleSelectConfigDone()">
+            <!--<button class="button button-block button-positive" ng-disabled="vm.singleSelectOptions.length < 2" ng-click="vm.singleSelectConfigDone()">
           Done
-        </button>
+        </button>-->
         </div>
 
 
-        <div class="list list-inset" ng-if="vm.singleSelectOptions.length !== 0">
-            <div class="item positive">
-                Poll Preview
+        <div class="list list-inset" ng-if="vm.singleSelectQuestion && vm.singleSelectEventName">
+            <div class="item positive item-button-right">
+                Polling Preview
+                <button class="button button-clear button-positive" ng-click="vm.showSingleSelectOptionDelete = !vm.showSingleSelectOptionDelete">Edit</button>
             </div>
-            <label ng-if="vm.question" class="item item-text-wrap">
-                Question: {{vm.question}}
+            <label class="item item-text-wrap">
+                Question: {{vm.singleSelectQuestion}}
             </label>
             <div class="item item-divider" ng-if="vm.singleSelectOptions.length > 1">
                 Select any one.
             </div>
-            <ion-item ng-repeat="item in vm.singleSelectOptions">
+            <ion-list show-delete="vm.showSingleSelectOptionDelete">
+                <ion-item class="item-input" ng-repeat="item in vm.singleSelectOptions">
+                    {{item.index}}. {{item.value}}
+                    <ion-delete-button class="ion-minus-circled" ng-click="vm.deleteSingleSelectOption(item)">
+                    </ion-delete-button>
+                </ion-item>
+            </ion-list>
+            <!--<ion-item ng-repeat="item in vm.singleSelectOptions">
                 {{item.index}}. {{item.value}}
-            </ion-item>
+            </ion-item>-->
         </div>
 
     </ion-content>
