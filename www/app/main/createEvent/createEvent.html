@@ -1,10 +1,4 @@
 <ion-view title="Create an Event">
-  <!--<ion-nav-buttons side="left">
-    <button menu-toggle="left"class="button button-icon icon ion-android-menu"></button>
-  </ion-nav-buttons>
-  <ion-content class="has-header">
-    <h1>Home</h1>
-  </ion-content>-->
 
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
@@ -13,58 +7,35 @@
   <ion-content class="has-header padding">
     
     <div class="list list-inset">
-      <div class="item item-divider item-icon-right" ng-click="vm.showInbuiltQues = !vm.showInbuiltQues">
+      <div class="item item-divider">
         Inbuilt Question Templates
-        <i class="icon" ng-class="vm.showInbuiltQues ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'"></i>
       </div>
-      <div ng-if="vm.showInbuiltQues">
-        <a class="item item-icon-left" href="#">
+      <div>
+        <a class="item item-icon-left" ng-click="vm.configureText()">
           <i class="icon ion-compose"></i> Text Answer
         </a>
-        <a class="item item-icon-left" href="#">
+        <a class="item item-icon-left" ng-click="vm.configureYesNo()">
           <i class="icon ion-help-circled"></i> Yes/No
         </a>
       </div>
     </div>
     <div class="list list-inset">
-      <div class="item item-divider item-icon-right" ng-click="vm.showCustomQues = !vm.showCustomQues">
+      <div class="item item-divider">
         Customizable Question Templates
-        <i class="icon" ng-class="vm.showCustomQues ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'"></i>
       </div>
-      <div ng-if="vm.showCustomQues">
+      <div>
         <a class="item item-icon-left" ng-click="vm.configureSingleSelect()">
           <i class="icon ion-android-radio-button-on"></i> Single Select
         </a>
-        <a class="item item-icon-left" href="#">
+        <a class="item item-icon-left" ng-click="vm.configureLinearScale()">
           <i class="icon ion-code-working"></i> Linear Scale
         </a>
 
-        <a class="item item-icon-left" href="#">
+        <a class="item item-icon-left" ng-click="vm.configureMultipleSelect()">
           <i class="icon ion-android-checkbox-outline"></i> Multiple Choice
         </a>
       </div>
     </div>
-
-    <!--<div class="list list-inset" ng-if="vm.singleSelectOptions.length !== 0 || !vm.showInbuiltQues || !vm.showCustomQues">
-      <div class="item item-button-right">
-        Polling Preview
-        <button class="button button-dark" ng-click="vm.configureSingleSelect()">
-                    Edit
-                </button>
-      </div>
-      <label class="item item-text-wrap">
-          Question : {{vm.previewQuestion}}
-        </label>
-      <div class="item item-divider" ng-if="vm.singleSelectOptions.length > 1">
-        Select any one.
-      </div>
-      <ion-item ng-repeat="item in vm.singleSelectOptions">
-        {{item.index}}. {{item.value}}
-      </ion-item>
-      <button class="button button-block button-dark" ng-click="vm.launchPoll()">
-          Launch this poll
-        </button>
-    </div>-->
 
   </ion-content>
 </ion-view>

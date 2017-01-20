@@ -1,0 +1,50 @@
+<ion-modal-view>
+    <ion-header-bar class="bar-positive">
+        <button class="button button-icon icon ion-android-arrow-back" ng-click="vm.backFromLinearScale()"></button>
+        <h1 class="title">Configure your event</h1>
+    </ion-header-bar>
+    <ion-content>
+
+        <div class='list list-inset'>
+            <label class="item item-input">
+                <input type="text" ng-model="vm.linearScaleEventName" placeholder="Event Name">
+            </label>
+            <label class="item item-input">
+                <input type="text" ng-model="vm.linearScaleQuestion" placeholder="Place your question here...">
+            </label><br>
+            <label class="item item-input">
+                <input type="number" ng-model="vm.rateRange" placeholder="Rating Range">
+            </label>
+            <a class="item item-icon-left assertive item-text-wrap" ng-if='vm.showRangeError'>
+                <i class="icon ion-android-alert"></i> Please make sure rating range lies between 1 & 10
+            </a>
+            <button class="button button-block button-positive" ng-disabled="!vm.linearScaleEventName || !vm.linearScaleQuestion || !vm.rateRange"
+                ng-click="vm.addLinearScaleRange()">
+          Assign Range
+        </button>
+            <button class="button button-block button-dark" ng-disabled="!vm.linearScaleEventName || !vm.linearScaleQuestion || !vm.rateRangeArray || vm.rateRangeArray.length === 0"
+                ng-click="vm.linearScaleEventConfigured()">
+          Create Event
+        </button>
+        </div>
+
+        <div class="list list-inset" ng-if="vm.linearScaleEventName && vm.linearScaleQuestion">
+            <div class="item item-positive item-button-right">
+                Polling Preview
+            </div>
+            <label class="item item-text-wrap">
+                    <span><strong>Question:</strong> {{vm.linearScaleQuestion}}</span>
+                </label>
+            <label class="item item-input item-select" ng-if="vm.rateRangeArray && vm.rateRangeArray.length !== 0">
+                    <div class="input-label">
+                        <strong>Select a value to rate</strong>
+                    </div>
+                    <select ng-model="vm.selectedRate">
+                        <option ng-repeat="item in vm.rateRangeArray">{{item}}</option>
+                    </select>                    
+                </label>
+            <button class="button button-block button-dark" ng-disabled="!vm.selectedRate">Submit Response</button>
+        </div>
+
+    </ion-content>
+</ion-modal-view>

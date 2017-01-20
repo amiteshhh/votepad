@@ -8,7 +8,7 @@
   <ion-content class="has-header">
 
     <div class="list">
-      <div class="item item-text-wrap row" ng-click="vm.viewDetail()" ng-repeat="item in [1,2,3,4,5,6,7,8]">
+      <!--<div class="item item-text-wrap row" ng-click="vm.viewDetail()" ng-repeat="item in [1,2,3,4,5,6,7,8]">
         <div class="col col-90">
           <h2><strong>Cognizant Internal Services</strong></h2>
           <p>Associates feedback on working of Cognizant Internal Services !</p>
@@ -17,7 +17,22 @@
         <div class="col col-10 col-center">
           <h1 class="icon ion-android-alert energized"></h1>
         </div>
+      </div>-->
+      <div ng-if="vm.eventsData && vm.eventsData.length !== 0" class="item item-text-wrap row" ng-click="vm.viewDetail()" ng-repeat="item in vm.eventsData">
+        <div class="col col-90">
+          <h2><strong>{{item.eventName}}</strong><span class="royal"> - {{item.eventTypeDetail}}</span></h2>
+          <p>{{item.eventQues}}</p>
+          <label class="energized">Not Yet Started</label>
+        </div>
+        <div class="col col-10 col-center">
+          <h1 class="icon ion-android-alert energized"></h1>
+        </div>
       </div>
+
+      <div ng-if="!vm.eventsData || vm.eventsData.length === 0" class='item item-text-wrap'>
+        <label class="positive">No Upcoming Events Found</label>
+      </div>
+      
     </div>
 
   </ion-content>

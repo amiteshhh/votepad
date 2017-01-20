@@ -6,10 +6,12 @@
     angular.module(moduleName)
         .controller('EventCtrl', Ctrl);
 
-    Ctrl.$inject = ['$injector', '$rootScope', '$scope', '$ionicModal'];
-    function Ctrl($injector, $rootScope, $scope, $ionicModal) {
+    Ctrl.$inject = ['$injector', '$rootScope', '$scope', '$ionicModal', '$localStorage'];
+    function Ctrl($injector, $rootScope, $scope, $ionicModal, $localStorage) {
         var vm = this;
         var EventSvc = $injector.get('EventSvc');
+
+        vm.eventsData = $localStorage.eventData ? $localStorage.eventData : [];
 
         init();
 
