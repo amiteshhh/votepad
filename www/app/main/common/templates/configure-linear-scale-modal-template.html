@@ -11,8 +11,34 @@
             </label>
             <label class="item item-input">
                 <input type="text" ng-model="vm.linearScaleQuestion" placeholder="Place your question here...">
-            </label><br>
-            <label class="item item-input">
+            </label>
+        </div>
+        <div class="list list-inset">
+            <label class="item item-input item-select">
+                <input type="text" ng-model="vm.optcomnt1" placeholder="(Start Range Optional Comments)">
+                <select>
+                    <option>0</option>
+                    <option selected>1</option>
+                </select>
+            </label>
+            <label class="item item-input item-select">
+                <input type="text" ng-model="vm.optcomnt2" placeholder="(End Range Optional Comments)">
+                <select>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option selected>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+            </label>
+
+            <!--</div>-->
+            
+            <!--<label class="item item-input">
                 <input type="number" ng-model="vm.rateRange" placeholder="Rating Range">
             </label>
             <a class="item item-icon-left assertive item-text-wrap" ng-if='vm.showRangeError'>
@@ -25,7 +51,7 @@
             <button class="button button-block button-dark" ng-disabled="!vm.linearScaleEventName || !vm.linearScaleQuestion || !vm.rateRangeArray || vm.rateRangeArray.length === 0"
                 ng-click="vm.linearScaleEventConfigured()">
           Create Event
-        </button>
+        </button>-->
         </div>
 
         <div class="list list-inset" ng-if="vm.linearScaleEventName && vm.linearScaleQuestion">

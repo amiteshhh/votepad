@@ -10,7 +10,11 @@
     function CreateEventCtrl($scope, $ionicModal, $ionicPopup, $timeout, $localStorage) {
         var vm = this;
 
-        vm.singleSelectOptions = [];
+        vm.singleSelectOptions = [{
+                index: 0,
+                itemNum: 'Num0',
+                itemDetail: ''
+            }];
         vm.showSingleSelectOptionDelete = false;
 
         vm.multipleSelectOptions = [];
@@ -23,6 +27,20 @@
         var eventData = {};
 
         //--------------------------------- SINGLE SELECT -----------------------------------
+
+        vm.updateOptionList = function() {
+            if(vm.singleSelectOptions.length > 4) {
+                console.log("maximum limit reached");
+                return;
+            }
+            var item = {
+                index: vm.singleSelectOptions.length,
+                itemNum: 'Num' + vm.singleSelectOptions.length,
+                itemDetail: ''
+            };
+            vm.singleSelectOptions.push(item);
+            console.log(vm.singleSelectOptions);
+        };
 
         vm.configureSingleSelect = function () {
 

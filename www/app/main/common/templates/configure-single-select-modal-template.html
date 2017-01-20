@@ -15,26 +15,30 @@
         </div>
 
         <div class="list list-inset">
-            <div class="item item-input">
-                <input type="text" ng-model="vm.option" placeholder="Untitled Option">
+            <div class="item item-input item-icon-right" ng-repeat="item in vm.singleSelectOptions">
+                <input type="text" ng-model="vm.item.itemNum" placeholder="Untitled Option">
+                <i class="icon ion-android-add-circle" ng-disabled="!item.itemNum" ng-click="vm.updateOptionList()"></i>
             </div>
-            <button class="button button-block button-positive" ng-disabled="!vm.singleSelectQuestion || !vm.singleSelectEventName || !vm.option"
+            <!--<div class="item item-input" ng-repeat="item in vm.singleSelectOptions track by $index">
+                <input type="text" ng-touched="vm.myFunc()" ng-model="item.itemNum" placeholder="Untitled Option">
+            </div>-->
+            <!--<button class="button button-block button-positive" ng-disabled="!vm.singleSelectQuestion || !vm.singleSelectEventName || !vm.option"
                 ng-click="vm.addSingleSelectOption()">
           Add Option
         </button>
             <button class="button button-block button-dark" ng-disabled="!vm.singleSelectEventName || !vm.singleSelectQuestion" ng-click="vm.singleScaleEventConfigured()">
           Create Event
-        </button>
+        </button>-->
         </div>
 
 
-        <div class="list list-inset" ng-if="vm.singleSelectQuestion && vm.singleSelectEventName">
+        <!--<div class="list list-inset" ng-if="vm.singleSelectQuestion && vm.singleSelectEventName">
             <div class="item positive item-button-right">
                 Polling Preview
                 <button class="button button-clear button-positive" ng-if="vm.singleSelectOptions.length !== 0" ng-click="vm.showSingleSelectOptionDelete = !vm.showSingleSelectOptionDelete">Edit</button>
             </div>
             <label class="item item-text-wrap">
-                <span><strong>Question:</strong> {{vm.singleSelectQuestion}}</span>
+                <span><strong>{{vm.singleSelectQuestion}}</strong></span>
             </label>
             <div class="item item-divider" ng-if="vm.singleSelectOptions.length > 1">
                 Select any one.
@@ -46,9 +50,9 @@
                     </ion-delete-button>
                 </ion-item>
             </ion-list>
-            <!--Need to handle disabled case for submit response button-->
+            <!--Need to handle disabled case for submit response button
             <button class="button button-block button-dark" ng-disabled="!vm.singleSelectOptions || vm.singleSelectOptions.length === 0">Submit Response</button>
-        </div>
+        </div>-->
 
     </ion-content>
 </ion-modal-view>

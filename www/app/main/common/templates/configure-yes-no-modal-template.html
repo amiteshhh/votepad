@@ -21,9 +21,11 @@
         </div>
 
 
-        <div class="list list-inset" ng-if="vm.yesNoQuestion && vm.yesNoEventName">
-            <div class="item positive item-button-right">
-                Polling Preview
+        <div class="list list-inset" ng-disabled="true" ng-if="vm.yesNoQuestion && vm.yesNoEventName">
+            <div class="item item-icon-left item-text-wrap" style="border-left: 10px solid #0c60ee;">
+                <i class="icon ion-person-stalker"></i> 
+                <h2><strong>Polling Preview</strong></h2>
+                <p>Shows a snapshot of the event as participant's view. </p>
             </div>
             <label class="item item-text-wrap">
                 <span><strong>Question:</strong> {{vm.yesNoQuestion}}</span>
@@ -31,11 +33,11 @@
             <div class="item item-divider">
                 Select any one.
             </div>            
-            <ion-list >
-                <ion-radio ng-model="vm.yesNoChoice" ng-value="1">Yes</ion-radio>
-                <ion-radio ng-model="vm.yesNoChoice" ng-value="2">No</ion-radio>
+            <ion-list ng-disabled="true">
+                <ion-radio ng-disabled="true" ng-model="vm.yesNoChoice" ng-value="1">Yes</ion-radio>
+                <ion-radio ng-disabled="true" ng-model="vm.yesNoChoice" ng-value="2">No</ion-radio>
             </ion-list>
-            <button class="button button-block button-dark" ng-disabled="!vm.yesNoChoice">Submit Response</button>
+            <button class="button button-block button-dark" ng-disabled="true">Submit Response</button>
         </div>
 
     </ion-content>

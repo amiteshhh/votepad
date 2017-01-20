@@ -21,19 +21,21 @@
         </div>
 
 
-        <div class="list list-inset" ng-if="vm.textEventName && vm.textQuestion">
-            <div class="item positive item-button-right">
-                Polling Preview
+        <div class="list list-inset" ng-disabled="true" ng-if="vm.textEventName && vm.textQuestion">
+            <div class="item item-icon-left item-text-wrap" style="border-left: 10px solid #0c60ee;">
+                <i class="icon ion-person-stalker"></i> 
+                <h2><strong>Polling Preview</strong></h2>
+                <p>Shows a snapshot of the event as participant's view. </p>
             </div>
             <label class="item item-text-wrap">
                 <span><strong>Question:</strong> {{vm.textQuestion}}</span>
             </label>
             <ion-list>
                 <label class="item item-input item-text-wrap">
-                    <input type="text" ng-model="vm.textResponse" placeholder="Please enter your response here">
+                    <input type="text" ng-disabled="true" ng-model="vm.textResponse" placeholder="Please enter your response here">
                 </label>
             </ion-list>
-            <button class="button button-block button-dark" ng-disabled="!vm.textResponse">Submit Response</button>
+            <button class="button button-block button-dark" ng-disabled="!vm.singleSelectOptions || vm.singleSelectOptions.length === 0">Submit Response</button>
         </div>
 
     </ion-content>
