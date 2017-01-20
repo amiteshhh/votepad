@@ -6,9 +6,13 @@
     angular.module(moduleName)
         .controller('ParticipentsCtrl', ParticipentsCtrl);
 
-    ParticipentsCtrl.$inject = ['$scope', '$ionicModal'];
-    function ParticipentsCtrl($scope, $ionicModal) {
+    ParticipentsCtrl.$inject = ['$scope', '$ionicModal', '$state'];
+    function ParticipentsCtrl($scope, $ionicModal, $state) {
         var vm = this;
+        
+        vm.openChatBox = function (toChatWith) {
+            $state.go('app.chat');
+        }
 
         /*$ionicModal.fromTemplateUrl('chat-box-modal.html', {
             scope: $scope,
