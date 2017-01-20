@@ -2,7 +2,70 @@
     <ion-nav-buttons side="left">
         <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
     </ion-nav-buttons>
-    <ion-content class="has-header">
-        UNDER CONSTRUCTION
+    <ion-content class="blue-bkg">
+        <div class="dashboard-content">
+            <div class="dashboard-top-section">
+                <div class="dashboard-name-and-comp">
+                    <div class="dashboard-name">Hello {{vm.userName}}</div>
+                    <div class="dashboard-comp">{{vm.compName}}</div>
+                </div>
+                <div class="dashboard-views-likes">
+                    <div class="dashboard-views">50 Likes</div>
+                    <div class="dashboard-likes">100 Comments</div>
+                </div>
+            </div>
+            <div class="row row-header">
+                <div class="col">Name</div>
+                <div class="col">Created</div>
+                <div class="col">Updated</div>
+                <div class="col">Status</div>
+            </div>
+            <div class="row" ng-repeat="data in vm.pollData">
+                <div class="col">{{data.name}}</div>
+                <div class="col">{{data.created}}</div>
+                <div class="col">{{data.updated}}</div>
+                <div class="col">
+                    <button class="button button-small button-balanced status-btn">
+                        {{data.status}}
+                    </button>
+                </div>
+            </div>
+            <div class="list poll-result">
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Overview & Results
+                    </div>
+                    <select>
+                        <option>Yes/No</option>
+                        <option selected>Single Select</option>
+                        <option>Linear Scale</option>
+                        <option>Multiple Choice</option>
+                    </select>
+                </label>
+            </div>
+            <div class="dashboard-mid-section">
+                <div class="dashboard-charts">
+                    <canvas id="doughnut" class="chart chart-doughnut"
+                            chart-data="vm.data" chart-labels="vm.labels">
+                    </canvas>
+                </div>
+                <div class="dashboard-charts">
+                    <canvas id="pie" class="chart chart-pie"
+                            chart-data="vm.data" chart-labels="vm.labels" chart-options="options">
+                    </canvas>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="button icon-left ion-star button-calm btn-views">1000 Participates</button>
+                </div>
+                <div class="col">
+                    <button class="button icon-left ion-clock button-royal btn-views">1hr Avg. Duration</button>
+                </div>
+            </div>
+            <div class="dashboard-bottom-section">
+                <button class="button button-full btn-full-orange" ng-click="vm.createEvent()">Create Event</button>
+            </div>
+        </div>
     </ion-content>
 </ion-view>

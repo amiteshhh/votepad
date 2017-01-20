@@ -2,7 +2,7 @@
     'use strict';
 
     var moduleName = 'app.dashboard',
-            requires = [];
+            requires = ['chart.js'];
 
     angular.module(moduleName, requires);
 
