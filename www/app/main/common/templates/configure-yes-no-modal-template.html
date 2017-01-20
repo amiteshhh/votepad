@@ -1,0 +1,44 @@
+<ion-modal-view>
+    <ion-header-bar class="bar-positive">
+        <button class="button button-icon icon ion-android-arrow-back" ng-click="vm.backFromYesNo()"></button>
+        <h1 class="title">Configure your event</h1>
+    </ion-header-bar>
+    <ion-content>
+
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="text" ng-model="vm.yesNoEventName" placeholder="Event Name">
+            </label>
+            <label class="item item-input">
+                <input type="text" ng-model="vm.yesNoQuestion" placeholder="Place your question here...">
+            </label>
+        </div>
+
+        <div class="list list-inset">            
+            <button class="button button-block button-dark" ng-disabled="!vm.yesNoEventName || !vm.yesNoQuestion" ng-click="vm.yesNoEventConfigured()">
+          Create Event
+        </button>
+        </div>
+
+
+        <div class="list list-inset" ng-disabled="true" ng-if="vm.yesNoQuestion && vm.yesNoEventName">
+            <div class="item item-icon-left item-text-wrap" style="border-left: 10px solid #0c60ee;">
+                <i class="icon ion-person-stalker"></i> 
+                <h2><strong>Polling Preview</strong></h2>
+                <p>Shows a snapshot of the event as participant's view. </p>
+            </div>
+            <label class="item item-text-wrap">
+                <span><strong>Question:</strong> {{vm.yesNoQuestion}}</span>
+            </label>
+            <div class="item item-divider">
+                Select any one.
+            </div>            
+            <ion-list ng-disabled="true">
+                <ion-radio ng-disabled="true" ng-model="vm.yesNoChoice" ng-value="1">Yes</ion-radio>
+                <ion-radio ng-disabled="true" ng-model="vm.yesNoChoice" ng-value="2">No</ion-radio>
+            </ion-list>
+            <button class="button button-block button-dark" ng-disabled="true">Submit Response</button>
+        </div>
+
+    </ion-content>
+</ion-modal-view>

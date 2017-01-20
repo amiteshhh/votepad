@@ -1,17 +1,17 @@
 (function () {
     'use strict';
 
-    var moduleName = 'app.home';
+    var moduleName = 'app.chat';
 
     angular.module(moduleName).config(routeConfig);
 
     function routeConfig($stateProvider) {
-        $stateProvider.state('app.home', {
-            url: '/home',
+        $stateProvider.state('app.chat', {
+            url: '/chat',
             views: {
                 'menuContent': {
-                    templateUrl: 'app/main/home/home.html',
-                    controller: 'HomeCtrl as vm'
+                    templateUrl: 'app/main/chat/chat.html',
+                    controller: 'ChatController as vm'
                 }
             }
         });

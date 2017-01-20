@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    var moduleName = 'app.home',
+    var moduleName = 'app.chat',
             requires = [];
 
     angular.module(moduleName, requires);

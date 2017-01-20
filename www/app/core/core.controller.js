@@ -6,12 +6,17 @@
     angular.module(moduleName)
         .controller('AppCtrl', Ctrl);
 
-    Ctrl.$inject = [];
-    function Ctrl() {
-        var socketUrl = 'http://localhost:1337';
-        var socket = io.sails.connect(socketUrl);
-        //io.sails.url = socketUrl;
-        socket.get('/event', function (resData, jwres) { console.log('socekt get', resData); });
-        socket.on('event', function (event) { console.log('event received socket', event); });
+    Ctrl.$inject = ['$state', '$localStorage'];
+    function Ctrl($state, $localStorage) {
+        var vm = this;
+
+        vm.host = false;
+        console.log("Inside AppCtrl");
+
+        vm.logout = function () {
+            delete $localStorage.signInInfo;
+            delete $localStorage.signUpInfo;
+            $state.go('auth');
+        };
     }
 })();

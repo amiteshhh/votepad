@@ -1,42 +1,60 @@
-<ion-view
-  hide-back-button="true">
+<ion-view hide-back-button="true">
   <ion-header-bar class="bar bar-positive">
-    <h1 class="title">{{vm.loginTarget}} Login</h1>
+    <h1 class="title">VotePad</h1>
   </ion-header-bar>
-  <ion-content padding="true"
-               scroll="false">
-    <div ng-show="vm.getPassword">
+  <ion-content padding="true" scroll="false">
+    <div>
       <!-- Form with floating labels -->
-      <form ng-submit="vm.login()"
-            novalidate="novalidate"
-            name="loginForm">
+      <form name="userSignUpForm" ng-submit="vm.validateRegistration()">
         <ion-list>
           <label class="item item-input item-floating-label">
-            <span class="input-label">PIC</span>
+            <span class="input-label">Name</span>
             <input type="text"
-                   placeholder="PIC"
-                   ng-model="vm.formData.pic" capitalize
-                   name="pic"
+                   placeholder="Name"
+                   ng-model="vm.signUpForm.username"
+                   name="Name"
                    ng-required="true">
           </label>
+
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Company Name</span>
+            <input type="text"
+                   placeholder="Company Name"
+                   ng-model="vm.signUpForm.company"
+                   name="comapny"
+                   ng-required="true">
+          </label>
+
+          <label class="item item-input item-floating-label">
+            <span class="input-label">Mobile</span>
+            <input type="text"
+                   placeholder="Mobile No."
+                   ng-model="vm.signUpForm.mobileNo"
+                   name="mobile"
+                   ng-required="true">
+          </label>
+
           <label class="item item-input item-floating-label">
             <span class="input-label">Password</span>
             <input type="password"
                    placeholder="Password"
-                   ng-model="vm.formData.password"
+                   ng-model="vm.signUpForm.password"
                    name="password"
                    ng-required="true">
           </label>
+<!--ng-disabled="userSignUpForm.$invalid" -->
         </ion-list>
-        <button ng-disabled="loginForm.$invalid" class="button button-dark button-block"
-                type="submit">Login
-        </button>
+        <button class="button button-royal button-block" type="submit" ng-click="vm.validateRegistration()">Sign Up</button>
       </form>
-      <p ng-if="vm.errorMsg" style="color: red;">{{vm.errorMsg}}</p>
     </div>
-    <div ng-hide="vm.getPassword" style="text-align: center;">
-      <p>Validating User Crendentials..</p>
-      <ion-spinner></ion-spinner>
-    </div>
-  </ion-content>
+
+    <div style="text-align: center;margin-top: 40px;">
+<p>or Register Using</p>
+<button class="button button-block icon-left ion-social-facebook button-positive"> Facebook</button>
+<!--<ion-spinner></ion-spinner>-->
+</div>
+<button class="button button-positive button-block" type="submit" ng-click="vm.openSignInModal()">Sign In
+        </button>
+
+</ion-content>
 </ion-view>

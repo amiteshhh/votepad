@@ -1,24 +1,53 @@
 <ion-side-menus>
 
   <ion-pane ion-side-menu-content>
-    <ion-nav-bar class="bar-stable">
+    <ion-nav-bar class="bar-positive">
       <ion-nav-back-button class="button-clear"><i class="icon ion-chevron-left"></i> Back</ion-nav-back-button>
     </ion-nav-bar>
     <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
   </ion-pane>
 
   <ion-side-menu side="left">
-    <header class="bar bar-header bar-stable">
-      <h1 class="title">Left</h1>
+    <header class="bar bar-header bar-dark">
+      <h1 class="title">Welocome Username</h1>
     </header>
     <ion-content class="has-header">
       <ion-list>
-        <ion-item nav-clear menu-close ui-sref="app.home">
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.dashboard">
+          <i class="icon ion-android-home"></i>
+          Dashboard
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.createEvent">
+          <i class="icon ion-android-list"></i>
           Create Event
         </ion-item>
-        <ion-item nav-clear menu-close ui-sref="app.event">
-          View Events
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.event">
+          <i class="icon ion-android-open"></i>
+          View Events 
         </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.participents">
+          <i class="icon ion-android-people"></i>
+          Online Users 
+        </ion-item>
+        <ion-toggle class="item-icon-left" toggle-class="toggle-positive" ng-model="vm.host">
+          <i class="icon ion-mouse"></i>
+          Logged in as {{ vm.host ? 'Participant' : 'Host'}}
+        </ion-toggle>
+        <ion-item class="item-icon-left" nav-clear menu-close>
+          <i class="icon ion-stats-bars"></i>
+          Analytics 
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close>
+          <i class="icon ion-android-person"></i>
+          Profile
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close>
+          <i class="icon ion-android-settings"></i>
+          Settings
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ng-click="appVm.logout()">
+          <i class="icon ion-power"></i>
+          Logout
         </ion-item>
       </ion-list>
     </ion-content>
