@@ -23,7 +23,10 @@
             "app.createEvent",
 
             // event module
-            "app.event"
+            "app.event",
+            
+            // chat module
+            "app.chat"
 
         ];
 
