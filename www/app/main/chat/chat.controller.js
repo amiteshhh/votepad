@@ -17,29 +17,29 @@
 //        var TYPING_TIMER_LENGTH = 250;
 //
 //        Socket.on('connect', function () {
-//            Socket.emit('add user', "username");
-//            Chat.setUsername("username");
+//            Socket.emit('add user', "userName");
+//            Chat.setUsername("userName");
 //
-//            if (!vm.data.username) {
+//            if (!vm.data.userName) {
 //                var nicknamePopup = $ionicPopup.show({
-//                    template: '<input id="usr-input" type="text" ng-model="data.username" autofocus>',
+//                    template: '<input id="usr-input" type="text" ng-model="data.userName" autofocus>',
 //                    title: 'What\'s your nickname?',
 //                    scope: $scope,
 //                    buttons: [{
 //                            text: '<b>Save</b>',
 //                            type: 'button-positive',
 //                            onTap: function (e) {
-//                                if (!vm.data.username) {
+//                                if (!vm.data.userName) {
 //                                    e.preventDefault();
 //                                } else {
-//                                    return vm.data.username;
+//                                    return vm.data.userName;
 //                                }
 //                            }
 //                        }]
 //                });
-//                nicknamePopup.then(function (username) {
-//                    Socket.emit('add user', username);
-//                    Chat.setUsername(username);
+//                nicknamePopup.then(function (userName) {
+//                    Socket.emit('add user', userName);
+//                    Chat.setUsername(userName);
 //                });
 //            }
 //
@@ -47,8 +47,8 @@
 //
 //        Chat.scrollBottom();
 //
-//        if ($stateParams.username) {
-//            vm.data.message = "@" + $stateParams.username;
+//        if ($stateParams.userName) {
+//            vm.data.message = "@" + $stateParams.userName;
 //            document.getElementById("msg-input").focus();
 //        }
 //
@@ -72,13 +72,13 @@
 //            sendUpdateTyping();
 //        };
 //
-//        vm.messageIsMine = function (username) {
-//            return vm.data.username === username;
+//        vm.messageIsMine = function (userName) {
+//            return vm.data.userName === userName;
 //        };
 //
-        vm.getBubbleClass = function (username) {
+        vm.getBubbleClass = function (userName) {
             var classname = 'from-them';
-            if (vm.messageIsMine(username)) {
+            if (vm.messageIsMine(userName)) {
                 classname = 'from-me';
             }
             return classname;

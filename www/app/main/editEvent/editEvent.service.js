@@ -22,24 +22,55 @@
     function Svc($http, $q, APP_CONFIG) {
 
         return {
-            sampleOperation: _sampleOperation
+            //sampleOperation: _sampleOperation,
+            createOrUpdate: _createOrUpdate,
+            destroy: _destroy
+
         };
 
-        /**
-         * @ngdoc function  
-         * @name app.editEvent.EditEventSvc#sampleOperation
-         *
-         * @description
-         * It does sample operation.
-         * @param {number} Id Employee Id.
-         * 
-         * @methodOf app.about.AboutSvc
-         * @returns {Promise} which resolves to list of items
-         */
-        function _sampleOperation(id) {
+        function _createOrUpdate(templateType, model) {
             var deferred = $q.defer();
-            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/editEvent/';
-            $http.get(url).then(function (response) {
+            var pathTo;
+
+            switch (templateType) {
+                case 'text': {
+                    pathTo = '/event';
+                    break;
+                }
+                case 'yesNo':
+                case 'singleSelect':
+                case 'multiSelect': 
+                case 'range': {
+                    pathTo = '/optiontemplate';
+                    break;
+                }
+            };
+
+            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + pathTo;
+            var req, method;
+            if (model.id) {
+                url += '/' + model.id;
+                method = 'PUT';
+            } else {
+                method = 'POST';
+            }
+            req = {
+                url: url,
+                method: method,
+                data: model
+            };
+            $http(req).then(function (response) {
+                deferred.resolve(response.data);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+
+        function _destroy(id) {
+            var deferred = $q.defer();
+            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/event/' + id;
+            $http.delete(url).then(function (response) {
                 deferred.resolve(response.data);
             }, function (err) {
                 deferred.reject(err);

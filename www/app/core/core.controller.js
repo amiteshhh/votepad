@@ -12,6 +12,11 @@
 
         vm.host = false;
         console.log("Inside AppCtrl");
+        init();
+
+        function init() {
+
+        }
 
         vm.logout = function () {
             delete $localStorage.signInInfo;

@@ -114,8 +114,7 @@
                 AuthSvc.createUser(vm.signUpForm).then(function (data) {
                     //$ionicLoading.hide();
                     console.log("createUser: " + JSON.stringify(data));
-                    $localStorage.signUpInfo = vm.signUpForm;
-                    $rootScope
+                    $rootScope.userInfo = $localStorage.userInfo = data; 
 
                     $ionicLoading.hide();
                     $state.go('app.createEvent');

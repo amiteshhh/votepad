@@ -13,6 +13,9 @@
     function config($stateProvider) {
         $stateProvider.state('app.editEvent', {
             url: '/editEvent/:templateType/:id',
+            params: {
+                "eventModel": null
+            },
             views: {
                 'menuContent': {
                     templateUrl: 'app/main/editEvent/editEvent.html',

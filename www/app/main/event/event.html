@@ -2,38 +2,29 @@
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
   </ion-nav-buttons>
-  <!--<ion-nav-buttons side="right">
-    <button ng-click="vm.createOrUpdate()" ng-disabled="!vm.event" class="button button-icon icon ion-edit"></button>
-  </ion-nav-buttons>-->
+  <ion-nav-buttons side="right">
+    <button ng-click="vm.showDelete = !vm.showDelete" ng-if="vm.events && vm.events.length !== 0" class="button button-icon icon ion-android-delete"></button>
+  </ion-nav-buttons>
   <ion-content class="has-header">
 
-    <div class="list list-inset">
-      <!--<div class="item item-text-wrap row" ng-click="vm.viewDetail()" ng-repeat="item in [1,2,3,4,5,6,7,8]">
-        <div class="col col-90">
-          <h2><strong>Cognizant Internal Services</strong></h2>
-          <p>Associates feedback on working of Cognizant Internal Services !</p>
-          <label class="energized">Not Yet Started</label>
-        </div>
-        <div class="col col-10 col-center">
-          <h1 class="icon ion-android-alert energized"></h1>
-        </div>
-      </div>-->
-      <div ng-if="vm.eventsData && vm.eventsData.length !== 0" class="item item-text-wrap row" ng-click="vm.viewDetail()" ng-repeat="item in vm.eventsData">
-        <div class="col col-90">
-          <h2><strong>{{item.eventName}}</strong><span class="royal"> - {{item.eventTypeDetail}}</span></h2>
-          <p>{{item.eventQues}}</p>
-          <label class="energized">Not Yet Started</label>
-        </div>
-        <div class="col col-10 col-center">
-          <h1 class="icon ion-android-alert energized"></h1>
-        </div>
-      </div>
+    <ion-list class="" show-delete="vm.showDelete">
+      <ion-item ng-if="vm.events && vm.events.length !== 0" class="item item-text-wrap item-icon-right" ng-click="vm.viewDetail(item)"
+        ng-repeat="item in vm.events">
+        <h2><strong>{{item.title}}</strong></h2>
+        <h2>{{item.description}}</h2>
+        <p>Status - {{item.eventStatus}}</p>
+        <p>Created on - {{item.createdAt | date : "medium"}}</p>
+        <p>Updated on - {{item.updatedAt | date : "medium"}}</p>
+        <i class="icon ion-record" ng-class="vm.assignEventStatus(item.eventStatus)"></i>
+        <ion-delete-button class="ion-minus-circled" ng-click="vm.onItemDelete(item)">
+        </ion-delete-button>
+      </ion-item>
 
-      <div ng-if="!vm.eventsData || vm.eventsData.length === 0" class='item item-text-wrap'>
+      <div ng-if="!vm.events || vm.events.length === 0" class='item item-text-wrap'>
         <label class="positive">No Upcoming Events Found</label>
       </div>
-      
-    </div>
+
+    </ion-list>
 
   </ion-content>
 </ion-view>

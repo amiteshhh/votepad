@@ -12,40 +12,40 @@
             })
 
             .factory('Users', function () {
-                var usernames = [];
-                usernames.numUsers = 0;
+                var userNames = [];
+                userNames.numUsers = 0;
 
                 return {
                     getUsers: function () {
-                        return usernames;
+                        return userNames;
                     },
-                    addUsername: function (username) {
-                        usernames.push(username);
+                    addUsername: function (userName) {
+                        userNames.push(userName);
                     },
-                    deleteUsername: function (username) {
-                        var index = usernames.indexOf(username);
+                    deleteUsername: function (userName) {
+                        var index = userNames.indexOf(userName);
                         if (index != -1) {
-                            usernames.splice(index, 1);
+                            userNames.splice(index, 1);
                         }
                     },
                     setNumUsers: function (data) {
-                        usernames.numUsers = data.numUsers;
+                        userNames.numUsers = data.numUsers;
                     }
                 };
             })
 
             .factory('Chat', function ($ionicScrollDelegate, Socket, Users) {
 
-                var username;
+                var userName;
                 var users = {};
                 users.numUsers = 0;
 
                 var messages = [];
                 var TYPING_MSG = '. . .';
 
-                var Notification = function (username, message) {
+                var Notification = function (userName, message) {
                     var notification = {};
-                    notification.username = username;
+                    notification.userName = userName;
                     notification.message = message;
                     notification.notification = true;
                     return notification;
@@ -61,30 +61,30 @@
 
                 Socket.on('typing', function (data) {
                     var typingMsg = {
-                        username: data.username,
+                        userName: data.userName,
                         message: TYPING_MSG
                     };
                     addMessage(typingMsg);
                 });
 
                 Socket.on('stop typing', function (data) {
-                    removeTypingMessage(data.username);
+                    removeTypingMessage(data.userName);
                 });
 
                 Socket.on('user joined', function (data) {
-                    var msg = data.username + ' joined';
-                    var notification = new Notification(data.username, msg);
+                    var msg = data.userName + ' joined';
+                    var notification = new Notification(data.userName, msg);
                     addMessage(notification);
                     Users.setNumUsers(data);
-                    Users.addUsername(data.username);
+                    Users.addUsername(data.userName);
                 });
 
                 Socket.on('user left', function (data) {
-                    var msg = data.username + ' left';
-                    var notification = new Notification(data.username, msg);
+                    var msg = data.userName + ' left';
+                    var notification = new Notification(data.userName, msg);
                     addMessage(notification);
                     Users.setNumUsers(data);
-                    Users.deleteUsername(data.username);
+                    Users.deleteUsername(data.userName);
                 });
 
                 var scrollBottom = function () {
@@ -100,7 +100,7 @@
 
                 var removeTypingMessage = function (usr) {
                     for (var i = messages.length - 1; i >= 0; i--) {
-                        if (messages[i].username === usr && messages[i].message.indexOf(TYPING_MSG) > -1) {
+                        if (messages[i].userName === usr && messages[i].message.indexOf(TYPING_MSG) > -1) {
                             messages.splice(i, 1);
                             scrollBottom();
                             break;
@@ -110,17 +110,17 @@
 
                 return {
                     getUsername: function () {
-                        return username;
+                        return userName;
                     },
                     setUsername: function (usr) {
-                        username = usr;
+                        userName = usr;
                     },
                     getMessages: function () {
                         return messages;
                     },
                     sendMessage: function (msg) {
                         messages.push({
-                            username: username,
+                            userName: userName,
                             message: msg
                         });
                         scrollBottom();

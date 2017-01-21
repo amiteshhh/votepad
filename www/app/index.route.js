@@ -12,7 +12,7 @@
             var $state = $injector.get('$state');
             var $stateParams = $injector.get('$stateParams');
             var $localStorage = $injector.get('$localStorage');
-            if ($localStorage.signUpInfo || $localStorage.signInInfo) {
+            if ($localStorage.userInfo && $localStorage.userInfo.id) {
                 $state.go('app.dashboard');//default nav for now
             } else {
                 $state.go('auth');

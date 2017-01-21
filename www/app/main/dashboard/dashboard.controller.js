@@ -9,7 +9,7 @@
     DashboardCtrl.$inject = ['$scope', '$ionicModal', '$localStorage', '$state'];
     function DashboardCtrl($scope, $ionicModal, $localStorage, $state) {
         var vm = this;
-        vm.userName = $localStorage.signUpInfo.username;
+        vm.userName = $localStorage.userInfo.userName;
         vm.compName = "Cognizant";
         vm.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
         vm.data = [300, 500, 100];

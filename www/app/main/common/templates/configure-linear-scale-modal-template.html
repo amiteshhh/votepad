@@ -1,77 +1,73 @@
-<ion-modal-view>
-    <ion-header-bar class="bar-positive">
-        <button class="button button-icon icon ion-android-arrow-back" ng-click="vm.backFromLinearScale()"></button>
-        <h1 class="title">Configure your event {{vm.startRange}} - {{vm.endRange}}</h1>
-    </ion-header-bar>
-    <ion-content>
+<ion-content>
 
-        <div class='list list-inset'>
-            <label class="item item-input">
-                <input type="text" ng-model="vm.linearScaleEventName" placeholder="Event Name">
+    <div class='list list-inset'>
+        <label class="item item-input">
+                <input type="text" ng-model="vm.event.title" placeholder="Event Name">
             </label>
-            <label class="item item-input">
-                <input type="text" ng-model="vm.linearScaleQuestion" placeholder="Place your question here...">
+        <label class="item item-input">
+                <input type="text" ng-model="vm.event.helpText" placeholder="Event Description (optional)">
             </label>
-        </div>
-        <div class="list list-inset">
-            <label class="item item-input item-select">
-                <input type="text" ng-model="vm.optcomnt1" placeholder="(Optional Start Range Comments)">
-                <select ng-options="item as item.label for item in vm.items track by item.id" ng-model="selected"></select>
-                <!--<select>
-                    <option ng-model="vm.startRange" value="0">0</option>
-                    <option ng-model="vm.startRange" value="1" selected>1</option>
-                </select>-->
+        <label class="item item-input">
+                <input type="text" ng-model="vm.event.question" placeholder="Place your question here">
             </label>
-            <label class="item item-input item-select">
-                <input type="text" ng-model="vm.optcomnt2" placeholder="(Optional End Range Comments)">
-                <select>
-                    <option value="2" >2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5" selected>5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
+    </div>
+    <div class="list list-inset">
+        <label class="item item-input item-select">
+                <input type="text" ng-model="vm.event.lowerRangeLabel" placeholder="(Optional Start Range Comments)">
+                <select ng-model="vm.event.lowerRange">
+                    <option ng-model="vm.event.lowerRange" value="0">0</option>
+                    <option ng-model="vm.event.lowerRange" value="1">1</option>
                 </select>
             </label>
-
-            <!--</div>-->
-            
-            <!--<label class="item item-input">
-                <input type="number" ng-model="vm.rateRange" placeholder="Rating Range">
+        <label class="item item-input item-select">
+                <input type="text" ng-model="vm.event.upperRangeLabel" placeholder="(Optional End Range Comments)">
+                <select ng-model="vm.event.upperRange">
+                    <option  ng-model="vm.event.endRange" value="2" >2</option>
+                    <option  ng-model="vm.event.endRange" value="3">3</option>
+                    <option  ng-model="vm.event.endRange" value="4">4</option>
+                    <option  ng-model="vm.event.endRange" value="5">5</option>
+                    <option  ng-model="vm.event.endRange" value="6">6</option>
+                    <option  ng-model="vm.event.endRange" value="7">7</option>
+                    <option  ng-model="vm.event.endRange" value="8">8</option>
+                    <option  ng-model="vm.event.endRange" value="9">9</option>
+                    <option  ng-model="vm.event.endRange" value="10">10</option>
+                </select>
             </label>
-            <a class="item item-icon-left assertive item-text-wrap" ng-if='vm.showRangeError'>
-                <i class="icon ion-android-alert"></i> Please make sure rating range lies between 1 & 10
-            </a>
-            <button class="button button-block button-positive" ng-disabled="!vm.linearScaleEventName || !vm.linearScaleQuestion || !vm.rateRange"
-                ng-click="vm.addLinearScaleRange()">
-          Assign Range
-        </button>-->
-            <button class="button button-block button-dark" ng-disabled="!vm.linearScaleEventName || !vm.linearScaleQuestion || !vm.optcomnt1 || !vm.optcomnt2"
-                ng-click="vm.linearScaleEventConfigured()">
+        <button class="button button-block button-dark" ng-disabled="!vm.event.title"
+            ng-click="vm.createOrUpdateEvent()">
           Create Event
         </button>
-        </div>
+        <button class="button button-block button-dark" ng-disabled="vm.validateYesNoLaunchPoll()" ng-click="vm.createOrUpdateEvent()">
+          Launch Poll
+        </button>
+    </div>
 
-        <div class="list list-inset" ng-if="vm.linearScaleEventName && vm.linearScaleQuestion">
-            <div class="item item-positive item-button-right">
-                Polling Preview
-            </div>
-            <label class="item item-text-wrap">
-                    <span><strong>Question:</strong> {{vm.linearScaleQuestion}}</span>
-                </label>
-            <label class="item item-input item-select" ng-if="vm.rateRangeArray && vm.rateRangeArray.length !== 0">
-                    <div class="input-label">
-                        <strong>Select a value to rate</strong>
-                    </div>
-                    <select ng-model="vm.selectedRate">
-                        <option ng-repeat="item in vm.rateRangeArray">{{item}}</option>
-                    </select>                    
-                </label>
-            <button class="button button-block button-dark" ng-disabled="!vm.selectedRate">Submit Response</button>
-        </div>
+    <div class="list list-inset" ng-disabled="true" ng-if="vm.event.title">
+        <div class="item item-icon-left item-text-wrap" style="border-left: 10px solid #0c60ee;">
+<i class="icon ion-person-stalker"></i>
+<h2><strong>Polling Preview</strong></h2>
+<p>Shown below a snapshot of the event as a participant's view. </p>
+</div>
+<label class="item item-text-wrap">
+                <h2><strong> {{vm.event.title}} </h2></span>
+                <p ng-if="vm.event.helpText"> {{vm.event.helpText}} </p>
+            </label>
+<label class="item item-text-wrap">
+                <h2>{{vm.event.question}} </h2>
+            </label>
+<div class="item item-divider">
+    Provide a Rate Value
+</div>
+<label class="item item-text-wrap" ng-if="vm.event.lowerRangeLabel">
+                <h2>{{vm.event.lowerRangeLabel}} </h2>
+            </label>
+<ion-list ng-disabled="true" ng-repeat="item in vm.event.options">
+    <ion-radio >{{item.label}}</ion-radio>
+</ion-list>
+<label class="item item-text-wrap" ng-if="vm.event.upperRangeLabel">
+                <h2>{{vm.event.upperRangeLabel}} </h2>
+            </label>
+<button class="button button-block button-dark" ng-disabled="true">Submit Response</button>
+</div>
 
-    </ion-content>
-</ion-modal-view>
+</ion-content>

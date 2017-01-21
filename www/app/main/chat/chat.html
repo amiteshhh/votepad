@@ -3,8 +3,8 @@
         <section class="chats">
             <span ng-repeat="message in vm.messages">
                 <span ng-show="!message.notification">
-                    <p class="username" ng-show="!messageIsMine(message.username)">{{message.username}}</p>
-                    <div ng-class='vm.getBubbleClass(vm.message.username)'>
+                    <p class="userName" ng-show="!messageIsMine(message.userName)">{{message.userName}}</p>
+                    <div ng-class='vm.getBubbleClass(vm.message.userName)'>
                         <p ng-bind="message.message"></p>
                     </div>
                     <div class="clear"></div>

@@ -1,58 +1,57 @@
-<ion-modal-view>
-    <ion-header-bar class="bar-positive">
-        <button class="button button-icon icon ion-android-arrow-back" ng-click="vm.backFromSingleSelect()"></button>
-        <h1 class="title">Configure your event</h1>
-    </ion-header-bar>
-    <ion-content>
 
-        <div class="list list-inset">
-            <label class="item item-input">
-                <input type="text" ng-model="vm.singleSelectEventName" placeholder="Event Name">
+<ion-content>
+
+    <div class="list list-inset">
+        <label class="item item-input">
+                <input type="text" ng-model="vm.event.title" placeholder="Event Name">
             </label>
-            <label class="item item-input">
-                <input type="text" ng-model="vm.singleSelectQuestion" placeholder="Place your question here...">
+        <label class="item item-input">
+                <input type="text" ng-model="vm.event.description" placeholder="Event Description (optional)">
             </label>
+        <label class="item item-input">
+                <input type="text" ng-model="vm.event.question" placeholder="Place your question here">
+            </label>
+    </div>
+    <div class="list list-inset">
+        <div class="item item-input item-icon-right" ng-repeat="item in vm.event.options">
+            <input id='{{item.cssId}}' type="text" ng-model="item.label" placeholder="{{'Option ' + ($index + 1)}}">
+            <i class="icon ion-android-delete" ng-if="$index !== 0" ng-click="vm.deleteQueFromTextTemplates(item, vm.event.options)"></i>
         </div>
+        <div class="item" ng-if="vm.event.options.length < 5" ng-click="vm.addOptToOptTemplates(vm.event.options)">
+            <p>Add Options</p>
+        </div>
+    </div>
 
-        <div class="list list-inset">
-            <div class="item item-input item-icon-right" ng-repeat="item in vm.singleSelectOptions">
-                <input type="text" ng-model="item.itemNum" placeholder="Untitled Option">
-                <i class="icon ion-android-add-circle" ng-disabled="!item.itemNum" ng-click="vm.updateOptionList()"></i>
-            </div>
-            <!--<div class="item item-input" ng-repeat="item in vm.singleSelectOptions track by $index">
-                <input type="text" ng-touched="vm.myFunc()" ng-model="item.itemNum" placeholder="Untitled Option">
-            </div>-->
-            <!--<button class="button button-block button-positive" ng-disabled="!vm.singleSelectQuestion || !vm.singleSelectEventName || !vm.option"
-                ng-click="vm.addSingleSelectOption()">
-          Add Option
-        </button>
-            <button class="button button-block button-dark" ng-disabled="!vm.singleSelectEventName || !vm.singleSelectQuestion" ng-click="vm.singleScaleEventConfigured()">
+    <div class="list list-inset">
+        <button class="button button-block button-dark" ng-disabled="!vm.event.title" ng-click="vm.createOrUpdateEvent()">
           Create Event
-        </button>-->
-        </div>
+        </button>
+        <button class="button button-block button-dark" ng-disabled="vm.validateYesNoLaunchPoll()" ng-click="vm.createOrUpdateEvent()">
+          Launch Poll
+        </button>
+    </div>
 
 
-        <!--<div class="list list-inset" ng-if="vm.singleSelectQuestion && vm.singleSelectEventName">
-            <div class="item positive item-button-right">
-                Polling Preview
-                <button class="button button-clear button-positive" ng-if="vm.singleSelectOptions.length !== 0" ng-click="vm.showSingleSelectOptionDelete = !vm.showSingleSelectOptionDelete">Edit</button>
-            </div>
-            <label class="item item-text-wrap">
-                <span><strong>{{vm.singleSelectQuestion}}</strong></span>
+    <div class="list list-inset" ng-disabled="true" ng-if="vm.event.question && vm.event.title">
+        <div class="item item-icon-left item-text-wrap" style="border-left: 10px solid #0c60ee;">
+<i class="icon ion-person-stalker"></i>
+<h2><strong>Polling Preview</strong></h2>
+<p>Shown below a snapshot of the event as a participant's view. </p>
+</div>
+<label class="item item-text-wrap">
+                <h2><strong> {{vm.event.title}} </h2></span>
+                <p ng-if="vm.yesNoEventDescp"> {{vm.event.description}} </p>
             </label>
-            <div class="item item-divider" ng-if="vm.singleSelectOptions.length > 1">
-                Select any one.
-            </div>
-            <ion-list show-delete="vm.showSingleSelectOptionDelete">
-                <ion-item class="item-input" ng-repeat="item in vm.singleSelectOptions">
-                    {{item.index}}. {{item.value}}
-                    <ion-delete-button class="ion-minus-circled" ng-click="vm.deleteSingleSelectOption(item)">
-                    </ion-delete-button>
-                </ion-item>
-            </ion-list>
-            <!--Need to handle disabled case for submit response button
-            <button class="button button-block button-dark" ng-disabled="!vm.singleSelectOptions || vm.singleSelectOptions.length === 0">Submit Response</button>
-        </div>-->
+<label class="item item-text-wrap">
+                <h2>{{vm.event.question}} </h2>
+            </label>
+<div class="item item-divider">
+    Select any one.
+</div>
+<ion-list ng-disabled="true" ng-repeat="item in vm.event.options">
+    <ion-radio ng-disabled="true">{{item.label}}</ion-radio>
+</ion-list>
+<button class="button button-block button-dark" ng-disabled="true">Submit Response</button>
+</div>
 
-    </ion-content>
-</ion-modal-view>
+</ion-content>

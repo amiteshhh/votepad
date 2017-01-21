@@ -27,8 +27,9 @@
   }
 
 
-  function runBlock($rootScope, $state) {
+  function runBlock($rootScope, $state, $localStorage) {
     console.log('Index runBlock is called.');
+    $rootScope.userInfo = $localStorage.userInfo;
     setupPush();
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
       if (toState.name === 'auth') {
