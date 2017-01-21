@@ -11,7 +11,7 @@
             <span class="input-label">Name</span>
             <input type="text"
                    placeholder="Name"
-                   ng-model="vm.signUpForm.username"
+                   ng-model="vm.signUpForm.userName"
                    name="Name"
                    ng-required="true">
           </label>
@@ -29,7 +29,7 @@
             <span class="input-label">Mobile</span>
             <input type="text"
                    placeholder="Mobile No."
-                   ng-model="vm.signUpForm.mobileNo"
+                   ng-model="vm.signUpForm.mobile"
                    name="mobile"
                    ng-required="true">
           </label>
@@ -42,9 +42,12 @@
                    name="password"
                    ng-required="true">
           </label>
-<!--ng-disabled="userSignUpForm.$invalid" -->
+          <!--ng-disabled="userSignUpForm.$invalid" -->
+          <div class="item item-icon-left assertive" ng-if='vm.userRegFail'>
+            <i class="icon ion-android-alert"></i> User Registration failed !
+          </div>
         </ion-list>
-        <button class="button button-royal button-block" type="submit" ng-click="vm.validateRegistration()">Sign Up</button>
+        <button class="button button-royal button-block" ng-disabled="userSignUpForm.$invalid" type="submit">Sign Up</button>
       </form>
     </div>
 

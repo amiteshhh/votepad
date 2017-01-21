@@ -38,7 +38,7 @@
 
     }
     
-    function _createUser(model, id) {
+    function _createUser(model) {
         var deferred = $q.defer();
         var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/user';
         var req, method;
@@ -46,7 +46,7 @@
         req = {
             url: url,
             method: method,
-            data: {"username" : model.username, "email" : "test@gmail.com", "mobile" : model.mobileNo, "password" : model.password}
+            data: {"userName" : model.userName, "company" : model.company, "mobile" : model.mobile, "password" : model.password}
         };
         $http(req).then(function (response) {
             deferred.resolve(response.data);

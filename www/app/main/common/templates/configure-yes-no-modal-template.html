@@ -10,6 +10,9 @@
                 <input type="text" ng-model="vm.yesNoEventName" placeholder="Event Name">
             </label>
             <label class="item item-input">
+                <input type="text" ng-model="vm.yesNoEventDescp" placeholder="Event Description (optional)">
+            </label>
+            <label class="item item-input">
                 <input type="text" ng-model="vm.yesNoQuestion" placeholder="Place your question here...">
             </label>
         </div>
@@ -25,10 +28,14 @@
             <div class="item item-icon-left item-text-wrap" style="border-left: 10px solid #0c60ee;">
                 <i class="icon ion-person-stalker"></i> 
                 <h2><strong>Polling Preview</strong></h2>
-                <p>Shows a snapshot of the event as participant's view. </p>
+                <p>Shown below a snapshot of the event as a participant's view. </p>
             </div>
             <label class="item item-text-wrap">
-                <span><strong>Question:</strong> {{vm.yesNoQuestion}}</span>
+                <h2><strong> {{vm.yesNoEventName}} </h2></span>
+                <p ng-if="vm.yesNoEventDescp"> {{vm.yesNoEventDescp}} </p>
+            </label>
+            <label class="item item-text-wrap">
+                <h2>{{vm.yesNoQuestion}} </h2>
             </label>
             <div class="item item-divider">
                 Select any one.

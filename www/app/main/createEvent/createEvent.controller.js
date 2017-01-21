@@ -6,15 +6,16 @@
     angular.module(moduleName)
         .controller('CreateEventCtrl', CreateEventCtrl);
 
-    CreateEventCtrl.$inject = ['$scope', '$ionicModal', '$ionicPopup', '$timeout', '$localStorage'];
-    function CreateEventCtrl($scope, $ionicModal, $ionicPopup, $timeout, $localStorage) {
+    CreateEventCtrl.$inject = ['$state', '$stateParams', '$scope', '$ionicModal', '$ionicPopup', '$timeout', '$localStorage'];
+    function CreateEventCtrl($state, $stateParams, $scope, $ionicModal, $ionicPopup, $timeout, $localStorage) {
         var vm = this;
+        var $stateParams = $stateParams;
 
         vm.singleSelectOptions = [{
-                index: 0,
-                itemNum: 'Num0',
-                itemDetail: ''
-            }];
+            index: 0,
+            itemNum: 'Num0',
+            itemDetail: ''
+        }];
         vm.showSingleSelectOptionDelete = false;
 
         vm.multipleSelectOptions = [];
@@ -28,8 +29,8 @@
 
         //--------------------------------- SINGLE SELECT -----------------------------------
 
-        vm.updateOptionList = function() {
-            if(vm.singleSelectOptions.length > 4) {
+        vm.updateOptionList = function () {
+            if (vm.singleSelectOptions.length > 4) {
                 console.log("maximum limit reached");
                 return;
             }
@@ -102,6 +103,14 @@
         //--------------------------------- LINEAR SCALE -----------------------------------
 
         vm.showRangeError = false;
+
+        vm.items = [{
+            id: 1,
+            label: 1
+        }, {
+            id: 2,
+            label: 2
+        }];
 
         vm.configureLinearScale = function () {
 
@@ -231,6 +240,7 @@
 
         vm.backFromYesNo = function () {
             vm.yesNoEventName = '';
+            vm.yesNoEventDescp = '';
             vm.yesNoQuestion = '';
             if (!eventData.eventType) {
                 eventData.eventType = 2;
@@ -239,14 +249,9 @@
         };
 
         vm.yesNoEventConfigured = function () {
-            eventData = {
-                eventType: 2,
-                eventTypeDetail: 'Yes/No',
-                eventName: vm.yesNoEventName,
-                eventQues: vm.yesNoQuestion
-            };
-            $localStorage.eventData.push(eventData);
+            eventConfigured(2, 'Yes/No', vm.yesNoEventName, vm.yesNoEventDescp, vm.yesNoQuestion);
             vm.yesNoEventName = '';
+            vm.yesNoEventDescp = '';
             vm.yesNoQuestion = '';
             vm.yesNoModal.hide();
         };
@@ -254,19 +259,61 @@
 
         //--------------------------------- TEXT -----------------------------------
 
-        vm.configureText = function () {
+        vm.textQuesArray = [{
+            id: 'Q1',
+            index: 1,
+            textQuestion: ''
+        }
+        ];
 
-            $ionicModal.fromTemplateUrl('app/main/common/templates/configure-text-modal-template.html', {
+        vm.addQueToTextQuesArray = function () {
+            var textQuesArrayLength = vm.textQuesArray.length + 1;
+            var tempTextQuest = {
+                id: 'Q' + textQuesArrayLength,
+                index: textQuesArrayLength,
+                textQuestion: ''
+            }
+
+            vm.textQuesArray.push(tempTextQuest);
+            $timeout(function () {
+                document.querySelector('#' + tempTextQuest.id).select();
+            }, 50, false);
+            console.log(vm.textQuesArray);
+
+        };
+
+        vm.deleteQueFromTextQuesArray = function(item) {
+            vm.textQuesArray.splice(vm.textQuesArray.indexOf(item), 1);
+            console.log(vm.textQuesArray);
+
+        };
+
+        vm.validateAndLaunchPoll = function() {
+            if(!vm.textEventName || _.filter(vm.textQuesArray, function(item){
+                return item.textQuestion === '';
+            }).length !== 0) {
+                return true;
+            };
+
+        };
+
+        vm.configureText = function () {
+            var textda = {
+                templateType: 'text'
+            }
+            $state.go('app.editEvent', textda);
+            /*$ionicModal.fromTemplateUrl('app/main/common/templates/configure-text-modal-template.html', {
                 scope: $scope,
                 animation: 'slide-in-up'
             }).then(function (modal) {
                 vm.textModal = modal;
                 modal.show();
-            });
+            });*/
         };
 
         vm.backFromText = function () {
             vm.textEventName = '';
+            vm.textEventDescp = '';
             vm.textQuestion = '';
             if (!eventData.eventType) {
                 eventData.eventType = 1;
@@ -275,14 +322,9 @@
         };
 
         vm.textEventConfigured = function () {
-            eventData = {
-                eventType: 1,
-                eventTypeDetail: 'Textual',
-                eventName: vm.textEventName,
-                eventQues: vm.textQuestion
-            };
-            $localStorage.eventData.push(eventData);
+            eventConfigured(1, 'Textual', vm.textEventName, vm.textEventDescp, vm.textQuestion);
             vm.textEventName = '';
+            vm.textEventDescp = '';
             vm.textQuestion = '';
             vm.textModal.hide();
         };
@@ -309,6 +351,19 @@
 
             }
         });
+
+        //------------------- Refactoring code goes here -----------------------
+
+        function eventConfigured(eventTyp, eventTypeDet, eventNam, eventDesc, eventQue) {
+            eventData = {
+                eventType: eventTyp,
+                eventTypeDetail: eventTypeDet,
+                eventName: eventNam,
+                eventDescp: eventDesc,
+                eventQues: eventQue
+            };
+            $localStorage.eventData.push(eventData);
+        }
 
     }
 })();

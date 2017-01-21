@@ -1,7 +1,7 @@
 <ion-modal-view>
     <ion-header-bar class="bar-positive">
         <button class="button button-icon icon ion-android-arrow-back" ng-click="vm.backFromLinearScale()"></button>
-        <h1 class="title">Configure your event</h1>
+        <h1 class="title">Configure your event {{vm.startRange}} - {{vm.endRange}}</h1>
     </ion-header-bar>
     <ion-content>
 
@@ -15,24 +15,25 @@
         </div>
         <div class="list list-inset">
             <label class="item item-input item-select">
-                <input type="text" ng-model="vm.optcomnt1" placeholder="(Start Range Optional Comments)">
-                <select>
-                    <option>0</option>
-                    <option selected>1</option>
-                </select>
+                <input type="text" ng-model="vm.optcomnt1" placeholder="(Optional Start Range Comments)">
+                <select ng-options="item as item.label for item in vm.items track by item.id" ng-model="selected"></select>
+                <!--<select>
+                    <option ng-model="vm.startRange" value="0">0</option>
+                    <option ng-model="vm.startRange" value="1" selected>1</option>
+                </select>-->
             </label>
             <label class="item item-input item-select">
-                <input type="text" ng-model="vm.optcomnt2" placeholder="(End Range Optional Comments)">
+                <input type="text" ng-model="vm.optcomnt2" placeholder="(Optional End Range Comments)">
                 <select>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option selected>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
+                    <option value="2" >2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5" selected>5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
                 </select>
             </label>
 
@@ -47,11 +48,11 @@
             <button class="button button-block button-positive" ng-disabled="!vm.linearScaleEventName || !vm.linearScaleQuestion || !vm.rateRange"
                 ng-click="vm.addLinearScaleRange()">
           Assign Range
-        </button>
-            <button class="button button-block button-dark" ng-disabled="!vm.linearScaleEventName || !vm.linearScaleQuestion || !vm.rateRangeArray || vm.rateRangeArray.length === 0"
+        </button>-->
+            <button class="button button-block button-dark" ng-disabled="!vm.linearScaleEventName || !vm.linearScaleQuestion || !vm.optcomnt1 || !vm.optcomnt2"
                 ng-click="vm.linearScaleEventConfigured()">
           Create Event
-        </button>-->
+        </button>
         </div>
 
         <div class="list list-inset" ng-if="vm.linearScaleEventName && vm.linearScaleQuestion">

@@ -1,4 +1,4 @@
-<ion-modal-view>
+<!--<ion-modal-view>-->
     <ion-header-bar class="bar-positive">
         <button class="button button-icon icon ion-android-arrow-back" ng-click="vm.backFromText()"></button>
         <h1 class="title">Configure your event</h1>
@@ -10,33 +10,49 @@
                 <input type="text" ng-model="vm.textEventName" placeholder="Event Name">
             </label>
             <label class="item item-input">
-                <input type="text" ng-model="vm.textQuestion" placeholder="Place your question here...">
+                <input type="text" ng-model="vm.textEventDescp" placeholder="Event Description (optional)">
             </label>
+        </div>
+        <div class="list list-inset">
+            <div class="item item-input item-icon-right" ng-repeat="item in vm.textQuesArray">
+                <input id='{{item.id}}' type="text" ng-model="item.textQuestion" placeholder="{{'Question ' + (vm.textQuesArray.indexOf(item) + 1)}}">
+                <i class="icon ion-android-delete" ng-if="$index !== 0" ng-click="vm.deleteQueFromTextQuesArray(item)"></i>
+            </div>
+            <div class="item" ng-if="vm.textQuesArray.length < 5" ng-click="vm.addQueToTextQuesArray()">
+                <p>Add Question</p>
+            </div>
         </div>
 
         <div class="list list-inset">
-            <button class="button button-block button-dark" ng-disabled="!vm.textEventName || !vm.textQuestion" ng-click="vm.textEventConfigured()">
+            <button class="button button-block button-dark" ng-disabled="!vm.textEventName" ng-click="vm.textEventConfigured()">
           Create Event
+        </button>
+            <button class="button button-block button-dark" ng-disabled="vm.validateLaunchPoll()" ng-click="vm.textEventConfigured()">
+          Launch Poll
         </button>
         </div>
 
 
-        <div class="list list-inset" ng-disabled="true" ng-if="vm.textEventName && vm.textQuestion">
+        <!--<div class="list list-inset" ng-disabled="true" ng-if="vm.textEventName && vm.textQuestion">
             <div class="item item-icon-left item-text-wrap" style="border-left: 10px solid #0c60ee;">
-                <i class="icon ion-person-stalker"></i> 
-                <h2><strong>Polling Preview</strong></h2>
-                <p>Shows a snapshot of the event as participant's view. </p>
-            </div>
-            <label class="item item-text-wrap">
-                <span><strong>Question:</strong> {{vm.textQuestion}}</span>
+<i class="icon ion-person-stalker"></i>
+<h2><strong>Polling Preview</strong></h2>
+<p>Shown below a snapshot of the event as a participant's view. </p>
+</div>
+<label class="item item-text-wrap">
+                <h2><strong> {{vm.textEventName}} </h2></span>
+                <p ng-if="vm.textEventDescp"> {{vm.textEventDescp}} </p>
             </label>
-            <ion-list>
-                <label class="item item-input item-text-wrap">
-                    <input type="text" ng-disabled="true" ng-model="vm.textResponse" placeholder="Please enter your response here">
+<label class="item item-text-wrap">
+                <h2> {{vm.textQuestion}}</h2>
+            </label>
+<ion-list>
+    <label class="item item-input item-text-wrap">
+                    <input type="text" placeholder="Please enter your response here">
                 </label>
-            </ion-list>
-            <button class="button button-block button-dark" ng-disabled="!vm.singleSelectOptions || vm.singleSelectOptions.length === 0">Submit Response</button>
-        </div>
+</ion-list>
+<button class="button button-block button-dark" ng-disabled="true">Submit Response</button>
+</div>-->
 
-    </ion-content>
-</ion-modal-view>
+</ion-content>
+<!--</ion-modal-view>-->

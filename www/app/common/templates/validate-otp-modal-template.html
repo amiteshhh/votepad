@@ -1,11 +1,10 @@
 <ion-modal-view>
-<ion-header-bar class="bar bar-positive">
+  <ion-header-bar class="bar bar-positive">
     <h1 class="title">OTP Authentication</h1>
     <button class="button button-clear" ng-click="vm.closeOtpModal()">Cancel</button>
   </ion-header-bar>
-  <ion-content padding="true"
-               scroll="false">
-    <div >
+  <ion-content padding="true" scroll="false">
+    <div>
       <!-- Form with floating labels -->
       <form name="OtpForm" ng-submit="vm.validateOTP()">
         <ion-list>
@@ -17,11 +16,11 @@
                    ng-model="vm.userOTP"
                    ng-required="true">
           </label>
+          <div class="item item-icon-left assertive item-text-wrap" ng-if='vm.otpValFail'>
+            <i class="icon ion-android-alert"></i> We are facing problem with validating your otp. Please try again later.
+          </div>
         </ion-list>
-        <button ng-disabled="OtpForm.$invalid" 
-                class="button button-dark button-block"
-                type="submit"
-                ng-click="vm.validateOTP()">Validate
+        <button ng-disabled="OtpForm.$invalid" class="button button-dark button-block" type="submit" ng-click="vm.validateOTP()">Validate
         </button>
       </form>
     </div>

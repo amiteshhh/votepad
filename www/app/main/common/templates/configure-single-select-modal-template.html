@@ -16,7 +16,7 @@
 
         <div class="list list-inset">
             <div class="item item-input item-icon-right" ng-repeat="item in vm.singleSelectOptions">
-                <input type="text" ng-model="vm.item.itemNum" placeholder="Untitled Option">
+                <input type="text" ng-model="item.itemNum" placeholder="Untitled Option">
                 <i class="icon ion-android-add-circle" ng-disabled="!item.itemNum" ng-click="vm.updateOptionList()"></i>
             </div>
             <!--<div class="item item-input" ng-repeat="item in vm.singleSelectOptions track by $index">

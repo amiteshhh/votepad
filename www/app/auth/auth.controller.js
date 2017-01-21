@@ -6,8 +6,8 @@
     angular.module(moduleName)
         .controller('AuthCtrl', AuthCtrl);
 
-    AuthCtrl.$inject = ['$state', '$scope', '$ionicModal', '$localStorage', '$http', '$injector'];
-    function AuthCtrl($state, $scope, $ionicModal, $localStorage, $http, $injector) {
+    AuthCtrl.$inject = ['$state', '$scope', '$ionicModal', '$localStorage', '$http', '$injector', '$ionicLoading', '$timeout', '$rootScope'];
+    function AuthCtrl($state, $scope, $ionicModal, $localStorage, $http, $injector, $ionicLoading, $timeout, $rootScope) {
         console.log("inside User Registration Controller");
         var vm = this;
         var AuthSvc = $injector.get('AuthSvc');
@@ -44,65 +44,84 @@
             }, handleServiceError);
         };
 
-        vm.validateRegistration = function () {
-            AuthSvc.createUser(vm.signUpForm).then(function (data) {
-                console.log("createUser: " + JSON.stringify(data));
+        vm.xvalidateRegistration = function () {
+            $ionicLoading.show();
+
+            // Simple GET request example:
+            $http({
+                method: 'GET',
+                url: 'https://www.cognalys.com/api/v1/otp/?app_id=1199d982fcd745c3a5d2bde&access_token=a4358cd8f369319284dfeb6764f17fe8a412185b&mobile=+91' + vm.signUpForm.mobile
+            }).then(function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                console.log("validateOTP success - " + JSON.stringify(response));
+
+                if (response.data.status === 'failed') {
+                    console.log('*************************');
+                    $ionicLoading.hide();
+                    vm.userRegFail = true;
+                    $timeout(function () {
+                        vm.userRegFail = false;
+                    }, 5000);
+                    return;
+                }
+
+                console.log("response.data.keymatch - " + response.data.keymatch);
+                vm.keymatch = response.data.keymatch;
+
                 $ionicModal.fromTemplateUrl('app/common/templates/validate-otp-modal-template.html', {
                     scope: $scope,
                     animation: 'slide-in-up'
                 }).then(function (modal) {
                     vm.validateOtpModal = modal;
                     modal.show();
+                    $ionicLoading.hide();
                 });
-                
-                $localStorage.signUpInfo = vm.signUpForm;
-                console.log("validateRegistration Mobile No - " + vm.signUpForm.mobileNo); // validate mobile number 10 digit for isd code etc..
-            }, handleServiceError);
-            
-            /*// Simple GET request example:
-            $http({
-                method: 'GET',
-                url: 'https://www.cognalys.com/api/v1/otp/?app_id=1199d982fcd745c3a5d2bde&access_token=a4358cd8f369319284dfeb6764f17fe8a412185b&mobile=+91' + vm.signUpForm.mobileNo
-            }).then(function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
-                console.log("validateOTP success - " + JSON.stringify(response));
-                
-                if(response.data.errors) {
-                    alert(response.data.errors[500]);
-                    return;
-                }
 
-                vm.validateOtpModal.show();
-                console.log("response.data.keymatch - " + response.data.keymatch);
-                vm.keymatch = response.data.keymatch;
             }, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 console.log("validateRegistration errorCallback");
-            });*/
+            });
         };
 
-        vm.validateOTP = function () {
-            console.log(vm.userOTP);            
-            vm.validateOtpModal.hide();
-            $state.go('app.dashboard');
-            vm.userOTP = '';
-            vm.validateOtpModal.remove();
-            
+        // vm.validateOTP = function () {
+        vm.validateRegistration = function () {
+            $ionicLoading.show();
+            console.log(vm.userOTP);
 
-            /*// Simple GET request example:
-            $http({
+            // Simple GET request example:
+            /*$http({
                 method: 'GET',
                 url: 'https://www.cognalys.com/api/v1/otp/confirm/?app_id=1199d982fcd745c3a5d2bde&access_token=a4358cd8f369319284dfeb6764f17fe8a412185b&keymatch=' + vm.keymatch + '&otp=+1' + vm.userOTP
             }).then(function successCallback(response) {
                 // this callback will be called asynchronously
                 // when the response is available
                 console.log("validateOTP success - " + JSON.stringify(response));
-                //alert to show mobile number is verified
-                alert(response.data.message);
-                $state.go('app.createEvent');
-            }, function errorCallback(response) {
+
+                if (response.data.status === 'failed') {
+                    $ionicLoading.hide();
+                    //vm.userRegFail
+                    vm.otpValFail = true;
+                    $timeout(function () {
+                        vm.otpValFail = false;
+                        vm.validateOtpModal.hide();
+                    }, 5000);
+                    console.log("We are facing problem with validating your otp. Please try again later.");
+                    return;
+                }*/
+
+                AuthSvc.createUser(vm.signUpForm).then(function (data) {
+                    //$ionicLoading.hide();
+                    console.log("createUser: " + JSON.stringify(data));
+                    $localStorage.signUpInfo = vm.signUpForm;
+                    $rootScope
+
+                    $ionicLoading.hide();
+                    $state.go('app.createEvent');
+                }, handleServiceError);
+
+            /*}, function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.
                 console.log("validateOTP errorCallback");
@@ -114,9 +133,21 @@
             vm.signInModal.remove();
             vm.validateOtpModal.remove();
         });*/
-        
+
         function handleServiceError(err) {
             console.log('Error occurred with service', err);
+
+            $ionicLoading.hide();
+            //vm.userRegFail
+            vm.userRegFail = true;
+            $timeout(function () {
+                vm.userRegFail = false;
+            }, 6000);
+            console.log("User Registration failed !");
+            /*$timeout(function () {
+                vm.validateOtpModal.hide();
+            }, 4000);*/
+
             //$rootScope.$broadcast('notify-service-error', err);
         }
 

@@ -9814,3 +9814,202 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+/* This is the main customized scss for app and should not contain any styles
+ * follow the scss structure inside www/lib/ionic/scss to create modular css
+ * each specific component/view should have its own scss
+ */
+/* define all variables in this page */
+.text-center {
+  text-align: center; }
+
+body[ng-app="ycf"] {
+  line-height: initial; }
+
+input, textarea {
+  -webkit-user-select: auto !important;
+  -khtml-user-select: auto !important;
+  -moz-user-select: auto !important;
+  -ms-user-select: auto !important;
+  -o-user-select: auto !important;
+  user-select: auto !important; }
+
+.snicker-btn, .dashboard-mid-section .btn-mini-orange, .dashboard-mid-section .button.btn-contact {
+  text-transform: lowercase;
+  font-family: 'snickerregular';
+  border: 1px solid transparent;
+  border-radius: 5px; }
+  .snicker-btn.activated, .dashboard-mid-section .activated.btn-mini-orange, .dashboard-mid-section .activated.button.btn-contact {
+    border: 1px solid transparent;
+    border-radius: 5px; }
+
+.orange-btn, .dashboard-mid-section .btn-mini-orange, .dashboard-mid-section .button.btn-contact, .dashboard-bottom-section .button.btn-full-orange, .orange-btn:hover, .dashboard-mid-section .btn-mini-orange:hover, .dashboard-mid-section .button.btn-contact:hover, .dashboard-bottom-section .button.btn-full-orange:hover {
+  color: white;
+  background-color: #F87032; }
+  .orange-btn.activated, .dashboard-mid-section .activated.btn-mini-orange, .dashboard-mid-section .activated.button.btn-contact, .dashboard-bottom-section .activated.button.btn-full-orange, .orange-btn:hover.activated, .dashboard-mid-section .btn-mini-orange:hover.activated, .dashboard-mid-section .button.btn-contact:hover.activated, .dashboard-bottom-section .button.btn-full-orange:hover.activated {
+    color: white;
+    background-color: #DF642D; }
+
+.purple-btn, .purple-btn:hover {
+  color: white;
+  background-color: #AA66CB; }
+  .purple-btn.activated, .purple-btn:hover.activated {
+    color: white;
+    background-color: #995BB6; }
+
+.dark-btn, .dark-btn:hover {
+  color: white;
+  background-color: #0F252C; }
+  .dark-btn.activated, .dark-btn:hover.activated {
+    color: white;
+    background-color: #0F252C; }
+
+.button.back-button.buttons.button-clear.header-item {
+  font-family: 'sofia_pro_soft_regularregular'; }
+
+/*.title.title-center.header-item, .title.title-left.header-item {
+    font-family: 'sofia_pro_softbold';
+    text-transform: uppercase;
+}*/
+.page-embed {
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; }
+  .page-embed iframe {
+    height: 100%;
+    width: 100%; }
+
+.blue-bkg {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center; }
+
+.vertical-center {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-60%);
+  -ms-transform: translateY(-60%);
+  transform: translateY(-60%); }
+
+.dash-content {
+  padding-bottom: 50px; }
+
+.dashboard-top-section {
+  background: #0F252C;
+  padding-top: 15px;
+  padding-bottom: 15px; }
+  .dashboard-top-section .dashboard-name-and-comp {
+    color: white;
+    padding: 0 15px;
+    display: inline-block;
+    width: 60%; }
+    .dashboard-top-section .dashboard-name-and-comp .dashboard-name {
+      font-size: 24px;
+      font-family: 'sofia_pro_softbold'; }
+    .dashboard-top-section .dashboard-name-and-comp .dashboard-comp {
+      font-size: 18px;
+      font-family: 'sofia_pro_soft_regularregular';
+      text-transform: uppercase; }
+  .dashboard-top-section .dashboard-views-likes {
+    color: #7FD2EF;
+    width: 34%;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center; }
+    .dashboard-top-section .dashboard-views-likes .days-views {
+      font-family: 'sofia_pro_soft_regularregular';
+      font-size: 72px;
+      line-height: 50px;
+      padding-bottom: 10px; }
+    .dashboard-top-section .dashboard-views-likes .days-likes {
+      text-transform: uppercase;
+      font-family: 'sofia_pro_soft_regularregular';
+      font-size: 18px; }
+
+.dashboard-mid-section {
+  background: #ADDEF0;
+  text-align: center; }
+  .dashboard-mid-section .dashboard-charts {
+    width: 49%;
+    display: inline-block;
+    text-align: center; }
+  .dashboard-mid-section .dashboard-circle {
+    background: #93BECF;
+    border-radius: 50%;
+    margin: 10px auto 0 auto;
+    padding: 15px;
+    width: 165px;
+    height: 165px;
+    font-family: 'sofia_pro_soft_regularregular';
+    position: relative; }
+    .dashboard-mid-section .dashboard-circle .dashboard-circle-val {
+      font-size: 65px;
+      color: white; }
+      .dashboard-mid-section .dashboard-circle .dashboard-circle-val span.dashboard-circle-percentage {
+        font-size: 52px; }
+    .dashboard-mid-section .dashboard-circle .dashboard-circle-label {
+      color: #0F252C;
+      margin-top: -15px;
+      font-size: 16px; }
+    .dashboard-mid-section .dashboard-circle canvas {
+      position: absolute;
+      top: 0;
+      left: 0; }
+  .dashboard-mid-section .btn-mini-orange {
+    width: 175px;
+    margin: 15px auto;
+    font-size: 30px;
+    line-height: 26px;
+    padding: 10px 15px; }
+  .dashboard-mid-section .button.btn-contact {
+    font-size: 30px;
+    margin: 10px auto;
+    width: 90%;
+    height: 50px;
+    line-height: 50px; }
+
+.dashboard-bottom-section .dashboard-bottom-image {
+  width: 100%;
+  height: auto; }
+
+.dashboard-bottom-section .button.btn-full-orange {
+  margin-top: -4px;
+  border: none;
+  font-family: 'sofia_pro_soft_regularregular';
+  height: 40px;
+  font-size: 22px;
+  line-height: 22px;
+  min-height: initial; }
+
+.chart {
+  margin: 10px auto 0 auto;
+  padding: 15px; }
+
+.row-header .col {
+  background-color: lightgrey;
+  color: #0C49B0; }
+
+.col {
+  border-bottom-style: none;
+  border-right-style: none;
+  min-width: 70px;
+  line-height: 32px; }
+
+.status-btn {
+  width: 80px;
+  font-size: 12px; }
+
+.btn-views {
+  min-width: 180px; }
+
+.poll-result {
+  margin-bottom: 0; }
+
+/*.col:last-child {
+    border-right: solid 1px grey;
+}
+
+.row:last-child .col {
+    border-bottom: solid 1px grey;
+    border: 1px solid grey !important;
+}*/
