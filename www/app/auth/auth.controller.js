@@ -43,9 +43,8 @@
                 console.log("verifyUser: " + JSON.stringify(data));
                 vm.signInModal.hide();
                 vm.signInForm = {};
-                $rootScope.userType = $localStorage.userType === vm.host ? 'host' : 'participant';
+                $rootScope.userType = $localStorage.userType = vm.host ? 'host' : 'participant';
                 $rootScope.userInfo = $localStorage.userInfo = data;
-                //vm.host = vm.participant = false;
                 $ionicLoading.hide();
                 if($rootScope.userType === 'host') {
                     $state.go('app.dashboard');
@@ -57,7 +56,6 @@
 
                 console.log('Error occurred with service', err);
                 $ionicLoading.hide();
-                //vm.userRegFail
                 vm.userSignInFail = true;
                 $timeout(function () {
                     vm.userSignInFail = false;
@@ -69,20 +67,11 @@
         vm.setLoginAsHost = function () {
             vm.host = true;
             vm.participant = false;
-            //$rootScope.host = $localStorage.host = true;
-            //$rootScope.participant = $localStorage.participant = false;
-            //vm.userTypModal.hide();
-            //$state.go('app.dashboard');
         };
 
         vm.setLoginAsParticipant = function () {
             vm.host = false;
             vm.participant = true;
-            //$rootScope.host = $localStorage.host = false;
-            //$rootScope.participant = $localStorage.participant = true;
-            //vm.userTypModal.hide();
-            //vm.userTypModal.remove();
-            //$state.go('app.event');
         };
 
         vm.xvalidateRegistration = function () {
@@ -155,10 +144,14 @@
             AuthSvc.createUser(vm.signUpForm).then(function (data) {
                 //$ionicLoading.hide();
                 console.log("createUser: " + JSON.stringify(data));
+                $rootScope.userType = $localStorage.userType = vm.host ? 'host' : 'participant';
                 $rootScope.userInfo = $localStorage.userInfo = data;
-
                 $ionicLoading.hide();
-                $state.go('app.createEvent');
+                if($rootScope.userType === 'host') {
+                    $state.go('app.createEvent');
+                } else if($rootScope.userType === 'participant') {
+                    $state.go('app.event');
+                };
             }, handleServiceError);
 
             /*}, function errorCallback(response) {
@@ -178,7 +171,6 @@
             console.log('Error occurred with service', err);
 
             $ionicLoading.hide();
-            //vm.userRegFail
             vm.userRegFail = true;
             $timeout(function () {
                 vm.userRegFail = false;

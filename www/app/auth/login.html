@@ -47,7 +47,11 @@
             <i class="icon ion-android-alert"></i> User Registration failed !
           </div>
         </ion-list>
-        <button class="button button-royal button-block" ng-disabled="userSignUpForm.$invalid" type="submit">Sign Up</button>
+        <div class="button-bar" style="margin-top: 10px;">
+<a class="button" ng-class="vm.host && !vm.participant ? 'button-dark' : 'button-stable'" ng-click="vm.setLoginAsHost()">Host</a>
+<a class="button" ng-class="vm.participant && !vm.host ? 'button-dark' : 'button-stable'" ng-click="vm.setLoginAsParticipant()">Participant</a>
+</div>
+        <button class="button button-royal button-block" ng-disabled="userSignUpForm.$invalid || !(vm.host || vm.participant)" type="submit">Sign Up</button>
       </form>
     </div>
 
