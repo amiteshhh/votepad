@@ -3,19 +3,19 @@
 
         <div class="list list-inset" ng-if="vm.event.templateType === 'singleSelect' || vm.event.templateType === 'yesNo'">
             <label class="item item-text-wrap row">
-                <div class="col col-80">
-                <h2><strong> {{vm.event.title}} </h2></span>
-                <p ng-if="vm.event.description"> {{vm.event.description}} </p>
-                </div>
-                <div class="col col-20">
-                    <button class="button button-clear" ng-class="vm.liked ? 'button-positive' : 'button-stable'" ng-click="vm.liked = !vm.liked">
-                        <i class="icon ion-thumbsup">Like</i>
-                    </button>                    
-                    </div>
-            </label>
+        <div class="col col-80">
+          <h2> {{vm.event.title}} </h2>
+          <p ng-if="vm.event.description"> {{vm.event.description}} </p>
+        </div>
+        <div class="col col-20">
+          <button class="button button-clear" ng-class="vm.liked ? 'button-positive' : 'button-stable'" ng-click="vm.toggleLikeEvent()">
+            <i class="icon ion-thumbsup">Like</i>
+          </button>
+        </div>
+      </label>
             <label class="item item-text-wrap">
-                <h2>{{vm.event.optionTemplate.question}} </h2>
-            </label>
+        <h2>{{vm.event.optionTemplate.question}} </h2>
+      </label>
             <div class="item item-divider">
                 Select any one.
             </div>
@@ -32,18 +32,17 @@
 
         <div class="list list-inset" ng-if="vm.event.templateType === 'multiSelect'">
             <div class="col col-80">
-                <h2><strong> {{vm.event.title}} </h2></span>
+                <h2> {{vm.event.title}} </h2>
                 <p ng-if="vm.event.description"> {{vm.event.description}} </p>
-                </div>
-                <div class="col col-20">
-                    <button class="button button-clear" ng-class="vm.liked ? 'button-positive' : 'button-stable'" ng-click="vm.liked = !vm.liked">
-                        <i class="icon ion-thumbsup">Like</i>
-                    </button>                    
-                    </div>
-            </label>
+            </div>
+            <div class="col col-20">
+                <button class="button button-clear" ng-class="vm.liked ? 'button-positive' : 'button-stable'" ng-click="vm.toggleLikeEvent()">
+          <i class="icon ion-thumbsup">Like</i>
+        </button>
+            </div>
             <label class="item item-text-wrap">
-                <h2>{{vm.event.optionTemplate.question}} </h2>
-            </label>
+        <h2>{{vm.event.optionTemplate.question}} </h2>
+      </label>
             <div class="item item-divider">
                 Select your choices.
             </div>
@@ -62,24 +61,23 @@
 
         <div class="list list-inset" ng-if="vm.event.templateType === 'range'">
             <div class="col col-80">
-                <h2><strong> {{vm.event.title}} </h2></span>
+                <h2>{{vm.event.title}} </h2>
                 <p ng-if="vm.event.description"> {{vm.event.description}} </p>
-                </div>
-                <div class="col col-20">
-                    <button class="button button-clear" ng-class="vm.liked ? 'button-positive' : 'button-stable'" ng-click="vm.liked = !vm.liked">
-                        <i class="icon ion-thumbsup">Like</i>
-                    </button>                    
-                    </div>
-            </label>
+            </div>
+            <div class="col col-20">
+                <button class="button button-clear" ng-class="vm.liked ? 'button-positive' : 'button-stable'" ng-click="vm.toggleLikeEvent()">
+          <i class="icon ion-thumbsup">Like</i>
+        </button>
+            </div>
             <label class="item item-text-wrap">
-                <h2>{{vm.event.optionTemplate.question}} </h2>
-            </label>
+        <h2>{{vm.event.optionTemplate.question}} </h2>
+      </label>
             <div class="item item-divider">
                 Provide a Rate Value
             </div>
             <label class="item item-text-wrap" ng-if="vm.event.optionTemplate.lowerRangeLabel">
-                <h2>{{vm.event.optionTemplate.lowerRangeLabel}} </h2>
-            </label>
+        <h2>{{vm.event.optionTemplate.lowerRangeLabel}} </h2>
+      </label>
             <ion-list ng-repeat="item in vm.event.optionTemplate.options">
                 <ion-radio ng-if="vm.userType === 'participant'">{{item.label}}</ion-radio>
                 <a class="item" ng-if="vm.userType === 'host'" ng-click="vm.showRespondedUsersList()">{{item.label}}
@@ -89,11 +87,43 @@
                 </a>
             </ion-list>
             <label class="item item-text-wrap" ng-if="vm.event.optionTemplate.upperRangeLabel">
-                <h2>{{vm.event.optionTemplate.upperRangeLabel}} </h2>
-            </label>
+        <h2>{{vm.event.optionTemplate.upperRangeLabel}} </h2>
+      </label>
             <button class="button button-block button-dark">Submit Response</button>
         </div>
 
+        <div class="list list-inset" ng-if="vm.event.templateType === 'text'">
+            <div class="col col-80">
+                <h2>{{vm.event.title}} </h2>
+                <p ng-if="vm.event.description"> {{vm.event.description}} </p>
+            </div>
+            <div class="col col-20">
+                <button class="button button-clear" ng-class="vm.liked ? 'button-positive' : 'button-stable'" ng-click="vm.toggleLikeEvent()">
+          <i class="icon ion-thumbsup">Like</i>
+        </button>
+            </div>
+            <ion-list class="chats">
+                <ion-item ng-repeat="message in vm.event.textTemplates track by $index">
+                    <h2 class="userName positive">{{message.textTemplateCreatedBy}}</h2>
+                    <div ng-class='message.className'>
+                        <p ng-bind="message.question"></p>
+                    </div>
+                </ion-item>
+            </ion-list>
+
+        </div>
+
     </ion-content>
+    <form name="sendMessageForm" ng-submit="vm.sendMessage()" novalidate>
+        <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
+            <label class="item-input-wrapper">
+            <input id="msg-input" ng-change="vm.updateTyping()" ng-model="vm.message" class="input-message" type="text" placeholder="Message">
+          </label>
+            <div class="footer-btn-wrap">
+                <button class="button button-icon icon ion-ios-paperplane footer-btn" type="submit" ng-disabled="!vm.message">
+            </button>
+            </div>
+        </ion-footer-bar>
+    </form>
 
 </ion-view>

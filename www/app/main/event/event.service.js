@@ -12,7 +12,9 @@
         return {
             createOrUpdate: _createOrUpdate,
             destroy: _destroy,
-            find: _find
+            find: _find,
+            findOne: _findOne,
+            pushEventUserRef: _pushEventUserRef
         };
 
         function _createOrUpdate(model, id) {
@@ -49,10 +51,38 @@
             return deferred.promise;
         }
 
+        function _findOne(id) {
+            var deferred = $q.defer();
+            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/event/' + id;
+            $http.get(url).then(function (response) {
+                deferred.resolve(response.data);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+
         function _find() {
             var deferred = $q.defer();
             var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/event/find';
             $http.get(url).then(function (response) {
+                deferred.resolve(response.data);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+
+        function _pushEventUserRef(id, fk, fkId, like) {
+            var deferred = $q.defer();
+            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/event/' + id + '/' + fk + '/' + fkId;
+            var req, method;
+            method = like ? 'POST' : 'DELETE';
+            req = {
+                url: url,
+                method: method
+            };
+            $http(req).then(function (response) {
                 deferred.resolve(response.data);
             }, function (err) {
                 deferred.reject(err);
