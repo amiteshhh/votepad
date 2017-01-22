@@ -15,7 +15,7 @@
     angular.module(moduleName)
         .controller('EditEventCtrl', Ctrl);
 
-    Ctrl.$inject = ['$scope' ,'$state', '$stateParams', '$injector', '$rootScope', '$localStorage', '$timeout', '$ionicLoading'];
+    Ctrl.$inject = ['$scope', '$state', '$stateParams', '$injector', '$rootScope', '$localStorage', '$timeout', '$ionicLoading'];
     function Ctrl($scope, $state, $stateParams, $injector, $rootScope, $localStorage, $timeout, $ionicLoading) {
         var vm = this;
         var EditEventSvc = $injector.get('EditEventSvc');
@@ -37,36 +37,38 @@
                 }
             } else if (templateType === 'yesNo') {
                 vm.tempalteLocation = 'app/main/common/templates/configure-yes-no-modal-template.html';
-                if (!vm.event.options) {
-                    vm.event.options = [{
-                        cssId: 'Q1',
-                        label: 'Yes'
-                    },
-                    {
-                        cssId: 'Q2',
-                        label: 'No'
+                if (!vm.event.optiontemplates) {
+                    vm.event.optiontemplates = [{
+                        options: [{
+                            cssId: 'Q1',
+                            label: 'Yes'
+                        },
+                        {
+                            cssId: 'Q2',
+                            label: 'No'
+                        }]
                     }];
                 }
             } else if (templateType === 'singleSelect') {
                 vm.tempalteLocation = 'app/main/common/templates/configure-single-select-modal-template.html';
-                if (!vm.event.options) {
-                    vm.event.options = [{
+                if (!vm.event.optiontemplate.options) {
+                    vm.event.optiontemplate.options = [{
                         cssId: 'Q1',
                         label: ''
                     }];
                 }
             } else if (templateType === 'multiSelect') {
                 vm.tempalteLocation = 'app/main/common/templates/configure-multiple-select-modal-template.html';
-                if (!vm.event.options) {
-                    vm.event.options = [{
+                if (!vm.event.optiontemplate.options) {
+                    vm.event.optiontemplate.options = [{
                         cssId: 'Q1',
                         label: ''
                     }];
                 }
             } else if (templateType === 'range') {
                 vm.tempalteLocation = 'app/main/common/templates/configure-linear-scale-modal-template.html';
-                if (!vm.event.options) {
-                    vm.event.options = [{
+                if (!vm.event.optiontemplate.options) {
+                    vm.event.optiontemplate.options = [{
                         label: 1,
                     },
                     {
@@ -145,8 +147,8 @@
         };
 
         //Same for Yes/No, singleSelect, multiSelect, linearRange
-        vm.validateYesNoLaunchPoll = function () {
-            if (!vm.event.title || _.filter(vm.event.options, function (item) {
+        vm.defaultValidateLaunchPoll = function () {
+            if (!vm.event.title || !vm.event.optiontemplates[0].question || _.filter(vm.event.optiontemplates[0].options, function (item) {
                 return item.label === '';
             }).length !== 0) {
                 return true;
@@ -155,13 +157,13 @@
 
         /*vm.setOptions = function () {
 
-            if (vm.event.lowerRange && vm.event.endRange) {
-                vm.event.options = [];
-                for (var i = vm.event.lowerRange; i <= vm.event.endRange; i++) {
+            if (vm.event.optiontemplate.lowerRange && vm.event.optiontemplate.endRange) {
+                vm.event.optiontemplate.options = [];
+                for (var i = vm.event.optiontemplate.lowerRange; i <= vm.event.optiontemplate.endRange; i++) {
                     var data = {
                         label: i
                     };
-                    vm.event.options.push(data);
+                    vm.event.optiontemplate.options.push(data);
                 }
             }
         }*/

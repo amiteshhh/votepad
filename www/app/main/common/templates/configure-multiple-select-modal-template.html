@@ -9,15 +9,15 @@
                 <input type="text" ng-model="vm.event.description" placeholder="Event Description (optional)">
             </label>
             <label class="item item-input">
-                <input type="text" ng-model="vm.event.question" placeholder="Place your question here">
+                <input type="text" ng-model="vm.event.optiontemplate.question" placeholder="Place your question here">
             </label>
         </div>
         <div class="list list-inset">
-            <div class="item item-input item-icon-right" ng-repeat="item in vm.event.options">
+            <div class="item item-input item-icon-right" ng-repeat="item in vm.event.optiontemplate.options">
                 <input id='{{item.cssId}}' type="text" ng-model="item.label" placeholder="{{'Option ' + ($index + 1)}}">
-                <i class="icon ion-android-delete" ng-if="$index !== 0" ng-click="vm.deleteQueFromTextTemplates(item, vm.event.options)"></i>
+                <i class="icon ion-android-delete" ng-if="$index !== 0" ng-click="vm.deleteQueFromTextTemplates(item, vm.event.optiontemplate.options)"></i>
             </div>
-            <div class="item" ng-if="vm.event.options.length < 5" ng-click="vm.addOptToOptTemplates(vm.event.options)">
+            <div class="item" ng-if="vm.event.optiontemplate.options.length < 5" ng-click="vm.addOptToOptTemplates(vm.event.optiontemplate.options)">
                 <p>Add Options</p>
             </div>
         </div>
@@ -26,13 +26,13 @@
             <button class="button button-block button-dark" ng-disabled="!vm.event.title" ng-click="vm.createOrUpdateEvent()">
           Create Event
         </button>
-            <button class="button button-block button-dark" ng-disabled="vm.validateYesNoLaunchPoll()" ng-click="vm.createOrUpdateEvent()">
+            <button class="button button-block button-dark" ng-disabled="vm.defaultValidateLaunchPoll()" ng-click="vm.createOrUpdateEvent()">
           Launch Poll
         </button>
         </div>
 
 
-        <div class="list list-inset" ng-disabled="true" ng-if="vm.event.question && vm.event.title">
+        <div class="list list-inset" ng-disabled="true" ng-if="vm.event.optiontemplate.question && vm.event.title">
             <div class="item item-icon-left item-text-wrap" style="border-left: 10px solid #0c60ee;">
                 <i class="icon ion-person-stalker"></i>
                 <h2><strong>Polling Preview</strong></h2>
@@ -40,10 +40,10 @@
             </div>
             <label class="item item-text-wrap">
                 <h2><strong> {{vm.event.title}} </h2></span>
-                <p ng-if="vm.yesNoEventDescp"> {{vm.event.description}} </p>
+                <p ng-if="vm.event.description"> {{vm.event.description}} </p>
             </label>
             <label class="item item-text-wrap">
-                <h2>{{vm.event.question}} </h2>
+                <h2>{{vm.event.optiontemplate.question}} </h2>
             </label>
             <div class="item item-divider">
                 Select any one.

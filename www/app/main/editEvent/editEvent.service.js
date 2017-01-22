@@ -30,9 +30,9 @@
 
         function _createOrUpdate(templateType, model) {
             var deferred = $q.defer();
-            var pathTo;
+            //var pathTo;
 
-            switch (templateType) {
+            /*switch (templateType) {
                 case 'text': {
                     pathTo = '/event';
                     break;
@@ -44,9 +44,9 @@
                     pathTo = '/optiontemplate';
                     break;
                 }
-            };
+            };*/
 
-            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + pathTo;
+            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/event';
             var req, method;
             if (model.id) {
                 url += '/' + model.id;
