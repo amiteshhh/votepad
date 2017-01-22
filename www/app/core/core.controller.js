@@ -12,8 +12,11 @@
         var OnlineUserSvc = $injector.get('OnlineUserSvc');
         var chatBoxes;
 
-        vm.host = false;
         console.log("Inside AppCtrl");
+        if(!$rootScope.userType) {
+            $rootScope.userType = ($localStorage.userType === 'host' ? true : false); 
+        }
+        
         init();
 
         function init() {

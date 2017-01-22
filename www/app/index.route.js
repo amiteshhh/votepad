@@ -13,7 +13,14 @@
             var $stateParams = $injector.get('$stateParams');
             var $localStorage = $injector.get('$localStorage');
             if ($localStorage.userInfo && $localStorage.userInfo.id) {
-                $state.go('app.dashboard');//default nav for now
+                if($localStorage.userType) {
+                    if($localStorage.userType === 'host') {
+                        $state.go('app.createEvent');
+                    } else if($localStorage.userType === 'participant') {
+                        $state.go('app.event');
+                    }
+                }
+                
             } else {
                 $state.go('auth');
             }

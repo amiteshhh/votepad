@@ -43,12 +43,13 @@
                 console.log("verifyUser: " + JSON.stringify(data));
                 vm.signInModal.hide();
                 vm.signInForm = {};
-                $rootScope.userType = $localStorage.userType = vm.host ? 'host' : 'participant';
+                $rootScope.userType = vm.host;
+                $localStorage.userType = vm.host ? 'host' : 'participant';                
                 $rootScope.userInfo = $localStorage.userInfo = data;
                 $ionicLoading.hide();
-                if($rootScope.userType === 'host') {
-                    $state.go('app.dashboard');
-                } else if($rootScope.userType === 'participant') {
+                if($localStorage.userType === 'host') {
+                    $state.go('app.createEvent');
+                } else if($localStorage.userType === 'participant') {
                     $state.go('app.event');
                 }
                 
@@ -144,12 +145,13 @@
             AuthSvc.createUser(vm.signUpForm).then(function (data) {
                 //$ionicLoading.hide();
                 console.log("createUser: " + JSON.stringify(data));
-                $rootScope.userType = $localStorage.userType = vm.host ? 'host' : 'participant';
+                $rootScope.userType = vm.host;
+                $localStorage.userType = vm.host ? 'host' : 'participant';
                 $rootScope.userInfo = $localStorage.userInfo = data;
                 $ionicLoading.hide();
-                if($rootScope.userType === 'host') {
+                if($localStorage.userType === 'host') {
                     $state.go('app.createEvent');
-                } else if($rootScope.userType === 'participant') {
+                } else if($localStorage.userType === 'participant') {
                     $state.go('app.event');
                 };
             }, handleServiceError);

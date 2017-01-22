@@ -12,6 +12,9 @@
         var EventSvc = $injector.get('EventSvc');
 
         vm.showDelete = false;
+        if(!$rootScope.userType) {
+            $rootScope.userType = ($localStorage.userType === 'host' ? true : false); 
+        }
 
         init();
 
@@ -92,7 +95,7 @@
                         templateType: item.templateType,
                         eventModel: item
                     };
-                    $state.go('app.editEvent', routeData);
+                    $state.go('app.poll', routeData);
                 };
 
                 if ($localStorage.userType === 'participant') {

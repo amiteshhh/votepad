@@ -20,8 +20,8 @@
                 Select any one.
             </div>
             <ion-list ng-repeat="item in vm.event.optionTemplate.options">
-                <ion-radio ng-if="vm.userType === 'participant'">{{item.label}}</ion-radio>
-                <a class="item" ng-if="vm.userType === 'host'" ng-click="vm.showRespondedUsersList()">{{item.label}}
+                <ion-radio  ng-if="!$root.userType">{{item.label}}</ion-radio>
+                <a class="item"  ng-if="$root.userType" ng-click="vm.showRespondedUsersList()">{{item.label}}
                     <span class="item-note">
                         Vote Count : {{vm.event.eventLikedBy.length}}
                     </span>
@@ -31,6 +31,7 @@
         </div>
 
         <div class="list list-inset" ng-if="vm.event.templateType === 'multiSelect'">
+            <label class="item item-text-wrap row">
             <div class="col col-80">
                 <h2><strong> {{vm.event.title}} </h2></span>
                 <p ng-if="vm.event.description"> {{vm.event.description}} </p>
@@ -48,10 +49,10 @@
                 Select your choices.
             </div>
             <ion-list ng-repeat="item in vm.event.optionTemplate.options">
-                <ion-checkbox ng-if="vm.userType === 'participant'" ng-model="item.checked" ng-checked="item.checked">
+                <ion-checkbox  ng-if="!$root.userType" ng-model="item.checked" ng-checked="item.checked">
                     {{item.label}}
                 </ion-checkbox>
-                <a class="item" ng-if="vm.userType === 'host'" ng-click="vm.showRespondedUsersList()">{{item.label}}
+                <a class="item"  ng-if="$root.userType" ng-click="vm.showRespondedUsersList()">{{item.label}}
                     <span class="item-note">
                         Vote Count : {{vm.event.eventLikedBy.length}}
                     </span>
@@ -61,8 +62,8 @@
         </div>
 
         <div class="list list-inset" ng-if="vm.event.templateType === 'range'">
+            <label class="item item-text-wrap row">
             <div class="col col-80">
-                <label class="item item-text-wrap row">
                 <h2><strong> {{vm.event.title}} </h2></span>
                 <p ng-if="vm.event.description"> {{vm.event.description}} </p>
                 </div>
@@ -82,8 +83,8 @@
                 <h2>{{vm.event.optionTemplate.lowerRangeLabel}} </h2>
             </label>
             <ion-list ng-repeat="item in vm.event.optionTemplate.options">
-                <ion-radio ng-if="vm.userType === 'participant'">{{item.label}}</ion-radio>
-                <a class="item" ng-if="vm.userType === 'host'" ng-click="vm.showRespondedUsersList()">{{item.label}}
+                <ion-radio  ng-if="!$root.userType">{{item.label}}</ion-radio>
+                <a class="item"  ng-if="$root.userType" ng-click="vm.showRespondedUsersList()">{{item.label}}
                     <span class="item-note">
                         Vote Count : {{vm.event.eventLikedBy.length}}
                     </span>

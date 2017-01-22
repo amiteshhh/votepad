@@ -21,7 +21,9 @@
         var PollSvc = $injector.get('PollSvc');
 
         vm.event = $stateParams.eventModel;
-        vm.userType = $stateParams.userType;
+        if(!$rootScope.userType) {
+            $rootScope.userType = ($localStorage.userType === 'host' ? true : false); 
+        }
         vm.liked = false;
 
         init();

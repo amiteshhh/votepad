@@ -13,11 +13,11 @@
     </header>
     <ion-content class="has-header">
       <ion-list>
-        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.dashboard">
+        <ion-item ng-if="$root.userType" class="item-icon-left" nav-clear menu-close ui-sref="app.dashboard">
           <i class="icon ion-android-home"></i>
           Dashboard
         </ion-item>
-        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.createEvent">
+        <ion-item ng-if="$root.userType" class="item-icon-left" nav-clear menu-close ui-sref="app.createEvent">
           <i class="icon ion-android-list"></i>
           Create Event
         </ion-item>
@@ -25,18 +25,18 @@
           <i class="icon ion-android-open"></i>
           View Events 
         </ion-item>
-        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.participents">
+        <ion-item ng-if="$root.userType" class="item-icon-left" nav-clear menu-close ui-sref="app.participents">
           <i class="icon ion-android-people"></i>
           Online Users 
         </ion-item>
-        <ion-toggle class="item-icon-left" toggle-class="toggle-positive" ng-model="vm.host">
+        <!--<ion-toggle class="item-icon-left" toggle-class="toggle-positive" ng-model="vm.host">
           <i class="icon ion-mouse"></i>
           Logged in as {{ vm.host ? 'Participant' : 'Host'}}
         </ion-toggle>
         <ion-item class="item-icon-left" nav-clear menu-close>
           <i class="icon ion-stats-bars"></i>
           Analytics 
-        </ion-item>
+        </ion-item>-->
         <ion-item class="item-icon-left" nav-clear menu-close>
           <i class="icon ion-android-person"></i>
           Profile
