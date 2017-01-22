@@ -29,7 +29,10 @@
             "app.chat",
 
             // edit event module
-            "app.editEvent"
+            "app.editEvent",
+
+            // poll module
+            "app.poll"
 
         ];
 
