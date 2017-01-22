@@ -1,28 +1,27 @@
-<ion-view view-title="Chats">
+<ion-view view-title="Chat with {{vm.recipientName}}">
     <ion-content class="padding">
         <section class="chats">
-            <span ng-repeat="message in vm.messages">
+            <span ng-repeat="message in vm.messages track by $index">
                 <span ng-show="!message.notification">
-                    <p class="userName" ng-show="!messageIsMine(message.userName)">{{message.userName}}</p>
-                    <div ng-class='vm.getBubbleClass(vm.message.userName)'>
+                    <p class="userName">{{message.senderName}}</p>
+                    <div ng-class='message.className'>
                         <p ng-bind="message.message"></p>
                     </div>
                     <div class="clear"></div>
                 </span>
-                <span ng-show="message.notification">
+            <span ng-show="message.notification">
                     <p class="notification" ng-bind="message.message"></p>
                 </span>
             </span>
         </section>
     </ion-content>
-    <form name="sendMessageForm" ng-submit="vm.sendMessage(vm.data.message)" novalidate>
+    <form name="sendMessageForm" ng-submit="vm.sendMessage()" novalidate>
         <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
             <label class="item-input-wrapper">
-                <input id="msg-input" ng-change="vm.updateTyping()" ng-model="vm.data.message" class="input-message" type="text" placeholder="Message">
+                <input id="msg-input" ng-change="vm.updateTyping()" ng-model="vm.message" class="input-message" type="text" placeholder="Message">
             </label>
             <div class="footer-btn-wrap">
-                <button class="button button-icon icon ion-ios-paperplane footer-btn" type="submit"
-                        ng-disabled="!vm.data.message || vm.data.message === ''">
+                <button class="button button-icon icon ion-ios-paperplane footer-btn" type="submit" ng-disabled="!vm.message">
                 </button>
             </div>
         </ion-footer-bar>

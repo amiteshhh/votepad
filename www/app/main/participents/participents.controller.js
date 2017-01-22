@@ -9,9 +9,9 @@
     ParticipentsCtrl.$inject = ['$scope', '$ionicModal', '$state'];
     function ParticipentsCtrl($scope, $ionicModal, $state) {
         var vm = this;
-        
-        vm.openChatBox = function (toChatWith) {
-            $state.go('app.chat');
+
+        vm.openChatBox = function (chatTo) {
+            $state.go('app.chat', { chatTo: chatTo });
         };
 
         /*$ionicModal.fromTemplateUrl('chat-box-modal.html', {

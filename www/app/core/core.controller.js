@@ -6,10 +6,11 @@
     angular.module(moduleName)
         .controller('AppCtrl', Ctrl);
 
-    Ctrl.$inject = ['$injector', '$state', '$localStorage'];
-    function Ctrl($injector, $state, $localStorage) {
+    Ctrl.$inject = ['$scope', '$injector', '$state', '$localStorage', '$ionicModal'];
+    function Ctrl($scope, $injector, $state, $localStorage, $ionicModal) {
         var vm = this;
         var OnlineUserSvc = $injector.get('OnlineUserSvc');
+        var chatBoxes ;
 
         vm.host = false;
         console.log("Inside AppCtrl");
@@ -18,6 +19,7 @@
         function init() {
            OnlineUserSvc.init();
            vm.onlineUsers = OnlineUserSvc.onlineUsers;
+           $scope.$on('socket-private-message', handlePrivateMessage);
         }
 
         vm.logout = function () {
@@ -25,5 +27,9 @@
             delete $localStorage.signUpInfo;
             $state.go('auth');
         };
+
+        function handlePrivateMessage(event, data){
+            console.log('private message', data);
+        }
     }
 })();

@@ -8,6 +8,9 @@
     function routeConfig($stateProvider) {
         $stateProvider.state('app.chat', {
             url: '/chat',
+            params:{
+                chatTo:null
+            },
             views: {
                 'menuContent': {
                     templateUrl: 'app/main/chat/chat.html',

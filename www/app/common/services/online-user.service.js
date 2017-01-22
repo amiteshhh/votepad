@@ -37,20 +37,22 @@
                 user: $rootScope.userInfo
             }, function (resData, jwres) {
                 console.log('socekt post onlineUser', resData);
+                $rootScope.myChatSocket = resData;
             });
 
             // Get the current list of users online.  This will also subscribe us to
             // update and destroy events for the individual users.
             socketInstance.get('/onlineUser', function (resData, jwres) {
                 console.log('socekt get onlineUser', resData);
-                if(!resData){
+                if (!resData) {
                     return;
                 }
-                Array.prototype.push.apply(onlineUsers, resData);
+                var users = removeMeFromOlineList(resData);
+                Array.prototype.push.apply(onlineUsers, users);
                 $rootScope.$apply();
             });
             socketInstance.on('onlineuser', function (message) {
-                //console.log('22222222socekt get onlineUser', message);
+                console.log('onlineUser socket event', message);
                 switch (message.verb) {
 
                     // Handle user creation
@@ -82,20 +84,40 @@
             });
 
             function addUser(data) {
-                console.log('new user added!!');
+                console.log('inside new user added!!');
+               /* if (data.user.id === $rootScope.userInfo.id) {//let user chat with himself :P
+                    return;
+                }*/
                 onlineUsers.push(data);
                 $rootScope.$apply();
                 $rootScope.$broadcast('socket-new-user-online', data);
             }
             function removeUser(id) {
+                console.log('inside user removed!!');
+                var index = _.findIndex(onlineUsers, { id: id });
+                if (index === -1) {
+                    console.log('same user detected. Exiting..!!');
+                    return;
+                }
                 console.log('user removed!!');
-                onlineUsers.splice(_.findIndex(onlineUsers, { id: id }), 1);//addUser(message.data);
+                onlineUsers.splice(index, 1);
                 $rootScope.$apply();
                 $rootScope.$broadcast('socket-remove-user-online', id);
             }
 
-            function receivePrivateMessage() {
+            function receivePrivateMessage(data) {
+                console.log('inside receivePrivateMessage!!', data);
+                $rootScope.$broadcast('socket-private-message', data);
+            }
 
+            function removeMeFromOlineList(onlineUsers) {
+                var users = [];
+                _.each(onlineUsers, function (item) {
+                    if (item.user.id !== $rootScope.userInfo.id) {
+                        users.push(item);
+                    }
+                });
+                return users;
             }
 
         }
