@@ -12,7 +12,7 @@
         
         vm.openChatBox = function (toChatWith) {
             $state.go('app.chat');
-        }
+        };
 
         /*$ionicModal.fromTemplateUrl('chat-box-modal.html', {
             scope: $scope,

@@ -1,34 +1,18 @@
-<ion-view title="Online Participants">
+<ion-view title="Online Participants ({{appVm.onlineUsers.length || 0}})">
     <ion-nav-buttons side="left">
         <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
     </ion-nav-buttons>
     <ion-content class="has-header">
         <div class="list">
-            <a class="item item-icon-right" ng-click="vm.openChatBox('Pratik Anand')">
-                Pratik Anand
-                <i class="icon ion-person positive"></i>
+            <a class="item item-icon-right" ng-click="vm.openChatBox(item)" ng-repeat="item in appVm.onlineUsers">
+                {{item.user.userName}}
+                <i class="icon ion-person balanced"></i>
             </a>
-            <a class="item item-icon-right" ng-click="vm.openChatBox('Saurav Sahoo')">
-                Saurav Sahoo
-                <i class="icon ion-person positive"></i>
-            </a>
-            <a class="item item-icon-right" ng-click="vm.openChatBox('Amitesh Kumar')">
-                Amitesh Kumar
-                <i class="icon ion-person positive"></i>
-            </a>
-            <a class="item item-icon-right" ng-click="vm.openChatBox('Haunshila Yadav')">
-                Haunshila Yadav
-                <i class="icon ion-person positive"></i>
-            </a>
-            <a class="item item-icon-right">
-                Amit Tiwary
-                <i class="icon ion-person assertive"></i>
-            </a>
-            <a class="item item-icon-right">
-                Soham Paul
-                <i class="icon ion-person assertive"></i>
-            </a>
+            <div ng-if="!appVm.onlineUsers.length" class='item item-text-wrap'>
+                <label>There is no online user</label>
+            </div>
         </div>
+
     </ion-content>
 </ion-view>
 

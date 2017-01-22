@@ -31,7 +31,7 @@
     console.log('Index runBlock is called.');
     $rootScope.userInfo = $localStorage.userInfo;
     setupPush();
-    setupSocket(APP_CONFIG);
+    setupSocket(APP_CONFIG, $rootScope.userInfo);
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
       if (toState.name === 'auth') {
         return;
@@ -55,17 +55,25 @@
   }
 
   function setupSocket(APP_CONFIG) {
-    console.log('socket established');
     var socketBaseUrl = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT;
     io.sails.autoConnect = true;
     io.sails.url = socketBaseUrl;
-    var socket = io.sails.connect(socketBaseUrl);
-    //var socket = io.socket;
-      socket.get('/event', function (resData, jwres) { console.log('socekt get', resData); });
-    socket.get('/user', function (resData, jwres) { console.log('socekt get', resData); });
+    window.socketInstance = io.sails.connect(socketBaseUrl);//expose global
 
-    socket.on('event', function (event) { console.log('event received socket', event); });
-    socket.on('user', function (event) { console.log('user received socket', event); });
+    socketInstance.on('connect', function () {
+      console.log('socket connected');
+      // Get the current list of chat rooms. This will also subscribe us to
+      // update and destroy events for the individual rooms.
+      socketInstance.get('/room', function (resData, jwres) {
+        console.log('socekt get rooms', resData);
+      });
+    });
+    //var socket = io.socket;
+    //socketInstance.get('/event', function (resData, jwres) { console.log('socekt get', resData); });
+
+
+    //socketInstance.on('event', function (event) { console.log('event received socket', event); });
+    //socketInstance.on('user', function (event) { console.log('user received socket', event); });
   }
 
 })();
