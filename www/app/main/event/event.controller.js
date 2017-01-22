@@ -87,13 +87,23 @@
             };
 
             if (item.eventStatus === 'closed') {
-                var eventCloseAlertPopup = $ionicPopup.alert({
-                    title: 'Event is closed !',
-                    template: "You cannot send your response for this event anymore."
-                });
-                $timeout(function () {
-                    eventCloseAlertPopup.close(); //close the popup after 3 seconds for some reason
-                }, 5000);
+                if ($localStorage.userType === 'host') {
+                    var routeData = {
+                        templateType: item.templateType,
+                        eventModel: item
+                    };
+                    $state.go('app.editEvent', routeData);
+                };
+
+                if ($localStorage.userType === 'participant') {
+                    var eventCloseAlertPopup = $ionicPopup.alert({
+                        title: 'Event is closed !',
+                        template: "You cannot send your response for this event anymore."
+                    });
+                    $timeout(function () {
+                        eventCloseAlertPopup.close();
+                    }, 5000);
+                };
             }
 
 

@@ -21,15 +21,23 @@
         var PollSvc = $injector.get('PollSvc');
 
         vm.event = $stateParams.eventModel;
+        vm.userType = $stateParams.userType;
+        vm.liked = false;
 
         init();
 
         console.log($stateParams);
 
-        
+
         function init() {
             console.log("inside Poll controller");
         }
+
+        vm.showRespondedUsersList = function () {
+            $rootScope.$broadcast('showUsersList', {
+                userList: vm.event.eventLikedBy
+            });
+        };
 
         function handleServiceError(err) {
             console.log('Error occurred with service', err);
@@ -37,4 +45,3 @@
         }
     }
 })();
-
