@@ -17,6 +17,14 @@
                    ng-required="true">
           </label>
                     <label class="item item-input item-floating-label">
+            <span class="input-label">Mobile</span>
+            <input type="number"
+                   placeholder="Mobile"
+                   name="mobile"
+                   ng-model="vm.signInForm.mobile"
+                   ng-required="true">
+          </label>
+                    <label class="item item-input item-floating-label">
             <span class="input-label">Password</span>
             <input type="password"
                    placeholder="Password"
@@ -25,15 +33,25 @@
                    ng-required="true">
           </label>
                 </ion-list>
-                <button ng-disabled="signinForm.$invalid" class="button button-dark button-block" type="submit" ng-click="vm.signInUser()">Sign In
+                <div class="button-bar" style="margin-top: 10px;">
+<a class="button" ng-class="vm.host && !vm.participant ? 'button-dark' : 'button-stable'" ng-click="vm.setLoginAsHost()">Host</a>
+<a class="button" ng-class="vm.participant && !vm.host ? 'button-dark' : 'button-stable'" ng-click="vm.setLoginAsParticipant()">Participant</a>
+</div>
+<button ng-disabled="signinForm.$invalid || !(vm.host || vm.participant)" class="button button-dark button-block" type="submit"
+    ng-click="vm.signInUser()">Sign In
         </button>
-            </form>
-        </div>
-        <div style="text-align: center;margin-top: 40px;">
+</form>
+</div>
+
+<div style="text-align: center;margin-top: 30px;">
+
 <p>or Login Using</p>
-<button style="" class="button button-block icon-left ion-social-facebook button-positive"> Facebook</button>
+<button class="button button-block icon-left ion-social-facebook button-positive"> Facebook</button>
 </div>
-<div>
+
+<div class="item item-icon-left assertive" ng-if='vm.userSignInFail'>
+    <i class="icon ion-android-alert"></i> User Login failed !
 </div>
+
 </ion-content>
 </ion-modal-view>

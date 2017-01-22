@@ -24,24 +24,65 @@
 
         vm.closeSignInModal = function () {
             vm.signInForm = {};
+            vm.host = vm.participant = false;
             vm.signInModal.hide();
-            vm.signInModal.remove();
+            //vm.signInModal.remove();
         };
 
         vm.closeOtpModal = function () {
             vm.userOTP = '';
             vm.signUpForm = {};
             vm.validateOtpModal.hide();
-            vm.validateOtpModal.remove();
+            //vm.validateOtpModal.remove();
         };
 
         vm.signInUser = function () {
+            $ionicLoading.show();
+
             AuthSvc.verifyUser(vm.signInForm).then(function (data) {
                 console.log("verifyUser: " + JSON.stringify(data));
                 vm.signInModal.hide();
-                $localStorage.signInInfo = vm.signInForm;
-                $state.go('app.dashboard');
-            }, handleServiceError);
+                vm.signInForm = {};
+                $rootScope.userType = $localStorage.userType === vm.host ? 'host' : 'participant';
+                $rootScope.userInfo = $localStorage.userInfo = data;
+                //vm.host = vm.participant = false;
+                $ionicLoading.hide();
+                if($rootScope.userType === 'host') {
+                    $state.go('app.dashboard');
+                } else if($rootScope.userType === 'participant') {
+                    $state.go('app.event');
+                };
+                
+            }, function handleServiceError(err) {
+
+                console.log('Error occurred with service', err);
+                $ionicLoading.hide();
+                //vm.userRegFail
+                vm.userSignInFail = true;
+                $timeout(function () {
+                    vm.userSignInFail = false;
+                }, 6000);
+                console.log("User Login failed !");
+            });
+        };
+
+        vm.setLoginAsHost = function () {
+            vm.host = true;
+            vm.participant = false;
+            //$rootScope.host = $localStorage.host = true;
+            //$rootScope.participant = $localStorage.participant = false;
+            //vm.userTypModal.hide();
+            //$state.go('app.dashboard');
+        };
+
+        vm.setLoginAsParticipant = function () {
+            vm.host = false;
+            vm.participant = true;
+            //$rootScope.host = $localStorage.host = false;
+            //$rootScope.participant = $localStorage.participant = true;
+            //vm.userTypModal.hide();
+            //vm.userTypModal.remove();
+            //$state.go('app.event');
         };
 
         vm.xvalidateRegistration = function () {
@@ -111,14 +152,14 @@
                     return;
                 }*/
 
-                AuthSvc.createUser(vm.signUpForm).then(function (data) {
-                    //$ionicLoading.hide();
-                    console.log("createUser: " + JSON.stringify(data));
-                    $rootScope.userInfo = $localStorage.userInfo = data; 
+            AuthSvc.createUser(vm.signUpForm).then(function (data) {
+                //$ionicLoading.hide();
+                console.log("createUser: " + JSON.stringify(data));
+                $rootScope.userInfo = $localStorage.userInfo = data;
 
-                    $ionicLoading.hide();
-                    $state.go('app.createEvent');
-                }, handleServiceError);
+                $ionicLoading.hide();
+                $state.go('app.createEvent');
+            }, handleServiceError);
 
             /*}, function errorCallback(response) {
                 // called asynchronously if an error occurs

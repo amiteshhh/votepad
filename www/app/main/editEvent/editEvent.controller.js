@@ -15,8 +15,8 @@
     angular.module(moduleName)
         .controller('EditEventCtrl', Ctrl);
 
-    Ctrl.$inject = ['$scope', '$state', '$stateParams', '$injector', '$rootScope', '$localStorage', '$timeout', '$ionicLoading', '$ionicViewService'];
-    function Ctrl($scope, $state, $stateParams, $injector, $rootScope, $localStorage, $timeout, $ionicLoading, $ionicViewService) {
+    Ctrl.$inject = ['$scope', '$state', '$stateParams', '$injector', '$rootScope', '$localStorage', '$timeout', '$ionicLoading', '$ionicHistory'];
+    function Ctrl($scope, $state, $stateParams, $injector, $rootScope, $localStorage, $timeout, $ionicLoading, $ionicHistory) {
         var vm = this;
         var EditEventSvc = $injector.get('EditEventSvc');
 
@@ -133,7 +133,7 @@
             $ionicLoading.show();
             EditEventSvc.createOrUpdate(templateType, vm.event).then(function (response) {
                 $state.go('app.event');
-                $ionicViewService.nextViewOptions({
+                $ionicHistory.nextViewOptions({
                     disableAnimate: true,
                     disableBack: true
                 });
@@ -162,7 +162,14 @@
 
         //Same for Yes/No, singleSelect, multiSelect, linearRange
         vm.defaultValidateLaunchPoll = function () {
-            if (!vm.event.title || !vm.event.optionTemplates[0].question || _.filter(vm.event.optionTemplates[0].options, function (item) {
+
+            if (templateType === 'range') {
+                if (!vm.event.title || !vm.event.optionTemplate.question || !vm.event.optionTemplate.lowerRange || !vm.event.optionTemplate.upperRange) {
+                    return true;
+                }
+            }
+
+            if (!vm.event.title || !vm.event.optionTemplate.question || _.filter(vm.event.optionTemplate.options, function (item) {
                 return item.label === '';
             }).length !== 0) {
                 return true;
