@@ -15,8 +15,8 @@
     angular.module(moduleName)
         .controller('EditEventCtrl', Ctrl);
 
-    Ctrl.$inject = ['$scope', '$state', '$stateParams', '$injector', '$rootScope', '$localStorage', '$timeout', '$ionicLoading'];
-    function Ctrl($scope, $state, $stateParams, $injector, $rootScope, $localStorage, $timeout, $ionicLoading) {
+    Ctrl.$inject = ['$scope', '$state', '$stateParams', '$injector', '$rootScope', '$localStorage', '$timeout', '$ionicLoading', '$ionicViewService'];
+    function Ctrl($scope, $state, $stateParams, $injector, $rootScope, $localStorage, $timeout, $ionicLoading, $ionicViewService) {
         var vm = this;
         var EditEventSvc = $injector.get('EditEventSvc');
 
@@ -123,6 +123,10 @@
             $ionicLoading.show();
             EditEventSvc.createOrUpdate(templateType, vm.event).then(function (response) {
                 $state.go('app.event');
+                $ionicViewService.nextViewOptions({
+                    disableAnimate: true,
+                    disableBack: true
+                });
             }).catch(handleServiceError).finally($ionicLoading.hide);
 
         };
