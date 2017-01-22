@@ -6,17 +6,18 @@
     angular.module(moduleName)
         .controller('AppCtrl', Ctrl);
 
-    Ctrl.$inject = ['$state', '$localStorage'];
-    function Ctrl($state, $localStorage) {
+    Ctrl.$inject = ['$injector', '$state', '$localStorage'];
+    function Ctrl($injector, $state, $localStorage) {
         var vm = this;
+        var OnlineUserSvc = $injector.get('OnlineUserSvc');
 
         vm.host = false;
         console.log("Inside AppCtrl");
         init();
 
         function init() {
-           
-
+           OnlineUserSvc.init();
+           vm.onlineUsers = OnlineUserSvc.onlineUsers;
         }
 
         vm.logout = function () {

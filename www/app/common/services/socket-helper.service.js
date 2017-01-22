@@ -20,21 +20,12 @@
 
     Svc.$inject = ['$rootScope', '$q', 'APP_CONFIG'];
     function Svc($rootScope, $q, APP_CONFIG) {
-        var socketBaseUrl = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT;
-        io.sails.autoConnect = true;
-        io.sails.url = socketBaseUrl;
-        var socket = io.socket;//io.sails.connect(socketUrl);
+       
         return {
-            registerEvent: _registerEvent
+            connect: _connect
         };
 
-        function _registerEvent(path) {
-            //socket.get('/' + path, function (resData, jwres) { console.log('socekt get', resData); });
-            socket.get('/event' , function (resData, jwres) { console.log('socekt get', resData); });
-            socket.get('/user' , function (resData, jwres) { console.log('socekt get', resData); });
-            
-            socket.on('event', function (event) { console.log('event received socket', event); });
-            socket.on('user', function (event) { console.log('user received socket', event); });
+        function _connect(path) {
         }
     }
 })();
