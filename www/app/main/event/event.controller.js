@@ -6,8 +6,8 @@
     angular.module(moduleName)
         .controller('EventCtrl', Ctrl);
 
-    Ctrl.$inject = ['$state', '$injector', '$rootScope', '$scope', '$ionicModal', '$localStorage', '$ionicLoading'];
-    function Ctrl($state, $injector, $rootScope, $scope, $ionicModal, $localStorage, $ionicLoading) {
+    Ctrl.$inject = ['$state', '$injector', '$rootScope', '$scope', '$ionicModal', '$localStorage', '$ionicLoading', '$ionicPopup', '$timeout'];
+    function Ctrl($state, $injector, $rootScope, $scope, $ionicModal, $localStorage, $ionicLoading, $ionicPopup, $timeout) {
         var vm = this;
         var EventSvc = $injector.get('EventSvc');
 
@@ -25,7 +25,7 @@
             }, handleServiceError);
         }
 
-        vm.onItemDelete = function(item) {
+        vm.onItemDelete = function (item) {
             $ionicLoading.show();
             vm.events.splice(vm.events.indexOf(item), 1);
             EventSvc.destroy(item.id).then(function (data) {
@@ -56,11 +56,47 @@
         };
 
         vm.viewDetail = function (item) {
-            var routeData = {
-                templateType: item.templateType,
-                eventModel: item
+            if (item.eventStatus === 'created') {
+                if ($localStorage.userType === 'host') {
+                    var routeData = {
+                        templateType: item.templateType,
+                        eventModel: item
+                    };
+                    $state.go('app.editEvent', routeData);
+                };
+
+                if ($localStorage.userType === 'participant') {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Event not yet started !',
+                        template: "Please wait till event creator starts this event"
+                    });
+                    $timeout(function () {
+                        alertPopup.close(); //close the popup after 3 seconds for some reason
+                    }, 5000);
+                };
+
             };
-            $state.go('app.editEvent', routeData);
+
+            if (item.eventStatus === 'open') {
+                var routeData = {
+                    eventModel: item,
+                    userType: $localStorage.userType
+                };
+                $state.go('app.poll', routeData);
+
+            };
+
+            if (item.eventStatus === 'closed') {
+                var eventCloseAlertPopup = $ionicPopup.alert({
+                    title: 'Event is closed !',
+                    template: "You cannot send your response for this event anymore."
+                });
+                $timeout(function () {
+                    eventCloseAlertPopup.close(); //close the popup after 3 seconds for some reason
+                }, 5000);
+            }
+
+
         };
 
         vm.likesModal = $ionicModal.fromTemplate(
