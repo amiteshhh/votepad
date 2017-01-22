@@ -9,15 +9,15 @@
                 <input type="text" ng-model="vm.event.description" placeholder="Event Description (optional)">
             </label>
         <label class="item item-input">
-                <input type="text" ng-model="vm.event.optiontemplate.question" placeholder="Place your question here">
+                <input type="text" ng-model="vm.event.optionTemplate.question" placeholder="Place your question here">
             </label>
     </div>
     <div class="list list-inset">
-        <div class="item item-input item-icon-right" ng-repeat="item in vm.event.optiontemplate.options">
+        <div class="item item-input item-icon-right" ng-repeat="item in vm.event.optionTemplate.options">
             <input id='{{item.cssId}}' type="text" ng-model="item.label" placeholder="{{'Option ' + ($index + 1)}}">
-            <i class="icon ion-android-delete" ng-if="$index !== 0" ng-click="vm.deleteQueFromTextTemplates(item, vm.event.optiontemplate.options)"></i>
+            <i class="icon ion-android-delete" ng-if="$index !== 0" ng-click="vm.deleteQueFromTextTemplates(item, vm.event.optionTemplate.options)"></i>
         </div>
-        <div class="item" ng-if="vm.event.optiontemplate.options.length < 5" ng-click="vm.addOptToOptTemplates(vm.event.optiontemplate.options)">
+        <div class="item" ng-if="vm.event.optionTemplate.options.length < 5" ng-click="vm.addOptToOptTemplates(vm.event.optionTemplate.options)">
             <p>Add Options</p>
         </div>
     </div>
@@ -32,7 +32,7 @@
     </div>
 
 
-    <div class="list list-inset" ng-disabled="true" ng-if="vm.event.optiontemplate.question && vm.event.title">
+    <div class="list list-inset" ng-disabled="true" ng-if="vm.event.optionTemplate.question && vm.event.title">
         <div class="item item-icon-left item-text-wrap" style="border-left: 10px solid #0c60ee;">
 <i class="icon ion-person-stalker"></i>
 <h2><strong>Polling Preview</strong></h2>
@@ -43,12 +43,12 @@
                 <p ng-if="vm.event.description"> {{vm.event.description}} </p>
             </label>
 <label class="item item-text-wrap">
-                <h2>{{vm.event.optiontemplate.question}} </h2>
+                <h2>{{vm.event.optionTemplate.question}} </h2>
             </label>
 <div class="item item-divider">
     Select any one.
 </div>
-<ion-list ng-disabled="true" ng-repeat="item in vm.event.optiontemplate.options">
+<ion-list ng-disabled="true" ng-repeat="item in vm.event.optionTemplate.options">
     <ion-radio ng-disabled="true">{{item.label}}</ion-radio>
 </ion-list>
 <button class="button button-block button-dark" ng-disabled="true">Submit Response</button>

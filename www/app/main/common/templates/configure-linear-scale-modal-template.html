@@ -8,29 +8,29 @@
                 <input type="text" ng-model="vm.event.description" placeholder="Event Description (optional)">
             </label>
         <label class="item item-input">
-                <input type="text" ng-model="vm.event.optiontemplate.question" placeholder="Place your question here">
+                <input type="text" ng-model="vm.event.optionTemplate.question" placeholder="Place your question here">
             </label>
     </div>
     <div class="list list-inset">
         <label class="item item-input item-select">
-                <input type="text" ng-model="vm.event.optiontemplate.lowerRangeLabel" placeholder="(Optional Start Range Comments)">
-                <select ng-model="vm.event.optiontemplate.lowerRange">
-                    <option ng-model="vm.event.optiontemplate.lowerRange" value="0">0</option>
-                    <option ng-model="vm.event.optiontemplate.lowerRange" value="1">1</option>
+                <input type="text" ng-model="vm.event.optionTemplate.lowerRangeLabel" placeholder="(Optional Start Range Comments)">
+                <select ng-model="vm.event.optionTemplate.lowerRange" ng-change="vm.createOptionsForLinearRange()">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
                 </select>
             </label>
         <label class="item item-input item-select">
-                <input type="text" ng-model="vm.event.optiontemplate.upperRangeLabel" placeholder="(Optional End Range Comments)">
-                <select ng-model="vm.event.optiontemplate.upperRange">
-                    <option  ng-model="vm.event.optiontemplate.upperRange" value="2" >2</option>
-                    <option  ng-model="vm.event.optiontemplate.upperRange" value="3">3</option>
-                    <option  ng-model="vm.event.optiontemplate.upperRange" value="4">4</option>
-                    <option  ng-model="vm.event.optiontemplate.upperRange" value="5">5</option>
-                    <option  ng-model="vm.event.optiontemplate.upperRange" value="6">6</option>
-                    <option  ng-model="vm.event.optiontemplate.upperRange" value="7">7</option>
-                    <option  ng-model="vm.event.optiontemplate.upperRange" value="8">8</option>
-                    <option  ng-model="vm.event.optiontemplate.upperRange" value="9">9</option>
-                    <option  ng-model="vm.event.optiontemplate.upperRange" value="10">10</option>
+                <input type="text" ng-model="vm.event.optionTemplate.upperRangeLabel" placeholder="(Optional End Range Comments)">
+                <select ng-model="vm.event.optionTemplate.upperRange" ng-change="vm.createOptionsForLinearRange()">
+                    <option  value="2" >2</option>
+                    <option  value="3">3</option>
+                    <option  value="4">4</option>
+                    <option  value="5">5</option>
+                    <option  value="6">6</option>
+                    <option  value="7">7</option>
+                    <option  value="8">8</option>
+                    <option  value="9">9</option>
+                    <option  value="10">10</option>
                 </select>
             </label>
         <button class="button button-block button-dark" ng-disabled="!vm.event.title"
@@ -42,7 +42,7 @@
         </button>
     </div>
 
-    <div class="list list-inset" ng-disabled="true" ng-if="vm.event.title && vm.event.optiontemplate.question && vm.event.optiontemplate.options.length !== 0">
+    <div class="list list-inset" ng-disabled="true" ng-if="vm.event.title && vm.event.optionTemplate.question && vm.event.optionTemplate.options.length !== 0">
         <div class="item item-icon-left item-text-wrap" style="border-left: 10px solid #0c60ee;">
 <i class="icon ion-person-stalker"></i>
 <h2><strong>Polling Preview</strong></h2>
@@ -53,19 +53,19 @@
                 <p ng-if="vm.event.description"> {{vm.event.description}} </p>
             </label>
 <label class="item item-text-wrap">
-                <h2>{{vm.event.optiontemplate.question}} </h2>
+                <h2>{{vm.event.optionTemplate.question}} </h2>
             </label>
 <div class="item item-divider">
     Provide a Rate Value
 </div>
-<label class="item item-text-wrap" ng-if="vm.event.optiontemplate.lowerRangeLabel">
-                <h2>{{vm.event.optiontemplate.lowerRangeLabel}} </h2>
+<label class="item item-text-wrap" ng-if="vm.event.optionTemplate.lowerRangeLabel">
+                <h2>{{vm.event.optionTemplate.lowerRangeLabel}} </h2>
             </label>
-<ion-list ng-disabled="true" ng-repeat="item in vm.event.optiontemplate.options">
+<ion-list ng-disabled="true" ng-repeat="item in vm.event.optionTemplate.options">
     <ion-radio >{{item.label}}</ion-radio>
 </ion-list>
-<label class="item item-text-wrap" ng-if="vm.event.optiontemplate.upperRangeLabel">
-                <h2>{{vm.event.optiontemplate.upperRangeLabel}} </h2>
+<label class="item item-text-wrap" ng-if="vm.event.optionTemplate.upperRangeLabel">
+                <h2>{{vm.event.optionTemplate.upperRangeLabel}} </h2>
             </label>
 <button class="button button-block button-dark" ng-disabled="true">Submit Response</button>
 </div>

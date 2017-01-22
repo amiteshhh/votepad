@@ -22,67 +22,77 @@
 
         var templateType = $stateParams.templateType;
         vm.event = $stateParams.eventModel || {};
+        vm.event.templateType = templateType;
+        vm.createOptionsForLinearRange = createOptionsForLinearRange;
 
         init();
 
         function init() {
+            setModalTemplate();
             if (templateType === 'text') {
-                vm.tempalteLocation = '/app/main/common/templates/configure-text-modal-template.html';
-                if (!vm.event.textTemplates) {
-                    vm.event.textTemplates = [{
-                        cssId: 'Q1',
-                        question: '',
-                        textTemplateCreatedBy: $rootScope.userInfo.id
-                    }];
+                if (!vm.event.textTemplates || !vm.event.textTemplates.length) {
+                    initTextTemplate();
                 }
-            } else if (templateType === 'yesNo') {
-                vm.tempalteLocation = 'app/main/common/templates/configure-yes-no-modal-template.html';
-                if (!vm.event.optiontemplates) {
-                    vm.event.optiontemplates = [{
-                        options: [{
-                            cssId: 'Q1',
-                            label: 'Yes'
-                        },
-                        {
-                            cssId: 'Q2',
-                            label: 'No'
-                        }]
-                    }];
+            } else {
+                if (!vm.event.optionTemplates || !vm.event.optionTemplates.length) {                    
+                    initOptionTemplate();
                 }
-            } else if (templateType === 'singleSelect') {
-                vm.tempalteLocation = 'app/main/common/templates/configure-single-select-modal-template.html';
-                if (!vm.event.optiontemplate.options) {
-                    vm.event.optiontemplate.options = [{
-                        cssId: 'Q1',
-                        label: ''
-                    }];
-                }
-            } else if (templateType === 'multiSelect') {
-                vm.tempalteLocation = 'app/main/common/templates/configure-multiple-select-modal-template.html';
-                if (!vm.event.optiontemplate.options) {
-                    vm.event.optiontemplate.options = [{
-                        cssId: 'Q1',
-                        label: ''
-                    }];
-                }
-            } else if (templateType === 'range') {
-                vm.tempalteLocation = 'app/main/common/templates/configure-linear-scale-modal-template.html';
-                if (!vm.event.optiontemplate.options) {
-                    vm.event.optiontemplate.options = [{
-                        label: 1,
-                    },
-                    {
-                        label: 2,
-                    },
-                    {
-                        label: 3,
-                    },
-                    {
-                        label: 4
-                    }];
+                vm.event.optionTemplate = vm.event.optionTemplate || vm.event.optionTemplates[0];//not working
+
+                if (templateType === 'range') {
+                    vm.createOptionsForLinearRange();
                 }
             }
             console.log(vm.event);
+        }
+
+        function initTextTemplate() {
+            vm.event.textTemplates = [{
+                cssId: 'Q1',
+                question: '',
+                textTemplateCreatedBy: $rootScope.userInfo.id
+            }];
+        }
+
+        function initOptionTemplate() {
+            var optionTemplate = {};
+            if (templateType === 'yesNo') {
+                optionTemplate.options = [{
+                    cssId: 'Q1',
+                    label: 'Yes'
+                },
+                {
+                    cssId: 'Q2',
+                    label: 'No'
+                }];
+            } else if (templateType === 'singleSelect' || templateType === 'multiSelect') {
+                optionTemplate.options = [{
+                    cssId: 'Q1',
+                    label: ''
+                }];
+            }
+            else if (templateType === 'range') {
+                optionTemplate.lowerRange = "1";
+                optionTemplate.upperRange = "10";
+            }
+            vm.event.optionTemplates = [optionTemplate];
+        }
+        function setModalTemplate() {
+            if (templateType === 'text') {
+                vm.tempalteLocation = '/app/main/common/templates/configure-text-modal-template.html';
+            }
+            else if (templateType === 'yesNo') {
+                vm.tempalteLocation = '/app/main/common/templates/configure-single-select-modal-template.html';
+            }
+            else if (templateType === 'singleSelect') {
+                vm.tempalteLocation = '/app/main/common/templates/configure-single-select-modal-template.html';
+            }
+            else if (templateType === 'multiSelect') {
+                vm.tempalteLocation = 'app/main/common/templates/configure-multiple-select-modal-template.html';
+            }
+            else if (templateType === 'range') {
+                vm.tempalteLocation = 'app/main/common/templates/configure-linear-scale-modal-template.html';
+            }
         }
 
         //For Text
@@ -114,7 +124,7 @@
                 return item.question === '';
             }).length !== 0) {
                 return true;
-            };
+            }
 
         };
 
@@ -148,25 +158,25 @@
 
         //Same for Yes/No, singleSelect, multiSelect, linearRange
         vm.defaultValidateLaunchPoll = function () {
-            if (!vm.event.title || !vm.event.optiontemplates[0].question || _.filter(vm.event.optiontemplates[0].options, function (item) {
+            if (!vm.event.title || !vm.event.optionTemplates[0].question || _.filter(vm.event.optionTemplates[0].options, function (item) {
                 return item.label === '';
             }).length !== 0) {
                 return true;
-            };
+            }
         };
 
-        /*vm.setOptions = function () {
-
-            if (vm.event.optiontemplate.lowerRange && vm.event.optiontemplate.endRange) {
-                vm.event.optiontemplate.options = [];
-                for (var i = vm.event.optiontemplate.lowerRange; i <= vm.event.optiontemplate.endRange; i++) {
-                    var data = {
-                        label: i
-                    };
-                    vm.event.optiontemplate.options.push(data);
-                }
+        function createOptionsForLinearRange() {
+            var lowerRange = parseInt(vm.event.optionTemplate.lowerRange, 10);
+            var upperRange = parseInt(vm.event.optionTemplate.upperRange, 10);
+            var options = [];
+            for (var i = lowerRange; i <= upperRange; i++) {
+                var option = {
+                    label: i
+                };
+                options.push(option);
             }
-        }*/
+            vm.event.optionTemplate.options = options;
+        }
 
     }
 })();
