@@ -23,8 +23,8 @@
         }
 
         vm.logout = function () {
-            delete $localStorage.signInInfo;
-            delete $localStorage.signUpInfo;
+            delete $localStorage.userInfo;
+            delete $localStorage.userType;
             $state.go('auth');
         };
 
