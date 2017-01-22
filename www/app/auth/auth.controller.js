@@ -50,7 +50,7 @@
                     $state.go('app.dashboard');
                 } else if($rootScope.userType === 'participant') {
                     $state.go('app.event');
-                };
+                }
                 
             }, function handleServiceError(err) {
 
