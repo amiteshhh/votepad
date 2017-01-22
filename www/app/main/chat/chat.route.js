@@ -9,7 +9,8 @@
         $stateProvider.state('app.chat', {
             url: '/chat',
             params:{
-                chatTo:null
+                chatTo:null,
+                msg:null
             },
             views: {
                 'menuContent': {

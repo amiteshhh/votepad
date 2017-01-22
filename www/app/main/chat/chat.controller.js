@@ -10,11 +10,23 @@
     function ChatController($scope, $rootScope, $stateParams, $ionicPopup, $timeout) {
         var vm = this;
         var chatTo = $stateParams.chatTo;
+        var msg = $stateParams.msg;
         var myChatId = $rootScope.myChatSocket.id;
         var recipientId = chatTo.id;
         var recipientName = vm.recipientName = chatTo.user.userName;
 
         vm.messages = [];
+
+        init();
+
+        function init(){
+            if(msg){
+                addMessageToConversation(recipientId, myChatId, msg);
+            }
+            $timeout(function(){
+                document.querySelector('#msg-input').focus();
+            }, 100, false);
+        }
 
         vm.sendMessage = function () {
             if (!vm.message) {
@@ -24,8 +36,13 @@
             addMessageToConversation(myChatId, recipientId, vm.message);
 
             // Send the message
-            //socketInstance.post('/chat/private', { to: recipientId, msg: vm.message });
-            socketInstance.request({ url: '/chat/private', method: 'POST', data: { to: recipientId, msg: vm.message } });
+            var data = {
+                to: recipientId,
+                from: $rootScope.myChatSocket,
+                msg: vm.message
+            };
+            socketInstance.post('/chat/private', data);
+            //socketInstance.request({ url: '/chat/private', method: 'POST', data: { to: recipientId, msg: vm.message } });
             vm.message = undefined;
         };
 
@@ -44,11 +61,11 @@
                 message: message,
                 senderName: senderName,
                 className: className
-            });
+            });            
         }
 
         // Handle an incoming private message from the server.
-        function receivePrivateMessage(data) {
+        function receivePrivateMessage(event, data) {
 
             var sender = data.from;
 
@@ -57,6 +74,9 @@
 
             // Add a message to the room
             addMessageToConversation(sender.id, myChatId, data.msg);
+            $scope.$apply();
         }
+
+        $scope.$on('socket-private-message', receivePrivateMessage);
     }
 })();
