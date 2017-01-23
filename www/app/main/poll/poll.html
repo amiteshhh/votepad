@@ -21,11 +21,11 @@
             </div>
             <ion-list ng-repeat="item in vm.event.optionTemplate.options">
                 <ion-radio  ng-if="!$root.userType">{{item.label}}</ion-radio>
-                <a class="item"  ng-if="$root.userType" ng-click="vm.showRespondedUsersList()">{{item.label}}
+                <span class="item"  ng-if="$root.userType">{{item.label}}
                     <span class="item-note">
-                        Vote Count : {{vm.event.eventLikedBy.length}}
+                        <a  ng-click="vm.showRespondedUsersList()">Vote Count : {{vm.event.eventLikedBy.length}}</a>
                     </span>
-                </a>
+                </span>
             </ion-list>
             <button class="button button-block button-dark" ng-disabled="vm.userType === 'host'">Submit Response</button>
         </div>
@@ -52,11 +52,11 @@
                 <ion-checkbox  ng-if="!$root.userType" ng-model="item.checked" ng-checked="item.checked">
                     {{item.label}}
                 </ion-checkbox>
-                <a class="item"  ng-if="$root.userType" ng-click="vm.showRespondedUsersList()">{{item.label}}
+                <span class="item"  ng-if="$root.userType">{{item.label}}
                     <span class="item-note">
-                        Vote Count : {{vm.event.eventLikedBy.length}}
+                        <a  ng-click="vm.showRespondedUsersList()">Vote Count : {{vm.event.eventLikedBy.length}}</a>
                     </span>
-                </a>
+                </span>
             </ion-list>
             <button class="button button-block button-dark">Submit Response</button>
         </div>
@@ -84,11 +84,11 @@
       </label>
             <ion-list ng-repeat="item in vm.event.optionTemplate.options">
                 <ion-radio  ng-if="!$root.userType">{{item.label}}</ion-radio>
-                <a class="item"  ng-if="$root.userType" ng-click="vm.showRespondedUsersList()">{{item.label}}
+                <span class="item"  ng-if="$root.userType">{{item.label}}
                     <span class="item-note">
-                        Vote Count : {{vm.event.eventLikedBy.length}}
+                        <a ng-click="vm.showRespondedUsersList()">Vote Count : {{vm.event.eventLikedBy.length}}</a>
                     </span>
-                </a>
+                </span>
             </ion-list>
             <label class="item item-text-wrap" ng-if="vm.event.optionTemplate.upperRangeLabel">
         <h2>{{vm.event.optionTemplate.upperRangeLabel}} </h2>
