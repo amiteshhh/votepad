@@ -59,6 +59,7 @@
         };
 
         vm.viewDetail = function (item) {
+            
             if (item.eventStatus === 'created') {
                 if ($localStorage.userType === 'host') {
                     var routeData = {

@@ -20,11 +20,12 @@
 
     Svc.$inject = ['$rootScope'];
     function Svc($rootScope) {
-        var onlineUsers = [];
-        var isInited = false;
+        var onlineUsers = [], rooms = [];
+        var isInited = false, activeRoom;
         return {
             init: _init,
-            onlineUsers: onlineUsers
+            onlineUsers: onlineUsers,
+            rooms: rooms
         };
 
         function _init() {
@@ -51,6 +52,98 @@
                 Array.prototype.push.apply(onlineUsers, users);
                 $rootScope.$apply();
             });
+
+            // Get the current list of chat rooms. This will also subscribe us to
+            // update and destroy events for the individual rooms.
+            socketInstance.get('/room', function (resData, jwres) {
+                console.log('socekt get onlineUser', resData);
+                if (!resData) {
+                    return;
+                }
+                Array.prototype.push.apply(rooms, resData);
+                $rootScope.$apply();
+            });
+
+            // Listen for the "room" event, which will be broadcast when something
+            // happens to a room we're subscribed to.  See the "autosubscribe" attribute
+            // of the Room model to see which messages will be broadcast by default
+            // to subscribed sockets.
+            socketInstance.on('room', function messageReceived(message) {
+                console.log('room socket event', message);
+                activeRoom = _.findWhere(rooms, { id: message.id }) || message;
+                activeRoom.onlineUsersCount = activeRoom.onlineUsersCount || 0;
+                switch (message.verb) {
+
+                    // Handle room creation
+                    case 'created':
+                        addRoom(message.data);
+                        break;
+
+                    // Handle a user joining a room
+                    case 'addedTo':
+                        // Post a message in the room
+                        //postStatusMessage('room-messages-' + message.id, $('#user-' + message.addedId).text() + ' has joined');
+                        // Update the room user count
+                        //increaseRoomCount(message.id);
+                        addUserToRoom(message);
+                        break;
+
+                    // Handle a user leaving a room
+                    case 'removedFrom':
+                        // Post a message in the room
+                        //postStatusMessage('room-messages-' + message.id, $('#user-' + message.removedId).text() + ' has left');
+                        // Update the room user count
+                        //decreaseRoomCount(message.id);
+                        removeUserFromRoom(message);
+                        break;
+
+                    // Handle a room being destroyed
+                    case 'destroyed':
+                        removeRoom(message.id);
+                        break;
+
+                    // Handle a public message in a room.  Only sockets subscribed to the "message" context of a
+                    // Room instance will get this message--see the "join" and "leave" methods of RoomController.js
+                    // to see where a socket gets subscribed to a Room instance's "message" context.
+                    case 'messaged':
+                        receiveRoomMessage(message.data);
+                        break;
+
+                    default:
+                        break;
+
+                }
+
+            });
+
+            function addRoom(data) {
+                activeRoom.onlineUsersCount = 0;
+                console.log('inside new room added!!');
+                rooms.push(data);
+                $rootScope.$apply();
+                $rootScope.$broadcast('socket-new-room', data);
+            }
+
+            function addUserToRoom(message) {
+                activeRoom.onlineUsersCount++;
+                $rootScope.$broadcast('socket-room-new-user', message);
+            }
+
+            function removeUserFromRoom(message) {
+                activeRoom.onlineUsersCount--;
+                $rootScope.$broadcast('socket-room-user-removed', message);
+            }
+
+            function removeRoom(id) {
+                activeRoom.onlineUsersCount = 0;
+                $rootScope.$broadcast('socket-room-closed', id);
+            }
+
+            function receiveRoomMessage(data) {
+                console.log('inside receivePrivateMessage!!', data);
+                $rootScope.$broadcast('socket-room-message', data);
+            }
+
             socketInstance.on('onlineuser', function (message) {
                 console.log('onlineUser socket event', message);
                 switch (message.verb) {
@@ -85,9 +178,9 @@
 
             function addUser(data) {
                 console.log('inside new user added!!');
-               /* if (data.user.id === $rootScope.userInfo.id) {//let user chat with himself :P
-                    return;
-                }*/
+                /* if (data.user.id === $rootScope.userInfo.id) {//let user chat with himself :P
+                     return;
+                 }*/
                 onlineUsers.push(data);
                 $rootScope.$apply();
                 $rootScope.$broadcast('socket-new-user-online', data);

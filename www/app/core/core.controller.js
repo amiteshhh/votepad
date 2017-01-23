@@ -21,8 +21,10 @@
 
         function init() {
             OnlineUserSvc.init();
-            vm.onlineUsers = OnlineUserSvc.onlineUsers;
+            $rootScope.onlineUsers = vm.onlineUsers = OnlineUserSvc.onlineUsers;
+            $rootScope.rooms = vm.rooms = OnlineUserSvc.rooms;
             $scope.$on('socket-private-message', handlePrivateMessage);
+            $scope.$on('socket-new-room', handleNewRoomAdd);
         }
 
         vm.logout = function () {
@@ -33,6 +35,15 @@
 
         function handlePrivateMessage(event, data) {
             console.log('private message', data);
+        }
+
+        function handleNewRoomAdd(event, data) {
+            console.log('new room', data);
+            var eventId = parseInt(data.name, 10);
+            var eventModel = _.findWhere($rootScope.events, {id:eventId});
+            if(eventModel){
+                eventModel.eventStatus = 'open';
+            }
         }
 
         vm.closeUserModal = function () {

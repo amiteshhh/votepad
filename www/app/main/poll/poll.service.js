@@ -18,13 +18,12 @@
     angular.module(moduleName)
         .service('PollSvc', Svc);
     /* Tweak the dependency like APP_CONFIG as per your requirement */
-    Svc.$inject = ['$http', '$q', 'APP_CONFIG'];
-    function Svc($http, $q, APP_CONFIG) {
-
+    Svc.$inject = ['$http', '$q', 'APP_CONFIG', '$rootScope'];
+    function Svc($http, $q, APP_CONFIG, $rootScope) {
         return {
-            //pushEventUserRef: _pushEventUserRef
         };
 
-        
+
+
     }
 })();

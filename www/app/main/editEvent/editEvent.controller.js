@@ -22,19 +22,21 @@
 
         var templateType = $stateParams.templateType;
         vm.event = $stateParams.eventModel || {};
-        vm.event.templateType = templateType;
+
         vm.createOptionsForLinearRange = createOptionsForLinearRange;
 
         init();
 
         function init() {
+            vm.event.templateType = templateType;
+            vm.event.eventHostedBy = vm.event.eventHostedBy || $rootScope.userInfo.id;
             setModalTemplate();
             if (templateType === 'text') {
                 if (!vm.event.textTemplates || !vm.event.textTemplates.length) {
                     initTextTemplate();
                 }
             } else {
-                if (!vm.event.optionTemplates || !vm.event.optionTemplates.length) {                    
+                if (!vm.event.optionTemplates || !vm.event.optionTemplates.length) {
                     initOptionTemplate();
                 }
                 vm.event.optionTemplate = vm.event.optionTemplate || vm.event.optionTemplates[0];//not working
