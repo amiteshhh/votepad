@@ -21,11 +21,11 @@
             </div>
             <ion-list ng-repeat="item in vm.event.optionTemplate.options">
                 <ion-radio  ng-if="!$root.userType">{{item.label}}</ion-radio>
-                <a class="item"  ng-if="$root.userType" ng-click="vm.showRespondedUsersList()">{{item.label}}
+                <span class="item"  ng-if="$root.userType">{{item.label}}
                     <span class="item-note">
-                        Vote Count : {{vm.event.eventLikedBy.length}}
+                        <a  ng-click="vm.showRespondedUsersList()">Vote Count : {{vm.event.eventLikedBy.length}}</a>
                     </span>
-                </a>
+                </span>
             </ion-list>
             <button class="button button-block button-dark" ng-disabled="vm.userType === 'host'">Submit Response</button>
         </div>
@@ -41,6 +41,7 @@
           <i class="icon ion-thumbsup">Like</i>
         </button>
             </div>
+            </label>
             <label class="item item-text-wrap">
         <h2>{{vm.event.optionTemplate.question}} </h2>
       </label>
@@ -51,11 +52,11 @@
                 <ion-checkbox  ng-if="!$root.userType" ng-model="item.checked" ng-checked="item.checked">
                     {{item.label}}
                 </ion-checkbox>
-                <a class="item"  ng-if="$root.userType" ng-click="vm.showRespondedUsersList()">{{item.label}}
+                <span class="item"  ng-if="$root.userType">{{item.label}}
                     <span class="item-note">
-                        Vote Count : {{vm.event.eventLikedBy.length}}
+                        <a  ng-click="vm.showRespondedUsersList()">Vote Count : {{vm.event.eventLikedBy.length}}</a>
                     </span>
-                </a>
+                </span>
             </ion-list>
             <button class="button button-block button-dark">Submit Response</button>
         </div>
@@ -71,6 +72,7 @@
           <i class="icon ion-thumbsup">Like</i>
         </button>
             </div>
+            </label>
             <label class="item item-text-wrap">
         <h2>{{vm.event.optionTemplate.question}} </h2>
       </label>
@@ -82,11 +84,11 @@
       </label>
             <ion-list ng-repeat="item in vm.event.optionTemplate.options">
                 <ion-radio  ng-if="!$root.userType">{{item.label}}</ion-radio>
-                <a class="item"  ng-if="$root.userType" ng-click="vm.showRespondedUsersList()">{{item.label}}
+                <span class="item"  ng-if="$root.userType">{{item.label}}
                     <span class="item-note">
-                        Vote Count : {{vm.event.eventLikedBy.length}}
+                        <a ng-click="vm.showRespondedUsersList()">Vote Count : {{vm.event.eventLikedBy.length}}</a>
                     </span>
-                </a>
+                </span>
             </ion-list>
             <label class="item item-text-wrap" ng-if="vm.event.optionTemplate.upperRangeLabel">
         <h2>{{vm.event.optionTemplate.upperRangeLabel}} </h2>
@@ -95,6 +97,7 @@
         </div>
 
         <div class="list list-inset" ng-if="vm.event.templateType === 'text'">
+            <label class="item item-text-wrap row">
             <div class="col col-80">
                 <h2>{{vm.event.title}} </h2>
                 <p ng-if="vm.event.description"> {{vm.event.description}} </p>
@@ -104,6 +107,7 @@
           <i class="icon ion-thumbsup">Like</i>
         </button> 
             </div>
+            </label>
             <ion-list class="chats">
                 <ion-item ng-repeat="message in vm.messages track by $index">
                     <h2 class="userName positive">{{message.textTemplateCreatedBy}}</h2>
@@ -116,7 +120,7 @@
         </div>
 
     </ion-content>
-    <form name="sendMessageForm" ng-submit="vm.sendMessage()" novalidate>
+    <form name="sendMessageForm"  ng-if="vm.event.templateType === 'text'" ng-submit="vm.sendMessage()" novalidate>
         <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
             <label class="item-input-wrapper">
             <input id="msg-input" ng-change="vm.updateTyping()" ng-model="vm.message" class="input-message" type="text" placeholder="Message">
