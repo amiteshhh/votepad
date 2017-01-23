@@ -60,7 +60,8 @@
             vm.messages.push({
                 message: message,
                 senderName: senderName,
-                className: className
+                className: className,
+                updatedAt: new Date()
             });            
         }
 

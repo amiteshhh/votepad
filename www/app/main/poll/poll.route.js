@@ -12,7 +12,7 @@
     config.$inject = ['$stateProvider'];
     function config($stateProvider) {
         $stateProvider.state('app.poll', {
-            url: '/poll',
+            url: '/poll/:id',
             params: {
                 "eventModel": null,
                 "userType": null

@@ -137,6 +137,7 @@
                 if (launchPoll) {
                     var routeData = {
                         eventModel: data,
+                        id: data.id,
                         userType: $localStorage.userType
                     };
                     $state.go('app.poll', routeData);

@@ -110,7 +110,7 @@
             </label>
             <ion-list class="chats">
                 <ion-item ng-repeat="message in vm.messages track by $index">
-                    <h2 class="userName positive">{{message.textTemplateCreatedBy}}</h2>
+                    <h2 class="userName"><span class="positive">User {{message.textTemplateCreatedBy}}</span><span style="color:#ccc; font-size:14px;"> at {{message.updatedAt | date : "medium"}}</span></h2>
                     <div ng-class='message.className'>
                         <p ng-bind="message.question"></p>
                     </div>
@@ -120,7 +120,7 @@
         </div>
 
     </ion-content>
-    <form name="sendMessageForm"  ng-if="vm.event.templateType === 'text'" ng-submit="vm.sendMessage()" novalidate>
+    <form name="sendMessageForm" autocomplete="off"  ng-if="vm.event.templateType === 'text'" ng-submit="vm.sendMessage()" novalidate>
         <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
             <label class="item-input-wrapper">
             <input id="msg-input" ng-change="vm.updateTyping()" ng-model="vm.message" class="input-message" type="text" placeholder="Message">

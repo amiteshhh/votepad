@@ -23,6 +23,7 @@
         var OnlineUserSvc = $injector.get('OnlineUserSvc');
 
         vm.event = $stateParams.eventModel;
+        var id = $stateParams.id || vm.event.id;
         var myChatId = $rootScope.myChatSocket.id;
         var roomId, roomName = vm.event.id;
         var rooms = OnlineUserSvc.rooms;
@@ -39,10 +40,18 @@
 
         function init() {
             console.log("inside Poll controller");
-            vm.messages = vm.event.textTemplates;
-            vm.liked = hasEventUserRef(vm.event, 'eventLikedBy', $rootScope.userInfo.id);
-            _createOrJoinRoom(vm.event);
-            //_findeOne(vm.event.id);
+
+            _findeOne(vm.event.id);
+        }
+
+        function _findeOne(id) {
+            EventSvc.findOne(id).then(function (data) {
+                vm.event = data;
+                console.log(data);
+                vm.messages = vm.event.textTemplates;
+                vm.liked = hasEventUserRef(vm.event, 'eventLikedBy', $rootScope.userInfo.id);
+                _createOrJoinRoom(vm.event);
+            }, handleServiceError);
         }
 
         function hasEventUserRef(event, fk, fkId) {
@@ -70,12 +79,7 @@
             $rootScope.$broadcast('notify-service-error', err);
         }
 
-        function _findeOne(id) {
-            EventSvc.findOne(id).then(function (data) {
-                vm.event = data;
-                console.log(data);
-            }, handleServiceError);
-        }
+
 
         function _createOrJoinRoom(event) {
             if (rooms.length) {
@@ -154,13 +158,14 @@
                 senderName = 'Me';
                 className = 'from-me';
             } else {
-                senderName = 'recipientName';
+                senderName = recipientName || 'Unknown';
                 className = 'from-them';
             }
             vm.messages.push({
                 question: message,
-                senderName: 'senderName',
-                className: className
+                textTemplateCreatedBy: senderName,
+                className: className,
+                updatedAt: new Date()
             });
 
             EventSvc.createOrUpdate({
