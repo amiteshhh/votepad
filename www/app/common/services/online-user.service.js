@@ -206,7 +206,7 @@
             function removeMeFromOlineList(onlineUsers) {
                 var users = [];
                 _.each(onlineUsers, function (item) {
-                    if (item.user.id !== $rootScope.userInfo.id) {
+                    if (item.user && item.user.id !== $rootScope.userInfo.id) {
                         users.push(item);
                     }
                 });

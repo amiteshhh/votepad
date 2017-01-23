@@ -13,14 +13,16 @@
             var $stateParams = $injector.get('$stateParams');
             var $localStorage = $injector.get('$localStorage');
             if ($localStorage.userInfo && $localStorage.userInfo.id) {
-                if($localStorage.userType) {
-                    if($localStorage.userType === 'host') {
+                //if ($localStorage.userType) {
+                    if ($localStorage.userType === 'host') {
                         $state.go('app.createEvent');
-                    } else if($localStorage.userType === 'participant') {
+                    } else if ($localStorage.userType === 'participant') {
                         $state.go('app.event');
+                    } else {
+                        $state.go('auth');
                     }
-                }
-                
+                //}
+
             } else {
                 $state.go('auth');
             }

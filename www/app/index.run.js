@@ -64,16 +64,10 @@
       console.log('socket connected');
       // Get the current list of chat rooms. This will also subscribe us to
       // update and destroy events for the individual rooms.
-      socketInstance.get('/room', function (resData, jwres) {
-        console.log('socekt get rooms', resData);
-      });
+      // socketInstance.get('/room', function (resData, jwres) {
+      //   console.log('socekt get rooms', resData);
+      // });
     });
-    //var socket = io.socket;
-    //socketInstance.get('/event', function (resData, jwres) { console.log('socekt get', resData); });
-
-
-    //socketInstance.on('event', function (event) { console.log('event received socket', event); });
-    //socketInstance.on('user', function (event) { console.log('user received socket', event); });
   }
 
 })();
