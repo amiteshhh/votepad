@@ -12,8 +12,8 @@
         var EventSvc = $injector.get('EventSvc');
 
         vm.showDelete = false;
-        if(!$rootScope.userType) {
-            $rootScope.userType = ($localStorage.userType === 'host' ? true : false); 
+        if (!$rootScope.userType) {
+            $rootScope.userType = ($localStorage.userType === 'host' ? true : false);
         }
 
         init();
@@ -24,8 +24,38 @@
         function _find() {
             EventSvc.find().then(function (data) {
                 vm.events = data;
+                assignEventAction();
                 console.log(vm.events);
             }, handleServiceError);
+        }
+
+        function assignEventAction() {
+            _.each(vm.events, function (item) {
+                var action;
+                var isOwner = item.eventHostedBy.id === $rootScope.userInfo.id;
+                if (item.eventStatus === 'created' && isOwner) {
+                    if ($rootScope.userType === 'host') {
+                        action = 'Launch Poll';
+                    } /*else {
+                        action = 'Edit Poll';
+                    }*/
+                } else if (item.eventStatus === 'closed' && isOwner) {
+                    action = 'View Response';
+                }
+                else if (item.eventStatus === 'open') {
+                    if (isOwner) {
+                        action = 'View Response';
+                    } else {
+                        if ($rootScope.userType === 'host') {
+                            action = 'View Response';
+                        } else {
+                            action = 'Join Poll';
+                        }
+                    }
+                }
+                item.action = action;
+            });
+
         }
 
         vm.onItemDelete = function (item) {
@@ -58,8 +88,22 @@
             }
         };
 
-        vm.viewDetail = function (item) {
-            
+        vm.viewDetail = function (item, $event) {
+            /*var routeData = {
+                eventModel: item,
+                userType: $localStorage.userType
+            };
+            $state.go('app.poll', routeData);
+            return;*/
+            if ($event) {
+                var routeData = {
+                    eventModel: item,
+                    userType: $localStorage.userType
+                };
+                $event.stopPropagation();
+                $state.go('app.poll', routeData);
+                return;
+            }
             if (item.eventStatus === 'created') {
                 if ($localStorage.userType === 'host') {
                     var routeData = {
@@ -67,7 +111,7 @@
                         eventModel: item
                     };
                     $state.go('app.editEvent', routeData);
-                };
+                }
 
                 if ($localStorage.userType === 'participant') {
                     var alertPopup = $ionicPopup.alert({
@@ -77,9 +121,9 @@
                     $timeout(function () {
                         alertPopup.close(); //close the popup after 3 seconds for some reason
                     }, 5000);
-                };
+                }
 
-            };
+            }
 
             if (item.eventStatus === 'open') {
                 var routeData = {
@@ -88,7 +132,7 @@
                 };
                 $state.go('app.poll', routeData);
 
-            };
+            }
 
             if (item.eventStatus === 'closed') {
                 if ($localStorage.userType === 'host') {
@@ -97,7 +141,7 @@
                         eventModel: item
                     };
                     $state.go('app.poll', routeData);
-                };
+                }
 
                 if ($localStorage.userType === 'participant') {
                     var eventCloseAlertPopup = $ionicPopup.alert({
@@ -107,7 +151,7 @@
                     $timeout(function () {
                         eventCloseAlertPopup.close();
                     }, 5000);
-                };
+                }
             }
 
 

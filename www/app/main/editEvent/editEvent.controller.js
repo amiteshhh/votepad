@@ -131,10 +131,19 @@
         };
 
         //Same for others too
-        vm.createOrUpdateEvent = function () {
+        vm.createOrUpdateEvent = function (launchPoll) {
             $ionicLoading.show();
-            EditEventSvc.createOrUpdate(templateType, vm.event).then(function (response) {
-                $state.go('app.event');
+            EditEventSvc.createOrUpdate(templateType, vm.event).then(function (data) {
+                if (launchPoll) {
+                    var routeData = {
+                        eventModel: data,
+                        userType: $localStorage.userType
+                    };
+                    $state.go('app.poll', routeData);
+                } else {
+                    $state.go('app.event');
+                }
+
                 $ionicHistory.nextViewOptions({
                     disableAnimate: true,
                     disableBack: true

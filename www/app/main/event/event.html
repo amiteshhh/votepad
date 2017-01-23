@@ -15,6 +15,8 @@
         <p>Status - {{item.eventStatus}}</p>
         <p>Created on - {{item.createdAt | date : "medium"}}</p>
         <p>Updated on - {{item.updatedAt | date : "medium"}}</p>
+        <button ng-if="item.action" class="button button-clear icon-right ion-chevron-right button-positive" ng-click="vm.viewDetail(item, $event)">{{item.action}}</button>
+
         <i class="icon ion-record" ng-class="vm.assignEventStatus(item.eventStatus)"></i>
         <ion-delete-button class="ion-minus-circled" ng-click="vm.onItemDelete(item)">
         </ion-delete-button>
