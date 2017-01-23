@@ -73,12 +73,7 @@
         $rootScope.$on('showUsersList', function (event, data) {
 
             console.log(data);
-            vm.usersList = [{
-                userName: "Sourav"
-            },
-            {
-                userName: "Amitesh"
-            }];
+            vm.usersList = data;
             $ionicModal.fromTemplateUrl('app/common/templates/user-list-modal-template.html', {
                 scope: $scope,
                 animation: 'slide-in-up'

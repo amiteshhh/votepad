@@ -89,31 +89,20 @@
         };
 
         vm.viewDetail = function (item, $event) {
-            /*var routeData = {
-                eventModel: item,
+            var routeData = {/*
+                eventModel: item,*/
+                id: item.id,
                 userType: $localStorage.userType
             };
-            $state.go('app.poll', routeData);
-            return;*/
             if ($event) {
-                var routeData = {
-                    eventModel: item,
-                    userType: $localStorage.userType
-                };
                 $event.stopPropagation();
                 $state.go('app.poll', routeData);
                 return;
             }
             if (item.eventStatus === 'created') {
-                if ($localStorage.userType === 'host') {
-                    var routeData = {
-                        templateType: item.templateType,
-                        eventModel: item
-                    };
+                if (item.eventHostedBy.id === $rootScope.userInfo.id) {
                     $state.go('app.editEvent', routeData);
-                }
-
-                if ($localStorage.userType === 'participant') {
+                }else {
                     var alertPopup = $ionicPopup.alert({
                         title: 'Event not yet started !',
                         template: "Please wait till event creator starts this event"
@@ -122,24 +111,14 @@
                         alertPopup.close(); //close the popup after 3 seconds for some reason
                     }, 5000);
                 }
-
             }
 
             if (item.eventStatus === 'open') {
-                var routeData = {
-                    eventModel: item,
-                    userType: $localStorage.userType
-                };
                 $state.go('app.poll', routeData);
-
             }
 
             if (item.eventStatus === 'closed') {
                 if ($localStorage.userType === 'host') {
-                    var routeData = {
-                        templateType: item.templateType,
-                        eventModel: item
-                    };
                     $state.go('app.poll', routeData);
                 }
 
@@ -153,8 +132,6 @@
                     }, 5000);
                 }
             }
-
-
         };
 
         vm.likesModal = $ionicModal.fromTemplate(

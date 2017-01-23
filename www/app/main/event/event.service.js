@@ -13,7 +13,7 @@
             createOrUpdate: _createOrUpdate,
             destroy: _destroy,
             find: _find,
-            findOne: _findOne,
+            findOneDeep: _findOneDeep,
             saveTextTemplate: _saveTextTemplate,
             pushEventUserRef: _pushEventUserRef
         };
@@ -52,15 +52,49 @@
             return deferred.promise;
         }
 
-        function _findOne(id) {
+        function _findOneDeep(id) {
             var deferred = $q.defer();
             var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/event/' + id;
             $http.get(url).then(function (response) {
+                var data = response.data;
+                if (data.templateType === 'text' || (!data.optionTemplate || !data.optionTemplate.id)) {
+                    deferred.resolve(data);
+                    return;
+                }
+                url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/optionTemplate/' + data.optionTemplate.id;
+                $http.get(url).then(function (response) {
+                    data.optionTemplate = response.data;
+                    _fetchOptions(data.optionTemplate);
+                    deferred.resolve(data);
+                }, function (err) {
+                    deferred.reject(err);
+                });
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+
+        function _fetchOptions(optionTemplate) {
+            var ids = _.pluck(optionTemplate.options, 'id');
+            if(!ids.length){
+                return;
+            }
+            var queryClause = 'where={id:[' + ids.toString() + ']}'
+            //http://localhost:1337/event?where={%22id%22:[1,%202]}
+            var deferred = $q.defer();
+            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/options?' + queryClause;
+            $http.get(url).then(function (response) {
+                optionTemplate.options = response.data;
                 deferred.resolve(response.data);
             }, function (err) {
                 deferred.reject(err);
             });
             return deferred.promise;
+        }
+
+        function _findOneOption(id) {
+
         }
 
         function _find() {

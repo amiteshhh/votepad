@@ -21,17 +21,11 @@
         var PollSvc = $injector.get('PollSvc');
         var EventSvc = $injector.get('EventSvc');
         var OnlineUserSvc = $injector.get('OnlineUserSvc');
-
-        vm.event = $stateParams.eventModel;
-        var id = $stateParams.id || vm.event.id;
+        var id = $stateParams.id;
         var myChatId = $rootScope.myChatSocket.id;
-        var roomId, roomName = vm.event.id;
+        var roomId, roomName = id;
         var rooms = OnlineUserSvc.rooms;
-
-        if (!$rootScope.userType) {
-            $rootScope.userType = ($localStorage.userType === 'host' ? true : false);
-        }
-        vm.liked = false;
+        vm.disableResponse = true;
 
         init();
 
@@ -41,12 +35,13 @@
         function init() {
             console.log("inside Poll controller");
 
-            _findeOne(vm.event.id);
+            _findOneDeep(id);
         }
 
-        function _findeOne(id) {
-            EventSvc.findOne(id).then(function (data) {
+        function _findOneDeep(id) {
+            EventSvc.findOneDeep(id).then(function (data) {
                 vm.event = data;
+                vm.disableResponse = false;//(vm.eventStatus === 'closed' || (vm.event.eventHostedBy.id === $rootScope.userInfo.id));
                 console.log(data);
                 vm.messages = vm.event.textTemplates;
                 vm.liked = hasEventUserRef(vm.event, 'eventLikedBy', $rootScope.userInfo.id);
@@ -60,10 +55,11 @@
             });
         }
 
-        vm.showRespondedUsersList = function () {
-            $rootScope.$broadcast('showUsersList', {
-                userList: vm.event.eventLikedBy
-            });
+        vm.showRespondedUsersList = function (users) {
+            if (!users || !users.length) {
+                return;
+            }
+            $rootScope.$broadcast('showUsersList', users);
         };
 
         vm.toggleLikeEvent = function () {
@@ -72,6 +68,13 @@
                 console.log(data);
 
             }, handleServiceError);
+        };
+
+        vm.saveSingleResponse = function () {
+            /*EventSvc.saveOptionsRef(option.id, 'optionRespondedBy', $rootScope.userInfo.id).then(function (data) {
+                console.log(data);
+
+            }, handleServiceError);*/
         };
 
         function handleServiceError(err) {

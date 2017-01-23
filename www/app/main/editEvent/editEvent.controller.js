@@ -19,33 +19,51 @@
     function Ctrl($scope, $state, $stateParams, $injector, $rootScope, $localStorage, $timeout, $ionicLoading, $ionicHistory) {
         var vm = this;
         var EditEventSvc = $injector.get('EditEventSvc');
+        var EventSvc = $injector.get('EventSvc');
 
         var templateType = $stateParams.templateType;
-        vm.event = $stateParams.eventModel || {};
+        var id = $stateParams.id;
 
         vm.createOptionsForLinearRange = createOptionsForLinearRange;
 
         init();
 
         function init() {
+            if (id) {
+                _findOneDeep(id);
+                return;
+            }
+            vm.event = {};
             vm.event.templateType = templateType;
-            vm.event.eventHostedBy = vm.event.eventHostedBy || $rootScope.userInfo.id;
+            vm.event.eventHostedBy = $rootScope.userInfo.id;
             setModalTemplate();
+            initTemplate();
+            console.log(vm.event);
+        }
+
+        function _findOneDeep(id) {
+            EventSvc.findOneDeep(id).then(function (data) {
+                vm.event = data;
+                templateType = vm.event.templateType;
+                setModalTemplate();
+                initTemplate();
+            }, handleServiceError);
+        }
+
+        function initTemplate() {
             if (templateType === 'text') {
                 if (!vm.event.textTemplates || !vm.event.textTemplates.length) {
                     initTextTemplate();
                 }
             } else {
-                if (!vm.event.optionTemplates || !vm.event.optionTemplates.length) {
+                if (!vm.event.optionTemplate) {
                     initOptionTemplate();
                 }
-                vm.event.optionTemplate = vm.event.optionTemplate || vm.event.optionTemplates[0];//not working
 
                 if (templateType === 'range') {
                     vm.createOptionsForLinearRange();
                 }
             }
-            console.log(vm.event);
         }
 
         function initTextTemplate() {
@@ -77,7 +95,7 @@
                 optionTemplate.lowerRange = "1";
                 optionTemplate.upperRange = "10";
             }
-            vm.event.optionTemplates = [optionTemplate];
+            vm.event.optionTemplate = optionTemplate;
         }
         function setModalTemplate() {
             if (templateType === 'text') {
