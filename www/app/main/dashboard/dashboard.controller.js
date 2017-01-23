@@ -11,12 +11,23 @@
         var DashboardSvc = $injector.get('DashboardSvc');
         var vm = this;
         vm.labels = ["Open Events", "Closed Events", "Events yet to be started"];
-        vm.data = [];
+        vm.data = [];vm.labels = ["Open Events", "Closed Events", "Not started"];
+        vm.data = [6,8,10];
+        vm.isParticipatedEvents = true;
+        vm.isHostedEvents = true;
+
+        vm.showParticipatedEventDetails = function() {
+            vm.isParticipatedEvents = !vm.isParticipatedEvents;
+        };
+
+        vm.showHostedEventDetails = function() {
+            vm.isHostedEvents = !vm.isHostedEvents;
+        };
 
         init();
 
         function init() {
-            _find();
+            //_find();
         }
 
         function _find() {
