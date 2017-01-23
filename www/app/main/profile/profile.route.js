@@ -16,7 +16,7 @@
             views: {
                 'menuContent': {
                     templateUrl: 'app/main/profile/profile.html',
-                    controller: '"ProfileCtrl" as vm'
+                    controller: 'ProfileCtrl as vm'
                 }
             }
         });

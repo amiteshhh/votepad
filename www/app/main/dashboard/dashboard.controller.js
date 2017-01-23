@@ -6,41 +6,60 @@
     angular.module(moduleName)
         .controller('DashboardCtrl', DashboardCtrl);
 
-    DashboardCtrl.$inject = ['$scope', '$ionicModal', '$localStorage', '$state'];
-    function DashboardCtrl($scope, $ionicModal, $localStorage, $state) {
+    DashboardCtrl.$inject = ['$scope', '$injector', '$ionicModal', '$localStorage', '$state', '$ionicHistory'];
+    function DashboardCtrl($scope, $injector, $ionicModal, $localStorage, $state, $ionicHistory) {
+        var DashboardSvc = $injector.get('DashboardSvc');
         var vm = this;
-        vm.userName = $localStorage.userInfo.userName;
-        vm.compName = "Cognizant";
-        vm.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
-        vm.data = [300, 500, 100];
-        
-        vm.pollData = [
-            {
-                id: 1,
-                name: "Cordova",
-                created: "25/12/16",
-                updated: "25/12/16",
-                status: "Closed"
-            },
-            {
-                id: 2,
-                name: "Angular",
-                created: "22/12/16",
-                updated: "23/12/16",
-                status: "Not Started"
-            },
-            {
-                id: 3,
-                name: "Ionic",
-                created: "11/01/17",
-                updated: "15/01/17",
-                status: "Closed"
-            }
-        ]
+        vm.labels = ["Open Events", "Closed Events", "Events yet to be started"];
+        vm.data = [];
 
-        vm.createEvent = function() {
+        init();
+
+        function init() {
+            _find();
+        }
+
+        function _find() {
+            DashboardSvc.find().then(function (data) {
+                vm.events = data;
+                console.log(vm.events);
+                vm.openEvents = _.filter(vm.events, function (item) {
+                    return item.eventStatus === 'open';
+                });
+                vm.data.push(vm.openEvents.length);
+
+                console.log(vm.openEvents);
+
+                vm.closedEvents = _.filter(vm.events, function (item) {
+                    return item.eventStatus === 'closed';
+                });
+                vm.data.push(vm.closedEvents.length);
+
+                console.log(vm.closedEvents);
+
+                vm.createdEvents = _.filter(vm.events, function (item) {
+                    return item.eventStatus === 'created';
+                });
+                vm.data.push(vm.createdEvents.length);
+
+                console.log(vm.createdEvents);
+
+            }, handleServiceError);
+
+        }
+
+        function handleServiceError(err) {
+            console.log('ended with error');
+        };
+
+
+        vm.createEvent = function () {
+            $ionicHistory.nextViewOptions({
+                    disableAnimate: true,
+                    disableBack: true
+                });
             $state.go('app.createEvent');
         }
-        
+
     }
 })();

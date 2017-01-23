@@ -15,10 +15,17 @@
     angular.module(moduleName)
         .controller('ProfileCtrl', Ctrl);
 
-    Ctrl.$inject = ['$injector', '$rootScope'];
-    function Ctrl($injector, $rootScope) {
+    Ctrl.$inject = ['$injector', '$rootScope', '$localStorage'];
+    function Ctrl($injector, $rootScope, $localStorage) {
         var vm = this;
         var ProfileSvc = $injector.get('ProfileSvc');
+        if(!$rootScope.userInfo) {
+            $rootScope.userInfo = $localStorage.userInfo;
+        }
+        
+
+        console.log(vm.userInfo);
+        console.log($localStorage.userInfo);
 
         init();
 
@@ -31,22 +38,10 @@
          * @methodOf app.profile.ProfileCtrl:ProfileCtrl
          */
         function init() {
-            //_sampleOperation();
+            //vm.userInfo = $localStorage.userInfo;
         }
 
-        function _sampleOperation() {
-            ProfileSvc.sampleOperation().then(function (data) {
-
-            }).catch(handleServiceError)
-                .finally(function () {
-                    //console.log('Finally hide the loader etc when error or success');
-                });
-        }
-
-        function handleServiceError(err) {
-            console.log('Error occurred with service', err);
-            $rootScope.$broadcast('notify-service-error', err);
-        }
+        
     }
 })();
 

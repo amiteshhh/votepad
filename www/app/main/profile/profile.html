@@ -1,1 +1,37 @@
-template for app.profile module
+<ion-view title="User Profile">
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
+    </ion-nav-buttons>
+
+    <ion-content class="has-header">
+
+        <ion-list class="">
+            <a class="item item-icon-left">
+                <i class="icon ion-android-person"></i> User
+                <span class="item-note">
+      {{$root.userInfo.userName}}
+    </span>
+            </a>
+            <a class="item item-icon-left">
+                <i class="icon ion-mouse"></i> Company
+                <span class="item-note">
+      {{$root.userInfo.company}}
+    </span>
+            </a>
+            <a class="item item-icon-left">
+                <i class="icon ion-iphone"></i> Mobile
+                <span class="item-note">
+      {{$root.userInfo.mobile}}
+    </span>
+            </a>
+            <a class="item item-icon-left">
+                <i class="icon ion-calendar"></i> Created On
+                <span class="item-note">
+      {{$root.userInfo.createdAt | date : 'medium'}}
+    </span>
+            </a>
+
+        </ion-list>
+
+    </ion-content>
+</ion-view>
