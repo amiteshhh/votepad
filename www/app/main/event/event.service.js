@@ -65,8 +65,8 @@
                 url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/optionTemplate/' + data.optionTemplate.id;
                 $http.get(url).then(function (response) {
                     data.optionTemplate = response.data;
-                    _fetchOptions(data.optionTemplate).then(function (response) {
-                        data.optionTemplate.options = response.data;
+                    _fetchOptions(data.optionTemplate).then(function (options) {
+                        data.optionTemplate.options = options;
                         deferred.resolve(data);
                     }, function (err) {
                         deferred.reject(err);
@@ -81,13 +81,13 @@
             return deferred.promise;
         }
 
-        function _fetchOptions(optionTemplate) {
+        function _fetchOptions_bak(optionTemplate) {
             var ids = _.pluck(optionTemplate.options, 'id');
             var deferred = $q.defer();
             if (!ids.length) {
                 return deferred.resolve({ data: [] });
             }
-            var queryClause = 'where={id:[' + ids.toString() + ']}'
+            var queryClause = 'where={id:[' + ids.toString() + ']}';//not working
             //http://localhost:1337/event?where={%22id%22:[1,%202]}
 
             var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/options?' + queryClause;
@@ -100,8 +100,30 @@
             return deferred.promise;
         }
 
-        function _findOneOption(id) {
+        function _fetchOptions(optionTemplate) {
+            var deferred = $q.defer();
+            var promises = [];
+            _.each(optionTemplate.options, function (option) {
+                promises.push(_findOneOption(option.id));
+            });
+            $q.all(promises).then(function (response) {
+                deferred.resolve(response);
+            }, function (err) {
+                deferred.reject(err);
+            });
 
+            return deferred.promise;
+        }
+
+        function _findOneOption(id) {
+            var deferred = $q.defer();
+            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/options/' + id;
+            $http.get(url).then(function (response) {
+                deferred.resolve(response.data);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
         }
 
         function _find() {
