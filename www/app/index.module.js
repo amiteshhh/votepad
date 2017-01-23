@@ -34,8 +34,11 @@
             // poll module
             "app.poll",
 
-            // poll module
-            "app.profile"
+            // profile module
+            "app.profile",
+
+            // settings module
+            "app.settings"
 
         ];
 
