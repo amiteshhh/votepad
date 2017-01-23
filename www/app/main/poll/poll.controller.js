@@ -26,6 +26,7 @@
         var roomId, roomName = id;
         var rooms = OnlineUserSvc.rooms;
         vm.disableResponse = true;
+        //vm.prevResponseOptionId;
 
         init();
 
@@ -41,12 +42,36 @@
         function _findOneDeep(id) {
             EventSvc.findOneDeep(id).then(function (data) {
                 vm.event = data;
-                vm.disableResponse = false;//(vm.eventStatus === 'closed' || (vm.event.eventHostedBy.id === $rootScope.userInfo.id));
+                vm.disableResponse = (vm.eventStatus === 'closed' || (vm.event.eventHostedBy.id === $rootScope.userInfo.id));
                 console.log(data);
-                vm.messages = vm.event.textTemplates;
                 vm.liked = hasEventUserRef(vm.event, 'eventLikedBy', $rootScope.userInfo.id);
+
+                if (vm.event.templateType === 'text') {
+                    vm.messages = vm.event.textTemplates;
+                } else if (vm.event.templateType === 'multiSelect') {
+                    initCheckBoxState();
+                } else {
+
+                    _.some(vm.event.optionTemplate.options, function (option) {
+                        var respondedBy = _.findWhere(option.optionRespondedBy, { id: $rootScope.userInfo.id });
+                        if (respondedBy) {
+                            vm.selectedAnswer = option;
+                            vm.prevResponseOptionId = option.id;
+                        }
+                        return respondedBy;
+                    });
+                }
                 _createOrJoinRoom(vm.event);
             }, handleServiceError);
+        }
+
+        function initCheckBoxState() {
+            _.each(vm.event.optionTemplate.options, function (option) {
+                option.checked = _.some(option.optionRespondedBy, function (user) {
+                    return user.id === $rootScope.userInfo.id;
+                });
+                option.originalChecked = option.checked;
+            });
         }
 
         function hasEventUserRef(event, fk, fkId) {
@@ -71,10 +96,30 @@
         };
 
         vm.saveSingleResponse = function () {
-            /*EventSvc.saveOptionsRef(option.id, 'optionRespondedBy', $rootScope.userInfo.id).then(function (data) {
+            $ionicLoading.show();
+            if (vm.prevResponseOptionId) {//delete prev response
+                EventSvc.pushOptionRespondedBy(vm.prevResponseOptionId, $rootScope.userInfo.id, true).then(function (data) {
+                    console.log(data);
+                }, handleServiceError);
+            }
+            EventSvc.pushOptionRespondedBy(vm.selectedAnswer.id, $rootScope.userInfo.id).then(function (data) {
                 console.log(data);
+                vm.prevResponseOptionId = vm.selectedAnswer.id;
+            }, handleServiceError).finally($ionicLoading.hide);
+        };
 
-            }, handleServiceError);*/
+        vm.saveMultiResponse = function () {
+            $ionicLoading.show();
+            _.each(vm.event.optionTemplate.options, function (option) {
+                if (option.checked && !option.originalChecked) {//new one
+                    EventSvc.pushOptionRespondedBy(option.id, $rootScope.userInfo.id);
+                } else if (!option.checked && option.originalChecked) {//delete this
+                    EventSvc.pushOptionRespondedBy(option.id, $rootScope.userInfo.id, true);
+                }
+            });
+            $timeout(function () {
+                $ionicLoading.hide();
+            }, 200);
         };
 
         function handleServiceError(err) {

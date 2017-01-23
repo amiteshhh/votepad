@@ -15,6 +15,7 @@
             find: _find,
             findOneDeep: _findOneDeep,
             saveTextTemplate: _saveTextTemplate,
+            pushOptionRespondedBy: _pushOptionRespondedBy,
             pushEventUserRef: _pushEventUserRef
         };
 
@@ -120,6 +121,23 @@
             var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/event/' + id + '/' + fk + '/' + fkId;
             var req, method;
             method = like ? 'POST' : 'DELETE';
+            req = {
+                url: url,
+                method: method
+            };
+            $http(req).then(function (response) {
+                deferred.resolve(response.data);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+
+        function _pushOptionRespondedBy(id, fkId, toDelete) {
+            var deferred = $q.defer();
+            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/options/' + id + '/optionRespondedBy/' + fkId;
+            var req, method;
+            method = toDelete ? 'DELETE' : 'POST';
             req = {
                 url: url,
                 method: method
