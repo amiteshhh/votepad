@@ -9927,7 +9927,7 @@ input, textarea {
       font-size: 18px; }
 
 .dashboard-mid-section {
-  background: #ADDEF0;
+  background: rgba(230, 181, 0, 0.66);
   text-align: center; }
   .dashboard-mid-section .dashboard-charts {
     width: 49%;

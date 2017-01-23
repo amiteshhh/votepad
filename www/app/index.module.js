@@ -32,7 +32,13 @@
             "app.editEvent",
 
             // poll module
-            "app.poll"
+            "app.poll",
+
+            // profile module
+            "app.profile",
+
+            // settings module
+            "app.settings"
 
         ];
 

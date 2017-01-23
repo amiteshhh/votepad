@@ -44,15 +44,15 @@
                 vm.signInModal.hide();
                 vm.signInForm = {};
                 $rootScope.userType = vm.host;
-                $localStorage.userType = vm.host ? 'host' : 'participant';                
+                $localStorage.userType = vm.host ? 'host' : 'participant';
                 $rootScope.userInfo = $localStorage.userInfo = data;
                 $ionicLoading.hide();
-                if($localStorage.userType === 'host') {
+                if ($localStorage.userType === 'host') {
                     $state.go('app.createEvent');
-                } else if($localStorage.userType === 'participant') {
+                } else if ($localStorage.userType === 'participant') {
                     $state.go('app.event');
                 }
-                
+
             }, function handleServiceError(err) {
 
                 console.log('Error occurred with service', err);
@@ -75,54 +75,78 @@
             vm.participant = true;
         };
 
+        vm.validateRegistration = function () {
+            $state.go('app.createEvent');
+        };
+
         vm.xvalidateRegistration = function () {
             $ionicLoading.show();
 
-            // Simple GET request example:
-            $http({
-                method: 'GET',
-                url: 'https://www.cognalys.com/api/v1/otp/?app_id=1199d982fcd745c3a5d2bde&access_token=a4358cd8f369319284dfeb6764f17fe8a412185b&mobile=+91' + vm.signUpForm.mobile
-            }).then(function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
-                console.log("validateOTP success - " + JSON.stringify(response));
+            AuthSvc.createUser(vm.signUpForm).then(function (data) {
+                //$ionicLoading.hide();
+                console.log("createUser: " + JSON.stringify(data));
+                $ionicLoading.hide();
+                if ($localStorage.userType === 'host') {
+                    $state.go('app.createEvent');
+                } else if ($localStorage.userType === 'participant') {
+                    $state.go('app.event');
+                };
+            }, handleServiceError);
 
-                if (response.data.status === 'failed') {
-                    console.log('*************************');
-                    $ionicLoading.hide();
-                    vm.userRegFail = true;
-                    $timeout(function () {
-                        vm.userRegFail = false;
-                    }, 5000);
-                    return;
-                }
+            if (!vm.userRegFail) {
+                // Simple GET request example:
+                $http({
+                    method: 'GET',
+                    url: 'xhttps://www.cognalys.com/api/v1/otp/?app_id=1199d982fcd745c3a5d2bde&access_token=a4358cd8f369319284dfeb6764f17fe8a412185b&mobile=+91' + vm.signUpForm.mobile
+                }).then(function successCallback(response) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    console.log("validateOTP success - " + JSON.stringify(response));
 
-                console.log("response.data.keymatch - " + response.data.keymatch);
-                vm.keymatch = response.data.keymatch;
+                    if (response.data.status === 'failed') {
+                        console.log('*************************');
+                        $ionicLoading.hide();
+                        vm.userRegFail = true;
+                        $timeout(function () {
+                            vm.userRegFail = false;
+                        }, 5000);
+                        return;
+                    }
 
-                $ionicModal.fromTemplateUrl('app/common/templates/validate-otp-modal-template.html', {
-                    scope: $scope,
-                    animation: 'slide-in-up'
-                }).then(function (modal) {
-                    vm.validateOtpModal = modal;
-                    modal.show();
-                    $ionicLoading.hide();
+                    console.log("response.data.keymatch - " + response.data.keymatch);
+                    vm.keymatch = response.data.keymatch;
+
+                    $ionicModal.fromTemplateUrl('app/common/templates/validate-otp-modal-template.html', {
+                        scope: $scope,
+                        animation: 'slide-in-up'
+                    }).then(function (modal) {
+                        vm.validateOtpModal = modal;
+                        modal.show();
+                        $ionicLoading.hide();
+                    });
+
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    console.log("validateRegistration errorCallback");
                 });
 
-            }, function errorCallback(response) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                console.log("validateRegistration errorCallback");
-            });
+            }
+
+
         };
 
-        // vm.validateOTP = function () {
-        vm.validateRegistration = function () {
+        vm.validateOTP = function () {
+            $state.go('app.createEvent');
+        };
+
+        vm.xvalidateOTP = function () {
+
             $ionicLoading.show();
             console.log(vm.userOTP);
 
             // Simple GET request example:
-            /*$http({
+            $http({
                 method: 'GET',
                 url: 'https://www.cognalys.com/api/v1/otp/confirm/?app_id=1199d982fcd745c3a5d2bde&access_token=a4358cd8f369319284dfeb6764f17fe8a412185b&keymatch=' + vm.keymatch + '&otp=+1' + vm.userOTP
             }).then(function successCallback(response) {
@@ -140,27 +164,29 @@
                     }, 5000);
                     console.log("We are facing problem with validating your otp. Please try again later.");
                     return;
-                }*/
+                }
 
-            AuthSvc.createUser(vm.signUpForm).then(function (data) {
-                //$ionicLoading.hide();
-                console.log("createUser: " + JSON.stringify(data));
-                $rootScope.userType = vm.host;
-                $localStorage.userType = vm.host ? 'host' : 'participant';
-                $rootScope.userInfo = $localStorage.userInfo = data;
-                $ionicLoading.hide();
-                if($localStorage.userType === 'host') {
-                    $state.go('app.createEvent');
-                } else if($localStorage.userType === 'participant') {
-                    $state.go('app.event');
-                };
-            }, handleServiceError);
 
-            /*}, function errorCallback(response) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                console.log("validateOTP errorCallback");
-            });*/
+                AuthSvc.createUser(vm.signUpForm).then(function (data) {
+                    //$ionicLoading.hide();
+                    console.log("createUser: " + JSON.stringify(data));
+                    $rootScope.userType = vm.host;
+                    $localStorage.userType = vm.host ? 'host' : 'participant';
+                    $rootScope.userInfo = $localStorage.userInfo = data;
+                    $ionicLoading.hide();
+                    if ($localStorage.userType === 'host') {
+                        $state.go('app.createEvent');
+                    } else if ($localStorage.userType === 'participant') {
+                        $state.go('app.event');
+                    };
+                }, handleServiceError);
+
+                /*}, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    console.log("validateOTP errorCallback");
+                });*/
+            })
         };
 
         // Cleanup the modal when we're done with it!
@@ -183,6 +209,7 @@
             }, 4000);*/
 
             //$rootScope.$broadcast('notify-service-error', err);
+            return;
         }
 
     }
