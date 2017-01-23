@@ -28,6 +28,12 @@
         vm.disableResponse = true;
         //vm.prevResponseOptionId;
 
+        //
+        var chatTo = $rootScope.onlineUsers[0];
+        //var msg = $stateParams.msg;
+        var recipientId = chatTo.id;
+        var recipientName = vm.recipientName = chatTo.user.userName;
+
         init();
 
         console.log($stateParams);
@@ -42,7 +48,16 @@
         function _findOneDeep(id) {
             EventSvc.findOneDeep(id).then(function (data) {
                 vm.event = data;
-                vm.disableResponse = (vm.eventStatus === 'closed' || (vm.event.eventHostedBy.id === $rootScope.userInfo.id));
+                if (vm.event.eventStatus === 'created') {//only owner can come here
+                    EventSvc.createOrUpdate({
+                        id: vm.event.id,
+                        eventStatus: 'open'
+                    });
+                    vm.event.eventStatus = 'open';
+                    broadcastPollStart();
+                }
+
+                vm.disableResponse = (vm.event.eventStatus === 'closed' || (vm.event.templateType !== 'text' && vm.event.eventHostedBy.id === $rootScope.userInfo.id));
                 console.log(data);
                 vm.liked = hasEventUserRef(vm.event, 'eventLikedBy', $rootScope.userInfo.id);
 
@@ -61,7 +76,7 @@
                         return respondedBy;
                     });
                 }
-                _createOrJoinRoom(vm.event);
+                //_createOrJoinRoom(vm.event);
             }, handleServiceError);
         }
 
@@ -167,7 +182,7 @@
 
 
         // Callback for when the user clicks the "Send message" button in a public room
-        vm.sendMessage = function () {
+        vm.sendMessage_bak = function () {
 
             if (!vm.message) {
                 return;
@@ -185,6 +200,37 @@
             socketInstance.post('/chat/public', data);
             vm.message = undefined;
         };
+
+        vm.sendMessage = function () {
+            if (!vm.message) {
+                return;
+            }
+            saveMessage(vm.message);
+            // Add this message to the room
+            addMessageToConversation(myChatId, recipientId, vm.message);
+
+            // Send the message
+            var data = {
+                to: recipientId,
+                from: $rootScope.myChatSocket,
+                msg: vm.message,
+                event: vm.event
+            };
+            socketInstance.post('/chat/private', data);
+            //socketInstance.request({ url: '/chat/private', method: 'POST', data: { to: recipientId, msg: vm.message } });
+            vm.message = undefined;
+        };
+
+        function broadcastPollStart(){
+            // Send the message
+            var data = {
+                to: recipientId,
+                from: $rootScope.myChatSocket,
+                msg: '',
+                event: vm.event
+            };
+            socketInstance.post('/chat/private', data);
+        }
 
         function saveMessage(question) {
             var textTemplate = {
@@ -216,10 +262,10 @@
                 updatedAt: new Date()
             });
 
-            EventSvc.createOrUpdate({
+            /*EventSvc.createOrUpdate({
                 id: vm.event.id,
                 eventStatus: 'open'
-            });
+            });*/
 
             /*if (senderId === 0) {
                 return postStatusMessage(roomName, message);
@@ -253,7 +299,43 @@
 
         function onRoomClose() {
             alert('this poll has been closed now!!');
+            vm.disableResponse = true;
         }
+
+        ////
+        // Add HTML for a new message in a private conversation
+        function addMessageToConversation(senderId, recipientId, message) {
+
+            var senderName, className, fromMe = senderId === myChatId;
+            if (fromMe) {
+                senderName = 'Me';
+                className = 'from-me';
+            } else {
+                senderName = recipientName;
+                className = 'from-them';
+            }
+            vm.messages.push({
+                question: message,
+                textTemplateCreatedBy: senderName,
+                className: className,
+                updatedAt: new Date()
+            });
+        }
+
+        // Handle an incoming private message from the server.
+        function receivePrivateMessage(event, data) {
+
+            var sender = data.from;
+
+            // Create a room for this message if one doesn't exist
+            //createPrivateConversationRoom(sender);
+
+            // Add a message to the room
+            addMessageToConversation(sender.id, myChatId, data.msg);
+            $scope.$apply();
+        }
+
+        $scope.$on('socket-private-message', receivePrivateMessage);
 
     }
 })();

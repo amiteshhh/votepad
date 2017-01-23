@@ -3,7 +3,7 @@
     <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-    <button ng-click="vm.showDelete = !vm.showDelete" ng-if="vm.events && vm.events.length !== 0 && $root.userType" class="button button-icon icon ion-android-delete"></button>
+    <button ng-click="vm.showDelete = !vm.showDelete" ng-if="vm.events && vm.events.length !== 0 && $root.userType === 'host'" class="button button-icon icon ion-android-delete"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
 

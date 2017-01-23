@@ -1,4 +1,4 @@
-<ion-view title="Event Online - {{$root.activeRoom.onlineUsersCount || 0}} people active">
+<ion-view title="Event Poll - {{$root.onlineUsers.length}} people active">
     <ion-content class="has-header">
 
         <div class="list list-inset" ng-if="vm.event.templateType === 'singleSelect' || vm.event.templateType === 'yesNo' || vm.event.templateType === 'range'">

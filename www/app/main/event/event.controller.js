@@ -12,9 +12,6 @@
         var EventSvc = $injector.get('EventSvc');
 
         vm.showDelete = false;
-        if (!$rootScope.userType) {
-            $rootScope.userType = ($localStorage.userType === 'host' ? true : false);
-        }
 
         init();
 
@@ -24,37 +21,39 @@
         function _find() {
             EventSvc.find().then(function (data) {
                 vm.events = data;
-                assignEventAction();
+                _.each(vm.events, function (item) {
+                    assignEventAction(item);
+                });
                 console.log(vm.events);
             }, handleServiceError);
         }
 
-        function assignEventAction() {
-            _.each(vm.events, function (item) {
-                var action;
-                var isOwner = item.eventHostedBy.id === $rootScope.userInfo.id;
-                if (item.eventStatus === 'created' && isOwner) {
-                    if ($rootScope.userType === 'host') {
-                        action = 'Launch Poll';
-                    } /*else {
+        function assignEventAction(item) {
+            // _.each(vm.events, function (item) {
+            var action;
+            var isOwner = item.eventHostedBy.id === $rootScope.userInfo.id;
+            if (item.eventStatus === 'created' && isOwner) {
+                if ($rootScope.userType === 'host') {
+                    action = 'Launch Poll';
+                } /*else {
                         action = 'Edit Poll';
                     }*/
-                } else if (item.eventStatus === 'closed' && isOwner) {
+            } else if (item.eventStatus === 'closed' && isOwner) {
+                action = 'View Response';
+            }
+            else if (item.eventStatus === 'open') {
+                if (isOwner) {
                     action = 'View Response';
-                }
-                else if (item.eventStatus === 'open') {
-                    if (isOwner) {
+                } else {
+                    if ($rootScope.userType === 'host') {
                         action = 'View Response';
                     } else {
-                        if ($rootScope.userType === 'host') {
-                            action = 'View Response';
-                        } else {
-                            action = 'Join Poll';
-                        }
+                        action = 'Join Poll';
                     }
                 }
-                item.action = action;
-            });
+            }
+            item.action = action;
+            //});
 
         }
 
@@ -102,7 +101,7 @@
             if (item.eventStatus === 'created') {
                 if (item.eventHostedBy.id === $rootScope.userInfo.id) {
                     $state.go('app.editEvent', routeData);
-                }else {
+                } else {
                     var alertPopup = $ionicPopup.alert({
                         title: 'Event not yet started !',
                         template: "Please wait till event creator starts this event"
@@ -148,5 +147,41 @@
                 scope: $scope,
                 animation: 'slide-in-up'
             });
+
+
+        $scope.$on('update-event-status', function (event, data) {
+            console.log('update', data);
+            var notify, matchedEvent = _.find(vm.events, function (item) {
+                return item.id === data.id;
+            });
+            if (matchedEvent) {//&& item.eventStatus !== data.eventStatus && item.status === 'created'
+                if(item.status === 'created'){
+                    matchedEvent.status = 'open';
+                    matchedEvent.action = 'Join Poll';
+                    notify = true;
+                }
+            }else{
+                vm.events.unshift(data);
+                data.action = 'Join Poll';
+                notify = true;
+            }
+
+            if(!notify){
+                return;
+            }
+            
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'A new poll just started for event - ' + data.title,
+                template: 'Do You want to participate?'
+            });
+
+            confirmPopup.then(function (res) {
+                if (res) {
+                    vm.viewDetail(matchedEvent);
+                } else {
+                    console.log('You are not sure');
+                }
+            });
+        });
     }
 })();

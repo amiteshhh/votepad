@@ -35,13 +35,17 @@
         var lastChatToId;
         function receivePrivateMessage(event, data) {
             console.log('private message', data);
+            if(data.event){//public msg
+                $rootScope.$broadcast('update-event-status', data.event);
+                return;
+            }
             var incomingChatId = data.from.id;
             if ($state.current.name === 'app.chat'/* && lastChatToId === incomingChatId*/) {
                 return;
             }
             var confirmPopup = $ionicPopup.confirm({
                 title: 'New message from ' + data.from.user.userName,
-                template: '<p><strong>Message:</strong> ' + data.msg + '</p>' + ' We dont support multiple parallel chat as of now. <br>Do You want to chat.!'
+                template: '<p><strong>Message:</strong> ' + data.msg + '</p>' + 'Do You want to chat?'
             });
 
             confirmPopup.then(function (res) {
