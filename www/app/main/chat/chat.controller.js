@@ -6,8 +6,8 @@
     angular.module(moduleName)
         .controller('ChatController', ChatController);
 
-    ChatController.$inject = ['$scope', '$rootScope', '$stateParams', '$ionicPopup', '$timeout'];
-    function ChatController($scope, $rootScope, $stateParams, $ionicPopup, $timeout) {
+    ChatController.$inject = ['$scope', '$rootScope', '$stateParams', '$ionicPopup', '$timeout', '$ionicScrollDelegate'];
+    function ChatController($scope, $rootScope, $stateParams, $ionicPopup, $timeout, $ionicScrollDelegate) {
         var vm = this;
         var chatTo = $stateParams.chatTo;
         var msg = $stateParams.msg;
@@ -62,7 +62,8 @@
                 senderName: senderName,
                 className: className,
                 updatedAt: new Date()
-            });            
+            });
+            $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);         
         }
 
         // Handle an incoming private message from the server.

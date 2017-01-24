@@ -1,5 +1,5 @@
 <ion-view view-title="Chat with {{vm.recipientName}}">
-    <ion-content class="padding">
+    <ion-content class="padding has-footer" delegate-handle="mainScroll">
         <!--<section class="chats">
             <span ng-repeat="message in vm.messages track by $index">
                 <span ng-show="!message.notification">
@@ -17,7 +17,7 @@
 
         <ion-list class="chats">
                 <ion-item ng-class='message.className' ng-repeat="message in vm.messages track by $index">
-                    <h2 class="userName"><span class="positive">{{message.senderName}}</span><span style="color:#ccc; font-size:14px;"> at {{message.updatedAt | date : "medium"}}</span></h2>
+                    <h2 class="userName"><span class="positive">{{message.senderName  || 'Unknown'}}</span><span style="color:#ccc; font-size:14px;"> at {{message.updatedAt | date : "medium"}}</span></h2>
                     <div  class="item-text-wrap">
                         <p ng-bind="message.message"></p>
                     </div>

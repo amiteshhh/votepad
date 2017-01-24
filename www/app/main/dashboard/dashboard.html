@@ -1,153 +1,156 @@
 <ion-view title="Dashboard">
-    <ion-nav-buttons side="left">
-        <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
-    </ion-nav-buttons>
-    <ion-nav-buttons side="right">
-        <button  ng-if="$root.userType === 'host' || $root.userType === true" ng-click="vm.createEvent()" class="button button-icon icon ion-compose"></button>
-    </ion-nav-buttons>
-    <ion-content>
+  <ion-nav-buttons side="left">
+    <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+    <button ng-if="$root.userType === 'host' || $root.userType === true" ng-click="vm.createEvent()" class="button button-icon icon ion-compose"></button>
+  </ion-nav-buttons>
+  <ion-content>
 
-        <div class="list card" ng-if="vm.participatedEvents.length === 0 && vm.participatedTextualData.length === 0 && vm.hostedEvents.length === 0 && vm.hostedTextualData.length === 0">
-            <div class="item item-text-wrap">
-                <h2><strong>It seems you are here for the first time or you haven't created any event !</strong></h2>
-                <p>No events available. </p>
-                <p>If you are not a host then please login as host to create an event.</p>
+    <div class="list card" ng-if="vm.participatedEvents.length === 0 && vm.participatedTextualData.length === 0 && vm.hostedEvents.length === 0 && vm.hostedTextualData.length === 0">
+      <div class="item item-text-wrap">
+        <h2><strong>It seems you are here for the first time or you haven't created any event !</strong></h2>
+        <p>No events available. </p>
+        <p>If you are not a host then please login as host to create an event.</p>
+      </div>
+    </div>
+
+    <div class='list list-inset' ng-if="vm.participatedData.length !== 0">
+      <a class="item item-icon-right item-dark" ng-click="vm.showParticipatedEventDetails()">
+        <i class="icon" ng-class="vm.isParticipatedEvents ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'"></i> Events Participated
+      </a>
+
+      <div ng-if="vm.isParticipatedEvents && vm.participatedEvents.length !==0" ng-repeat="item in vm.participatedEvents">
+
+        <div class="list card">
+          <div class="item row" style="border-bottom: white;">
+            <div class="col col-67">
+              <h2 style="margin-top: 7px;"><strong>{{item.title}}</strong></h2>
+              <p style="margin-top: 7px;">Created By: {{item.createdBy}}</p>
+              <p style="margin-top: -7px;">Created On: {{item.createdOn | date: 'medium'}}</p>
             </div>
+            <div class="col col-33">
+              <span class="positive" style="float: right;" ng-click="vm.showRespondedUsersList(item.eventLikedBy)">{{item.eventLikedBy.length}} <i class="icon ion-thumbsup">Like</i></span>
+              <br>
+              <i ng-class=" vm.assignEventStatus(item.status)" style="float: right; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
+                                {{item.status}}
+                            </i>
+            </div>
+          </div>
+          <div class="item row" style="border-top: white;">
+            <div class="col col-67">
+              <canvasx id="pie" style="margin-top: -20px;" class="chart chart-pie" chart-data="item.optData" chart-labels="item.optLabels" chart-options="options"></canvasx>
+            </div>
+            <div class="col col-33">
+              <i style="float: right; margin-right: 10px; background-color: #444444; color: white; border-radius: 7px; height: 60px; width: 60px; text-align: center; line-height: 60px;">
+                                <span style="font-size: xx-large;">{{item.participantsCount}}</span>
+                            </i>
+              <br>
+              <span class="dark" style="float: right;">Participants</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div class='list list-inset' ng-if="vm.participatedData.length !== 0">
-            <a class="item item-icon-right item-dark" ng-click="vm.showParticipatedEventDetails()">
-                <i class="icon" ng-class="vm.isParticipatedEvents ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'" ></i>
-                    Events Participated
-            </a>
-            
-            <div ng-if="vm.isParticipatedEvents && vm.participatedEvents.length !==0" ng-repeat="item in vm.participatedEvents">
-
-                <div class="list card">
-                    <div class="item row" style="border-bottom: white;">
-                        <div class="col col-67">
-                            <h2 style="margin-top: 7px;"><strong>{{item.title}}</strong></h2>
-                            <p style="margin-top: 7px;">Created By: {{item.createdBy}}</p>
-                            <p style="margin-top: -7px;">Created On: {{item.createdOn | date: 'medium'}}</p>
-                        </div>
-                        <div class="col col-33">
-                            <span class="positive" style="float: right;">{{item.eventLikes}} <i class="icon ion-thumbsup">Like</i></span><br>
-                            <i ng-class=" vm.assignEventStatus(item.status)" style="float: right; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
+      <div ng-if="vm.isParticipatedEvents && vm.participatedTextualData.length !== 0" ng-repeat="item in vm.participatedTextualData">
+        <div class="list card">
+          <div class="item row" style="border-bottom: white;">
+            <div class="col col-67">
+              <h2 style="margin-top: 7px;"><strong>{{item.title}}</strong></h2>
+              <p style="margin-top: 7px;">Created By: {{item.createdBy}}</p>
+              <p style="margin-top: -7px;">Created On: {{item.createdOn | date: 'medium'}}</p>
+            </div>
+            <div class="col col-33">
+              <span class="positive" style="float: right;" ng-click="vm.showRespondedUsersList(item.eventLikedBy)">{{item.eventLikedBy.length}} <i class="icon ion-thumbsup">Like</i></span>
+              <br>
+              <i style="float: right; background-color: #33cd5f; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
                                 {{item.status}}
                             </i>
-                        </div>
-                    </div>
-                    <div class="item row" style="border-top: white;">
-                        <div class="col col-67">
-                            <canvas id="pie" style="margin-top: -20px;" class="chart chart-pie" chart-data="{{item.optData}}" chart-labels="{{item.optLabels}}" chart-options="options"></canvas>
-                        </div>
-                        <div class="col col-33">
-                            <i style="float: right; margin-right: 10px; background-color: #444444; color: white; border-radius: 7px; height: 60px; width: 60px; text-align: center; line-height: 60px;">
-                                <span style="font-size: xx-large;">{{item.participantsCount}}</span>
-                            </i><br>
-                            <span class="dark" style="float: right;">Participated</span>
-                        </div>
-                    </div>
-                </div>
             </div>
+          </div>
 
-            <div ng-if="vm.isParticipatedEvents && vm.participatedTextualData.length !== 0" ng-repeat="item in vm.participatedTextualData">
-                <div class="list card">
-                    <div class="item row" style="border-bottom: white;">
-                        <div class="col col-67">
-                            <h2 style="margin-top: 7px;"><strong>{{item.title}}</strong></h2>
-                            <p style="margin-top: 7px;">Created By: {{item.createdBy}}</p>
-                            <p style="margin-top: -7px;">Created On: {{item.createdOn | date: 'medium'}}</p>
-                        </div>
-                        <div class="col col-33">
-                            <span class="positive" style="float: right;">{{item.eventLikes}} <i class="icon ion-thumbsup">Like</i></span><br>
-                            <i style="float: right; background-color: #33cd5f; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
-                                {{item.status}}
+          <div class="item" style="border-top: white;">
+            <div>
+              <i style="float: left; margin-right: 10px; background-color: #444444; color: white; border-radius: 7px; height: 60px; width: 60px; text-align: center; line-height: 60px;">
+                                <span style="font-size: xx-large;">{{item.participantsCount}}</span>
                             </i>
-                        </div>
-                    </div>
-
-                    <div class="item" style="border-top: white;">                        
-                        <div>
-                            <i style="float: left; margin-right: 10px; background-color: #444444; color: white; border-radius: 7px; height: 60px; width: 60px; text-align: center; line-height: 60px;">
-                                <span style="font-size: xx-large;">{{item.participantsCount}}</span>
-                            </i><br>
-                            <span class="dark">Participated</span>
-                        </div>
-                    </div>
-                </div>
+              <br>
+              <span class="dark">Participants</span>
             </div>
-
+          </div>
         </div>
+      </div>
 
-        <div class='list list-inset' ng-if="vm.hostedData.length !== 0">
-            <a class="item item-icon-right item-dark" ng-click="vm.showHostedEventDetails()">
-                <i class="icon" ng-class="vm.isHostedEvents ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'"></i>
-                    Events Hosted
-            </a>
+    </div>
 
-            <div ng-if="vm.isHostedEvents && vm.hostedEvents.length !==0" ng-repeat="item in vm.hostedEvents">
+    <div class='list list-inset' ng-if="vm.hostedData.length !== 0">
+      <a class="item item-icon-right item-dark" ng-click="vm.showHostedEventDetails()">
+        <i class="icon" ng-class="vm.isHostedEvents ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'"></i> Events Hosted
+      </a>
 
-                <div class="list card">
-                    <div class="item row" style="border-bottom: white;">
-                        <div class="col col-67">
-                            <h2 style="margin-top: 7px;"><strong>{{item.title}}</strong></h2>
-                            <p style="margin-top: 7px;">Created By: {{item.createdBy}}</p>
-                            <p style="margin-top: -7px;">Created On: {{item.createdOn | date: 'medium'}}</p>
-                        </div>
-                        <div class="col col-33">
-                            <span class="positive" style="float: right;">{{item.eventLikes}} <i class="icon ion-thumbsup">Like</i></span><br>
-                            <i style="float: right; background-color: #33cd5f; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
-                                {{item.status}}
-                            </i>
-                        </div>
-                    </div>
+      <div ng-if="vm.isHostedEvents && vm.hostedEvents.length !==0" ng-repeat="item in vm.hostedEvents">
 
-                    <div class="item row" style="border-top: white;">
-                        <div class="col col-67">
-                            <canvas id="pie" style="margin-top: -20px;" class="chart chart-pie" chart-data="item.optData" chart-labels="item.optLabels" chart-options="options"></canvas>
-                        </div>
-                        <div class="col col-33">
-                            <i style="float: right; margin-right: 10px; background-color: #444444; color: white; border-radius: 7px; height: 60px; width: 60px; text-align: center; line-height: 60px;">
-                                <span style="font-size: xx-large;">{{item.participantsCount}}</span>
-                            </i><br>
-                            <span class="dark" style="float: right;">Participated</span>
-                        </div>
-                    </div>
-                </div>
+        <div class="list card">
+          <div class="item row" style="border-bottom: white;">
+            <div class="col col-67">
+              <h2 style="margin-top: 7px;"><strong>{{item.title}}</strong></h2>
+              <p style="margin-top: 7px;">Created By: {{item.createdBy}}</p>
+              <p style="margin-top: -7px;">Created On: {{item.createdOn | date: 'medium'}}</p>
             </div>
-
-            <div ng-if="vm.isHostedEvents && vm.hostedTextualData.length !== 0" ng-repeat="item in vm.hostedTextualData">
-                <div class="list card">
-                    <div class="item row" style="border-bottom: white;">
-                        <div class="col col-67">
-                            <h2 style="margin-top: 7px;"><strong>{{item.title}}</strong></h2>
-                            <p style="margin-top: 7px;">Created By: {{item.createdBy}}</p>
-                            <p style="margin-top: -7px;">Created On: {{item.createdOn | date: 'medium'}}</p>
-                        </div>
-                        <div class="col col-33">
-                            <span class="positive" style="float: right;">{{item.eventLikes}} <i class="icon ion-thumbsup">Like</i></span><br>
-                            <i ng-class=" vm.assignEventStatus(item.status)" style="float: right; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
+            <div class="col col-33">
+              <span class="positive" style="float: right;" ng-click="vm.showRespondedUsersList(item.eventLikedBy)">{{item.eventLikedBy.length}} <i class="icon ion-thumbsup">Like</i></span>
+              <br>
+              <i style="float: right; background-color: #33cd5f; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
                                 {{item.status}}
                             </i>
-                        </div>
-                    </div>
+            </div>
+          </div>
 
-                    <div class="item" style="border-top: white;">                        
-                        <div>
-                            <i style="float: left; margin-right: 10px; background-color: #444444; color: white; border-radius: 7px; height: 60px; width: 60px; text-align: center; line-height: 60px;">
+          <div class="item row" style="border-top: white;">
+            <div class="col col-67">
+              <canvas id="pie" style="margin-top: -20px;" class="chart chart-pie" chart-data="item.optData" chart-labels="item.optLabels" chart-options="options"></canvas>
+            </div>
+            <div class="col col-33">
+              <i style="float: right; margin-right: 10px; background-color: #444444; color: white; border-radius: 7px; height: 60px; width: 60px; text-align: center; line-height: 60px;">
                                 <span style="font-size: xx-large;">{{item.participantsCount}}</span>
-                            </i><br>
-                            <span class="dark">Participated</span>
-                        </div>
-                    </div>
-                </div>
-            </div>          
-
+                            </i>
+              <br>
+              <span class="dark" style="float: right;">Participants</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-    </ion-content>
+      <div ng-if="vm.isHostedEvents && vm.hostedTextualData.length !== 0" ng-repeat="item in vm.hostedTextualData">
+        <div class="list card">
+          <div class="item row" style="border-bottom: white;">
+            <div class="col col-67">
+              <h2 style="margin-top: 7px;"><strong>{{item.title}}</strong></h2>
+              <p style="margin-top: 7px;">Created By: {{item.createdBy}}</p>
+              <p style="margin-top: -7px;">Created On: {{item.createdOn | date: 'medium'}}</p>
+            </div>
+            <div class="col col-33">
+              <span class="positive" style="float: right;" ng-click="vm.showRespondedUsersList(item.eventLikedBy)">{{item.eventLikedBy.length}} <i class="icon ion-thumbsup">Like</i></span>
+              <br>
+              <i ng-class=" vm.assignEventStatus(item.status)" style="float: right; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
+                                {{item.status}}
+                            </i>
+            </div>
+          </div>
+
+          <div class="item" style="border-top: white;">
+            <div>
+              <i style="float: left; margin-right: 10px; background-color: #444444; color: white; border-radius: 7px; height: 60px; width: 60px; text-align: center; line-height: 60px;">
+                                <span style="font-size: xx-large;">{{item.participantsCount}}</span>
+                            </i>
+              <br>
+              <span class="dark">Participants</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </ion-content>
 </ion-view>
-
-
-

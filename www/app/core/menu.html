@@ -17,7 +17,7 @@
           <i class="icon ion-android-home"></i>
           Dashboard
         </ion-item>
-        <ion-item ng-if="$root.userType === 'host' || $root.userType === true" class="item-icon-left" nav-clear menu-close ui-sref="app.createEvent">
+        <ion-item ng-if="$root.userType === 'host'" class="item-icon-left" nav-clear menu-close ui-sref="app.createEvent">
           <i class="icon ion-android-list"></i>
           Create Event
         </ion-item>
@@ -25,7 +25,7 @@
           <i class="icon ion-android-open"></i>
           View Events 
         </ion-item>
-        <ion-item ng-if="$root.userType === 'host' || $root.userType === true" class="item-icon-left" nav-clear menu-close ui-sref="app.participents">
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.participents">
           <i class="icon ion-android-people"></i>
           Online Users ({{$root.onlineUsers.length || 0}})
         </ion-item>

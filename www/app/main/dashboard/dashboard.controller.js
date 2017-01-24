@@ -57,18 +57,18 @@
                         createdOn: item.eventHostedBy.createdAt,
                         status: item.eventStatus,
                         participantsCount: item.eventParticipants.length,
-                        eventLikes: item.eventLikedBy.length
-                    }
+                        eventLikedBy: item.eventLikedBy
+                    };
                     vm.hostedTextualData.push(textEvent);
                     return;
-                };
+                }
                 var event = {
                     title: item.title,
                     createdBy: item.eventHostedBy.userName,
                     createdOn: item.eventHostedBy.createdAt,
                     status: item.eventStatus,
                     participantsCount: item.eventParticipants.length,
-                    eventLikes: item.eventLikedBy.length,
+                    eventLikedBy: item.eventLikedBy,
                     optLabels: [],
                     optData: []
                 };
@@ -118,18 +118,18 @@
                         createdOn: item.eventHostedBy.createdAt,
                         status: item.eventStatus,
                         participantsCount: item.eventParticipants.length,
-                        eventLikes: item.eventLikedBy.length
-                    }
+                        eventLikedBy: item.eventLikedBy
+                    };
                     vm.participatedTextualData.push(textEvent);
                     return;
-                };
+                }
                 var event = {
                     title: item.title,
                     createdBy: item.eventHostedBy.userName,
                     createdOn: item.eventHostedBy.createdAt,
                     status: item.eventStatus,
                     participantsCount: item.eventParticipants.length,
-                    eventLikes: item.eventLikedBy.length,
+                    eventLikedBy: item.eventLikedBy,
                     optLabels: [],
                     optData: []
                 };
@@ -156,7 +156,7 @@
 
         function handleServiceError(err) {
             console.log('ended with error');
-        };
+        }
 
         vm.createEvent = function () {
             $ionicHistory.nextViewOptions({
@@ -164,7 +164,14 @@
                 disableBack: true
             });
             $state.go('app.createEvent');
-        }
+        };
+
+        vm.showRespondedUsersList = function (users) {
+            if (!users || !users.length) {
+                return;
+            }
+            $rootScope.$broadcast('showUsersList', users);
+        };
 
     }
 })();

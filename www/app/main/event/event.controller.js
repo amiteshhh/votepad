@@ -156,41 +156,13 @@
                 return item.id === data.id;
             });
             if (matchedEvent) {//&& item.eventStatus !== data.eventStatus && item.status === 'created'
-                if (matchedEvent.eventStatus === 'created') {
                     matchedEvent.eventStatus = 'open';
                     matchedEvent.action = 'Join Poll';
-                    notify = true;
-                }
             } else {
                 vm.events.unshift(data);
                 data.action = 'Join Poll';
-                notify = true;
             }
 
-            matchedEvent = data;
-
-            if (!notify) {
-                return;
-            }
-
-            var confirmPopup = $ionicPopup.confirm({
-                title: 'A new poll just started for event - ' + data.title,
-                template: 'Do You want to participate?'
-            });
-
-            confirmPopup.then(function (res) {
-                if (res) {
-                    var routeData = {/*
-                eventModel: item,*/
-                        id: matchedEvent.id,
-                        userType: $localStorage.userType
-                    };
-                    $state.go('app.poll', routeData);
-
-                } else {
-                    console.log('You are not sure');
-                }
-            });
         });
     }
 })();

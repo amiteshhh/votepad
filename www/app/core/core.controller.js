@@ -6,8 +6,8 @@
     angular.module(moduleName)
         .controller('AppCtrl', Ctrl);
 
-    Ctrl.$inject = ['$scope', '$rootScope', '$injector', '$state', '$localStorage', '$ionicModal', '$timeout', '$ionicPopup'];
-    function Ctrl($scope, $rootScope, $injector, $state, $localStorage, $ionicModal, $timeout, $ionicPopup) {
+    Ctrl.$inject = ['$scope', '$rootScope', '$injector', '$state', '$stateParams', '$localStorage', '$ionicModal', '$timeout', '$ionicPopup'];
+    function Ctrl($scope, $rootScope, $injector, $state, $stateParams, $localStorage, $ionicModal, $timeout, $ionicPopup) {
         var vm = this;
         var OnlineUserSvc = $injector.get('OnlineUserSvc');
         var UpdateUserInfo = $injector.get('UpdateUserInfo');
@@ -28,14 +28,14 @@
 
             UpdateUserInfo.updateUserInfo($rootScope.userInfo.id).then(function (data) {
                 console.log(data);
-                $rootScope.userInfo = $localStorage.userInfo = data;                
+                $rootScope.userInfo = $localStorage.userInfo = data;
 
             }, handleServiceError);
         }
 
         function handleServiceError(err) {
             console.log('ended with error');
-        };
+        }
 
         vm.logout = function () {
             delete $localStorage.userInfo;
@@ -46,7 +46,8 @@
         var lastChatToId;
         function receivePrivateMessage(event, data) {
             console.log('private message', data);
-            if(data.event){//public msg
+            if (data.event) {//public msg\
+                handleEventMessage(data);
                 $rootScope.$broadcast('update-event-status', data.event);
                 return;
             }
@@ -63,6 +64,44 @@
                 if (res) {
                     lastChatToId = data.from.id;
                     $state.go('app.chat', { chatTo: data.from, msg: data.msg });
+                } else {
+                    console.log('You are not sure');
+                }
+            });
+        }
+        $rootScope.eventsInProgress = [];
+        function handleEventMessage(data) {
+            var event = data.event, msg = data.msg;
+
+            var isAlreadyNotified = _.contains($rootScope.eventsInProgress, event.id);//event.id !== $stateParams.id && 
+            /*if ($state.current.name !== 'app.poll' && $rootScope.userInfo.id === event.eventHostedBy.id) {//owner
+                iqwerty.toast.Toast('New response received for event - ' + event.title);
+            }*/
+            if (/*$localStorage.userType === 'host' && */$state.current.name !== 'app.poll' && $rootScope.userInfo.id === event.eventHostedBy.id) {
+                iqwerty.toast.Toast('New response received for event - ' + event.title);
+                return;
+            }
+
+            if ($localStorage.userType === 'host' || isAlreadyNotified || $state.current.name === 'app.poll') {//if participant you may show this
+                //iqwerty.toast.Toast('New response received for event ' + event.title);
+                return;
+            }
+
+            $rootScope.eventsInProgress.push(event.id);
+
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'A new poll just started for event - ' + event.title,
+                template: 'Do You want to participate?'
+            });
+            confirmPopup.then(function (res) {
+                if (res) {
+                    var routeData = {/*
+                eventModel: item,*/
+                        id: event.id,
+                        userType: $localStorage.userType
+                    };
+                    $state.go('app.poll', routeData);
+
                 } else {
                     console.log('You are not sure');
                 }

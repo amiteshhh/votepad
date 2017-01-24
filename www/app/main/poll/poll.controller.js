@@ -15,13 +15,18 @@
     angular.module(moduleName)
         .controller('PollCtrl', Ctrl);
 
-    Ctrl.$inject = ['$state', '$stateParams', '$injector', '$rootScope', '$scope', '$ionicModal', '$localStorage', '$ionicLoading', '$ionicPopup', '$timeout'];
-    function Ctrl($state, $stateParams, $injector, $rootScope, $scope, $ionicModal, $localStorage, $ionicLoading, $ionicPopup, $timeout) {
+    Ctrl.$inject = ['$state', '$stateParams', '$injector', '$rootScope', '$scope', '$ionicModal', '$localStorage', '$ionicLoading', '$ionicPopup', '$timeout', '$ionicScrollDelegate'];
+    function Ctrl($state, $stateParams, $injector, $rootScope, $scope, $ionicModal, $localStorage, $ionicLoading, $ionicPopup, $timeout, $ionicScrollDelegate) {
         var vm = this;
         var PollSvc = $injector.get('PollSvc');
         var EventSvc = $injector.get('EventSvc');
         var OnlineUserSvc = $injector.get('OnlineUserSvc');
-        var id = $stateParams.id;
+        var id = parseInt($stateParams.id, 10);
+        $rootScope.eventsInProgress = $rootScope.eventsInProgress || [];
+        if (!_.contains($rootScope.eventsInProgress, id)) {
+            $rootScope.eventsInProgress.push(id);
+        }
+
         var myChatId = $rootScope.myChatSocket.id;
         var roomId, roomName = id;
         var rooms = OnlineUserSvc.rooms;
@@ -330,6 +335,7 @@
                 className: className,
                 updatedAt: new Date()
             });
+            $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
         }
 
         // Handle an incoming private message from the server.
