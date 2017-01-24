@@ -27,7 +27,7 @@
         </ion-item>
         <ion-item ng-if="$root.userType === 'host' || $root.userType === true" class="item-icon-left" nav-clear menu-close ui-sref="app.participents">
           <i class="icon ion-android-people"></i>
-          Online Users 
+          Online Users ({{$root.onlineUsers.length || 0}})
         </ion-item>
         <!--<ion-toggle class="item-icon-left" toggle-class="toggle-positive" ng-model="vm.host">
           <i class="icon ion-mouse"></i>
