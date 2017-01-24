@@ -7,10 +7,11 @@
     </ion-nav-buttons>
     <ion-content>
 
-        <div class="list card" ng-if="vm.events.length === 0">
+        <div class="list card" ng-if="vm.participatedEvents.length === 0 && vm.participatedTextualData.length === 0 && vm.hostedEvents.length === 0 && vm.hostedTextualData.length === 0">
             <div class="item item-text-wrap">
                 <h2><strong>It seems you are here for the first time or you haven't created any event !</strong></h2>
-                <p>No events available.</p>
+                <p>No events available. </p>
+                <p>If you are not a host then please login as host to create an event.</p>
             </div>
         </div>
 
