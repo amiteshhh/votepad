@@ -25,7 +25,9 @@
                     assignEventAction(item);
                 });
                 console.log(vm.events);
-            }, handleServiceError);
+            }, handleServiceError).finally(function(){
+                vm.hideSpinner = true;
+            });
         }
 
         function assignEventAction(item) {
