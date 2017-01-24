@@ -158,8 +158,10 @@
                         id: data.id,
                         userType: $localStorage.userType
                     };
+                    //iqwerty.toast.Toast('Successfully Registered !');
                     $state.go('app.poll', routeData);
                 } else {
+                    iqwerty.toast.Toast('Event Created Successfully !');
                     $state.go('app.event');
                 }
 
