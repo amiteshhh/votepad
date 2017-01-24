@@ -14,6 +14,7 @@
             destroy: _destroy,
             find: _find,
             findOneDeep: _findOneDeep,
+            fetchEvents: _fetchEvents,
             saveTextTemplate: _saveTextTemplate,
             pushOptionRespondedBy: _pushOptionRespondedBy,
             pushEventUserRef: _pushEventUserRef
@@ -105,6 +106,21 @@
             var promises = [];
             _.each(optionTemplate.options, function (option) {
                 promises.push(_findOneOption(option.id));
+            });
+            $q.all(promises).then(function (response) {
+                deferred.resolve(response);
+            }, function (err) {
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
+        }
+
+        function _fetchEvents(events) {
+            var deferred = $q.defer();
+            var promises = [];
+            _.each(events, function (event) {
+                promises.push(_findOneDeep(event.id));
             });
             $q.all(promises).then(function (response) {
                 deferred.resolve(response);
