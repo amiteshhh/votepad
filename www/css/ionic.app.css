@@ -9823,6 +9823,12 @@ a.button {
 .text-center {
   text-align: center; }
 
+/*.from-me{
+    text-align: left
+}*/
+.from-them {
+  text-align: right; }
+
 body[ng-app="ycf"] {
   line-height: initial; }
 
