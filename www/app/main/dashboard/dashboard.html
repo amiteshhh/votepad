@@ -3,7 +3,7 @@
         <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
     </ion-nav-buttons>
     <ion-nav-buttons side="right">
-        <button ng-click="vm.createEvent()" class="button button-icon icon ion-compose"></button>
+        <button  ng-if="$root.userType === 'host' || $root.userType === true" ng-click="vm.createEvent()" class="button button-icon icon ion-compose"></button>
     </ion-nav-buttons>
     <ion-content>
 
