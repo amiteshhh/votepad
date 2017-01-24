@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div class='list list-inset' ng-if="vm.participatedEvents.length !== 0">
+        <div class='list list-inset' ng-if="vm.participatedData.length !== 0">
             <a class="item item-icon-right item-dark" ng-click="vm.showParticipatedEventDetails()">
                 <i class="icon" ng-class="vm.isParticipatedEvents ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'" ></i>
                     Events Participated
@@ -32,7 +32,7 @@
                         </div>
                         <div class="col col-33">
                             <span class="positive" style="float: right;">{{item.eventLikes}} <i class="icon ion-thumbsup">Like</i></span><br>
-                            <i style="float: right; background-color: #33cd5f; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
+                            <i ng-class=" vm.assignEventStatus(item.status)" style="float: right; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
                                 {{item.status}}
                             </i>
                         </div>
@@ -80,7 +80,7 @@
 
         </div>
 
-        <div class='list list-inset' ng-if="vm.hostedEvents.length !== 0">
+        <div class='list list-inset' ng-if="vm.hostedData.length !== 0">
             <a class="item item-icon-right item-dark" ng-click="vm.showHostedEventDetails()">
                 <i class="icon" ng-class="vm.isHostedEvents ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'"></i>
                     Events Hosted
@@ -127,7 +127,7 @@
                         </div>
                         <div class="col col-33">
                             <span class="positive" style="float: right;">{{item.eventLikes}} <i class="icon ion-thumbsup">Like</i></span><br>
-                            <i style="float: right; background-color: #33cd5f; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
+                            <i ng-class=" vm.assignEventStatus(item.status)" style="float: right; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
                                 {{item.status}}
                             </i>
                         </div>
@@ -148,3 +148,6 @@
 
     </ion-content>
 </ion-view>
+
+
+

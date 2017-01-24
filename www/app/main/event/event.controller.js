@@ -63,6 +63,7 @@
             EventSvc.destroy(item.id).then(function (data) {
                 $ionicLoading.hide();
                 console.log("Event deleted successfully");
+                iqwerty.toast.Toast('Event deleted successfully !');
             }, handleServiceError);
         };
 

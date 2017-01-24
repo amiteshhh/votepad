@@ -40,6 +40,7 @@
             EventSvc.fetchEvents(id).then(function (data) {
                 console.log("Hosted Data ---------- ");
                 console.log(data);
+                vm.hostedData = data;
                 _createHostedEventArray(data);
             }, handleServiceError);
         }
@@ -86,10 +87,21 @@
 
         }
 
+        vm.assignEventStatus = function (eventStatus) {
+            if (eventStatus === 'created') {
+                return 'myEnerzized';
+            } else if (eventStatus === 'open') {
+                return 'myBalanced';
+            } else if (eventStatus === 'closed') {
+                return 'myAssertive';
+            }
+        };
+
         function _participatedEvents(id) {
             EventSvc.fetchEvents(id).then(function (data) {
                 console.log("Participated Data ---------- ");
                 console.log(data);
+                vm.participatedData = data;
                 _createParticipatedEventArray(data);
             }, handleServiceError);
         }

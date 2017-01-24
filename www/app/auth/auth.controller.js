@@ -47,6 +47,8 @@
                 $rootScope.userType = $localStorage.userType = vm.host ? 'host' : 'participant';
                 $rootScope.userInfo = $localStorage.userInfo = data;
                 $ionicLoading.hide();
+                iqwerty.toast.Toast('Successfully Logged In !');
+
                 $state.go('app.dashboard');
                 /*if ($localStorage.userType === 'host') {
                     $state.go('app.createEvent');
@@ -102,6 +104,8 @@
 
                 console.log("response.data.keymatch - " + response.data.keymatch);
                 vm.keymatch = response.data.keymatch;
+
+                iqwerty.toast.Toast('OTP Sent');
 
                 $ionicModal.fromTemplateUrl('app/common/templates/validate-otp-modal-template.html', {
                     scope: $scope,
@@ -169,6 +173,7 @@
                     $rootScope.userInfo = $localStorage.userInfo = data;
                     //vm.validateOtpModal.hide();
                     $ionicLoading.hide();
+                    iqwerty.toast.Toast('Successfully Registered !');
                     $state.go('app.dashboard');
                 }, handleServiceError);
 
