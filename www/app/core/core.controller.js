@@ -10,6 +10,7 @@
     function Ctrl($scope, $rootScope, $injector, $state, $localStorage, $ionicModal, $timeout, $ionicPopup) {
         var vm = this;
         var OnlineUserSvc = $injector.get('OnlineUserSvc');
+        var UpdateUserInfo = $injector.get('UpdateUserInfo');
         var chatBoxes;
 
         console.log("Inside AppCtrl");
@@ -24,7 +25,17 @@
             $rootScope.userType = $localStorage.userType;
             $scope.$on('socket-private-message', receivePrivateMessage);
             $scope.$on('socket-new-room', handleNewRoomAdd);
+
+            UpdateUserInfo.updateUserInfo($rootScope.userInfo.id).then(function (data) {
+                console.log(data);
+                $rootScope.userInfo = $localStorage.userInfo = data;                
+
+            }, handleServiceError);
         }
+
+        function handleServiceError(err) {
+            console.log('ended with error');
+        };
 
         vm.logout = function () {
             delete $localStorage.userInfo;
