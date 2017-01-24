@@ -6,21 +6,24 @@
     angular.module(moduleName)
         .controller('DashboardCtrl', DashboardCtrl);
 
-    DashboardCtrl.$inject = ['$scope', '$injector', '$ionicModal', '$localStorage', '$state', '$ionicHistory'];
-    function DashboardCtrl($scope, $injector, $ionicModal, $localStorage, $state, $ionicHistory) {
+    DashboardCtrl.$inject = ['$scope', '$rootScope', '$injector', '$ionicModal', '$localStorage', '$state', '$ionicHistory'];
+    function DashboardCtrl($scope, $rootScope, $injector, $ionicModal, $localStorage, $state, $ionicHistory) {
         var DashboardSvc = $injector.get('DashboardSvc');
+        var UpdateUserInfo = $injector.get('UpdateUserInfo');
+        var EventSvc = $injector.get('EventSvc');
         var vm = this;
-        vm.labels = ["Open Events", "Closed Events", "Events yet to be started"];
-        vm.data = [];vm.labels = ["Open Events", "Closed Events", "Not started"];
-        vm.data = [6,8,10];
+
+        //vm.labels = ["Open Events", "Closed Events", "Not started"];
+        //vm.data = [6, 8, 10];
+
         vm.isParticipatedEvents = true;
         vm.isHostedEvents = true;
 
-        vm.showParticipatedEventDetails = function() {
+        vm.showParticipatedEventDetails = function () {
             vm.isParticipatedEvents = !vm.isParticipatedEvents;
         };
 
-        vm.showHostedEventDetails = function() {
+        vm.showHostedEventDetails = function () {
             vm.isHostedEvents = !vm.isHostedEvents;
         };
 
@@ -28,47 +31,126 @@
 
         function init() {
             //_find();
+            _updateUserInfo();
+            _hostedEvents($rootScope.userInfo.eventsHosted);
+            _participatedEvents($rootScope.userInfo.eventsParticipated);
         }
 
-        function _find() {
-            DashboardSvc.find().then(function (data) {
-                vm.events = data;
-                console.log(vm.events);
-                vm.openEvents = _.filter(vm.events, function (item) {
-                    return item.eventStatus === 'open';
+        function _hostedEvents(id) {
+            EventSvc.fetchEvents(id).then(function (data) {
+                console.log("Hosted Data ---------- ");
+                console.log(data);
+                _createHostedEventArray(data);
+            }, handleServiceError);
+        }
+
+        function _createHostedEventArray(data) {
+            vm.hostedEvents = [];
+            vm.hostedTextualData = [];
+            _.each(data, function (item) {
+
+                if (item.templateType === 'text') {
+                    var textEvent = {
+                        title: item.title,
+                        createdBy: item.eventHostedBy.userName,
+                        createdOn: item.eventHostedBy.createdAt,
+                        status: item.eventStatus,
+                        participantsCount: item.eventParticipants.length,
+                        eventLikes: item.eventLikedBy.length
+                    }
+                    vm.hostedTextualData.push(textEvent);
+                    return;
+                };
+                var event = {
+                    title: item.title,
+                    createdBy: item.eventHostedBy.userName,
+                    createdOn: item.eventHostedBy.createdAt,
+                    status: item.eventStatus,
+                    participantsCount: item.eventParticipants.length,
+                    eventLikes: item.eventLikedBy.length,
+                    optLabels: [],
+                    optData: []
+                };
+                _.each(item.optionTemplate.options, function (i) {
+                    event.optLabels.push(i.label);
+                    event.optData.push(i.optionRespondedBy.length);
                 });
-                vm.data.push(vm.openEvents.length);
+                vm.hostedEvents.push(event);
 
-                console.log(vm.openEvents);
+            });
 
-                vm.closedEvents = _.filter(vm.events, function (item) {
-                    return item.eventStatus === 'closed';
+            console.log("Hosted Filtered Data");
+            console.log(vm.hostedEvents);
+            console.log("Hosted Textual Filtered Data");
+            console.log(vm.hostedTextualData);
+
+        }
+
+        function _participatedEvents(id) {
+            EventSvc.fetchEvents(id).then(function (data) {
+                console.log("Participated Data ---------- ");
+                console.log(data);
+                _createParticipatedEventArray(data);
+            }, handleServiceError);
+        }
+
+        function _createParticipatedEventArray(data) {
+            vm.participatedEvents = [];
+            vm.participatedTextualData = [];
+            _.each(data, function (item) {
+
+                if (item.templateType === 'text') {
+                    var textEvent = {
+                        title: item.title,
+                        createdBy: item.eventHostedBy.userName,
+                        createdOn: item.eventHostedBy.createdAt,
+                        status: item.eventStatus,
+                        participantsCount: item.eventParticipants.length,
+                        eventLikes: item.eventLikedBy.length
+                    }
+                    vm.participatedTextualData.push(textEvent);
+                    return;
+                };
+                var event = {
+                    title: item.title,
+                    createdBy: item.eventHostedBy.userName,
+                    createdOn: item.eventHostedBy.createdAt,
+                    status: item.eventStatus,
+                    participantsCount: item.eventParticipants.length,
+                    eventLikes: item.eventLikedBy.length,
+                    optLabels: [],
+                    optData: []
+                };
+                _.each(item.optionTemplate.options, function (i) {
+                    event.optLabels.push(i.label);
+                    event.optData.push(i.optionRespondedBy.length);
                 });
-                vm.data.push(vm.closedEvents.length);
+                vm.participatedEvents.push(event);
+            });
 
-                console.log(vm.closedEvents);
+            console.log("Participated Filtered Data");
+            console.log(vm.participatedEvents);
+            console.log("Participated Textual Filtered Data");
+            console.log(vm.participatedTextualData);
+        }
 
-                vm.createdEvents = _.filter(vm.events, function (item) {
-                    return item.eventStatus === 'created';
-                });
-                vm.data.push(vm.createdEvents.length);
-
-                console.log(vm.createdEvents);
+        function _updateUserInfo() {
+            UpdateUserInfo.updateUserInfo($rootScope.userInfo.id).then(function (data) {
+                console.log(data);
+                $rootScope.userInfo = $localStorage.userInfo = data;
 
             }, handleServiceError);
-
         }
 
         function handleServiceError(err) {
             console.log('ended with error');
         };
 
-
         vm.createEvent = function () {
             $ionicHistory.nextViewOptions({
-                    disableAnimate: true,
-                    disableBack: true
-                });
+                disableAnimate: true,
+                disableBack: true
+            });
             $state.go('app.createEvent');
         }
 
