@@ -155,8 +155,8 @@
                 return item.id === data.id;
             });
             if (matchedEvent) {//&& item.eventStatus !== data.eventStatus && item.status === 'created'
-                if (matchedEvent.status === 'created') {
-                    matchedEvent.status = 'open';
+                if (matchedEvent.eventStatus === 'created') {
+                    matchedEvent.eventStatus = 'open';
                     matchedEvent.action = 'Join Poll';
                     notify = true;
                 }

@@ -207,7 +207,7 @@
             }
             saveMessage(vm.message);
             // Add this message to the room
-            addMessageToConversation(myChatId, recipientId, vm.message);
+            addMessageToConversation($rootScope.myChatSocket, recipientId, vm.message);
 
             // Send the message
             var data = {
@@ -245,19 +245,21 @@
         }
 
         // Add HTML for a new message in a public room
-        function addMessageToChatRoom(senderId, roomId, message) {
+        function addMessageToChatRoom(sender, roomId, message) {
 
-            var senderName, className, fromMe = senderId === myChatId;
-            if (fromMe) {
+            var  className, fromMe = senderId === myChatId;
+            /*if (fromMe) {
                 senderName = 'Me';
                 className = 'from-me';
             } else {
                 senderName = recipientName || 'Unknown';
                 className = 'from-them';
-            }
+            }*/
+
+            sender = 
             vm.messages.push({
                 question: message,
-                textTemplateCreatedBy: senderName,
+                textTemplateCreatedBy: sender,
                 className: className,
                 updatedAt: new Date()
             });
@@ -304,9 +306,9 @@
 
         ////
         // Add HTML for a new message in a private conversation
-        function addMessageToConversation(senderId, recipientId, message) {
+        function addMessageToConversation(sender, recipientId, message) {
 
-            var senderName, className, fromMe = senderId === myChatId;
+            var senderName, className, fromMe = sender.Id === myChatId;
             if (fromMe) {
                 senderName = 'Me';
                 className = 'from-me';
@@ -316,7 +318,7 @@
             }
             vm.messages.push({
                 question: message,
-                textTemplateCreatedBy: senderName,
+                textTemplateCreatedBy: sender.user,
                 className: className,
                 updatedAt: new Date()
             });
@@ -331,7 +333,7 @@
             //createPrivateConversationRoom(sender);
 
             // Add a message to the room
-            addMessageToConversation(sender.id, myChatId, data.msg);
+            addMessageToConversation(sender, myChatId, data.msg);
             $scope.$apply();
         }
 

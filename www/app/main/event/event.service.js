@@ -59,23 +59,30 @@
             var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/event/' + id;
             $http.get(url).then(function (response) {
                 var data = response.data;
-                if (data.templateType === 'text' || (!data.optionTemplate || !data.optionTemplate.id)) {
-                    deferred.resolve(data);
-                    return;
-                }
-                url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/optionTemplate/' + data.optionTemplate.id;
-                $http.get(url).then(function (response) {
-                    data.optionTemplate = response.data;
-                    _fetchOptions(data.optionTemplate).then(function (options) {
-                        data.optionTemplate.options = options;
+                if (data.templateType === 'text') {
+                    _fetchTextTemplates(data.textTemplates).then(function (response) {
+                        data.textTemplates = response;
                         deferred.resolve(data);
                     }, function (err) {
                         deferred.reject(err);
                     });
 
-                }, function (err) {
-                    deferred.reject(err);
-                });
+                } else {
+                    url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/optionTemplate/' + data.optionTemplate.id;
+                    $http.get(url).then(function (response) {
+                        data.optionTemplate = response.data;
+                        _fetchOptions(data.optionTemplate).then(function (options) {
+                            data.optionTemplate.options = options;
+                            deferred.resolve(data);
+                        }, function (err) {
+                            deferred.reject(err);
+                        });
+
+                    }, function (err) {
+                        deferred.reject(err);
+                    });
+                }
+
             }, function (err) {
                 deferred.reject(err);
             });
@@ -115,6 +122,20 @@
 
             return deferred.promise;
         }
+        function _fetchTextTemplates(textTemplates) {
+            var deferred = $q.defer();
+            var promises = [];
+            _.each(textTemplates, function (option) {
+                promises.push(_findOneTextTemplate(option.id));
+            });
+            $q.all(promises).then(function (response) {
+                deferred.resolve(response);
+            }, function (err) {
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
+        }
 
         function _fetchEvents(events) {
             var deferred = $q.defer();
@@ -134,6 +155,16 @@
         function _findOneOption(id) {
             var deferred = $q.defer();
             var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/options/' + id;
+            $http.get(url).then(function (response) {
+                deferred.resolve(response.data);
+            }, function (err) {
+                deferred.reject(err);
+            });
+            return deferred.promise;
+        }
+        function _findOneTextTemplate(id) {
+            var deferred = $q.defer();
+            var url = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT + '/texttemplate/' + id;
             $http.get(url).then(function (response) {
                 deferred.resolve(response.data);
             }, function (err) {
