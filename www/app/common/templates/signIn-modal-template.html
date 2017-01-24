@@ -34,8 +34,8 @@
           </label>
                 </ion-list>
                 <div class="button-bar" style="margin-top: 10px;">
-<a class="button" ng-class="vm.host && !vm.participant ? 'button-dark' : 'button-stable'" ng-click="vm.setLoginAsHost()">Host</a>
-<a class="button" ng-class="vm.participant && !vm.host ? 'button-dark' : 'button-stable'" ng-click="vm.setLoginAsParticipant()">Participant</a>
+<a class="button" href="javascript:;" ng-class="vm.host && !vm.participant ? 'button-dark' : 'button-stable'" ng-click="vm.setLoginAsHost()">Host</a>
+<a class="button" href="javascript:;" ng-class="vm.participant && !vm.host ? 'button-dark' : 'button-stable'" ng-click="vm.setLoginAsParticipant()">Participant</a>
 </div>
 <button ng-disabled="signinForm.$invalid || !(vm.host || vm.participant)" class="button button-dark button-block" type="submit"
     ng-click="vm.signInUser()">Sign In
