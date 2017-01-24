@@ -148,8 +148,9 @@
                     vm.otpValFail = true;
                     $timeout(function () {
                         vm.otpValFail = false;
+                        vm.userOTP = '';
                         vm.validateOtpModal.hide();
-                    }, 5000);
+                    }, 8000);
                     console.log("We are facing problem with validating your otp. Please try again later.");
                     return;
                 }
