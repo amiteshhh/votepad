@@ -177,10 +177,12 @@
             });
 
             function addUser(data) {
-                console.log('inside new user added!!');
+                console.log('inside new user added!!', data);
                 /* if (data.user.id === $rootScope.userInfo.id) {//let user chat with himself :P
                      return;
                  }*/
+                 var userName = data && data.user ? data.user.userName : 'A new user';
+                 iqwerty.toast.Toast(userName + ' is online !');
                 onlineUsers.push(data);
                 $rootScope.$apply();
                 $rootScope.$broadcast('socket-new-user-online', data);

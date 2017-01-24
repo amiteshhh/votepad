@@ -35,7 +35,7 @@
             </label>
         <button class="button button-block button-dark" ng-disabled="!vm.event.title"
             ng-click="vm.createOrUpdateEvent()">
-          Create Event
+          {{vm.event.id? 'Update Event' : 'Create Event'}}
         </button>
         <button class="button button-block button-dark" ng-disabled="vm.defaultValidateLaunchPoll()" ng-click="vm.createOrUpdateEvent(true)">
           Launch Poll

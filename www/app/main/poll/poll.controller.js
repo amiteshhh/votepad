@@ -56,6 +56,12 @@
                     vm.event.eventStatus = 'open';
                     broadcastPollStart();
                 }
+                vm.isEventOwner = vm.event.eventHostedBy.id === $rootScope.userInfo.id;
+                if (!vm.isEventOwner) {
+                    EventSvc.pushEventUserRef(vm.event.id, 'eventParticipants', $rootScope.userInfo.id, true);
+                }
+
+
 
                 vm.disableResponse = (vm.event.eventStatus === 'closed' || (vm.event.templateType !== 'text' && vm.event.eventHostedBy.id === $rootScope.userInfo.id));
                 console.log(data);
@@ -223,7 +229,7 @@
             vm.message = undefined;
         };
 
-        function broadcastPollStart(){
+        function broadcastPollStart() {
             // Send the message
             var data = {
                 to: recipientId,
@@ -249,7 +255,7 @@
         // Add HTML for a new message in a public room
         function addMessageToChatRoom(sender, roomId, message) {
 
-            var  className, fromMe = senderId === myChatId;
+            var className, fromMe = senderId === myChatId;
             /*if (fromMe) {
                 senderName = 'Me';
                 className = 'from-me';
@@ -258,13 +264,13 @@
                 className = 'from-them';
             }*/
 
-            sender = 
-            vm.messages.push({
-                question: message,
-                textTemplateCreatedBy: sender,
-                className: className,
-                updatedAt: new Date()
-            });
+            sender =
+                vm.messages.push({
+                    question: message,
+                    textTemplateCreatedBy: sender,
+                    className: className,
+                    updatedAt: new Date()
+                });
 
             /*EventSvc.createOrUpdate({
                 id: vm.event.id,
