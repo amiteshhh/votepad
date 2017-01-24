@@ -120,6 +120,7 @@
             EventSvc.pushOptionRespondedBy(vm.selectedAnswer.id, $rootScope.userInfo.id).then(function (data) {
                 console.log(data);
                 vm.prevResponseOptionId = vm.selectedAnswer.id;
+                iqwerty.toast.Toast('Response submitted successfully !');
             }, handleServiceError).finally($ionicLoading.hide);
         };
 
@@ -134,6 +135,7 @@
             });
             $timeout(function () {
                 $ionicLoading.hide();
+                iqwerty.toast.Toast('Response submitted successfully !');
             }, 200);
         };
 
