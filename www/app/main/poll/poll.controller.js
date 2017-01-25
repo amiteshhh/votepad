@@ -22,23 +22,9 @@
         var EventSvc = $injector.get('EventSvc');
         var OnlineUserSvc = $injector.get('OnlineUserSvc');
         var id = parseInt($stateParams.id, 10);
-        $rootScope.eventsInProgress = $rootScope.eventsInProgress || [];
-        if (!_.contains($rootScope.eventsInProgress, id)) {
-            $rootScope.eventsInProgress.push(id);
-        }
+        var chatTo, myChatId, recipientId, recipientName, roomId, roomName, rooms;
 
-        var myChatId = $rootScope.myChatSocket.id;
-        var roomId, roomName = id;
-        var rooms = OnlineUserSvc.rooms;
         vm.disableResponse = true;
-        //vm.prevResponseOptionId;
-
-        //
-        var chatTo = $rootScope.onlineUsers[0];
-        //var msg = $stateParams.msg;
-        chatTo = chatTo || $rootScope.myChatSocket;//self
-        var recipientId = chatTo.id;
-        var recipientName = vm.recipientName = chatTo.user.userName;
 
         init();
 
@@ -47,8 +33,26 @@
 
         function init() {
             console.log("inside Poll controller");
-
+            setSocketVariables();
             _findOneDeep(id);
+
+            $rootScope.eventsInProgress = $rootScope.eventsInProgress || [];
+            if (!_.contains($rootScope.eventsInProgress, id)) {
+                $rootScope.eventsInProgress.push(id);
+            }
+        }
+
+        function setSocketVariables() {
+            if (!$rootScope.myChatSocket) {
+                return;
+            }
+            myChatId = $rootScope.myChatSocket.id;
+            roomName = id;
+            rooms = OnlineUserSvc.rooms;
+            chatTo = $rootScope.onlineUsers[0];//chat with first user :P
+            chatTo = chatTo || $rootScope.myChatSocket;//or with self :P
+            recipientId = chatTo.id;
+            recipientName = vm.recipientName = chatTo.user.userName;
         }
 
         function _findOneDeep(id) {
@@ -231,7 +235,7 @@
                 event: vm.event
             };
             vm.message = undefined;
-            if (recipientId === myChatId) {
+            if (!myChatId || recipientId === myChatId) {//no socket or only this user is active
                 return;
             }
             socketInstance.post('/chat/private', data);

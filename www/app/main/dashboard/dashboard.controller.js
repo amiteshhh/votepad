@@ -6,8 +6,8 @@
     angular.module(moduleName)
         .controller('DashboardCtrl', DashboardCtrl);
 
-    DashboardCtrl.$inject = ['$scope', '$rootScope', '$injector', '$ionicModal', '$localStorage', '$state', '$ionicHistory'];
-    function DashboardCtrl($scope, $rootScope, $injector, $ionicModal, $localStorage, $state, $ionicHistory) {
+    DashboardCtrl.$inject = ['$scope', '$rootScope', '$injector', '$ionicModal', '$localStorage', '$state', '$ionicHistory', $q];
+    function DashboardCtrl($scope, $rootScope, $injector, $ionicModal, $localStorage, $state, $ionicHistory, $q) {
         var DashboardSvc = $injector.get('DashboardSvc');
         var UpdateUserInfo = $injector.get('UpdateUserInfo');
         var EventSvc = $injector.get('EventSvc');
@@ -32,118 +32,6 @@
         function init() {
             //_find();
             _updateUserInfo();
-            _hostedEvents($rootScope.userInfo.eventsHosted);
-            _participatedEvents($rootScope.userInfo.eventsParticipated);
-        }
-
-        function _hostedEvents(id) {
-            EventSvc.fetchEvents(id).then(function (data) {
-                console.log("Hosted Data ---------- ");
-                console.log(data);
-                vm.hostedData = data;
-                _createHostedEventArray(data);
-            }, handleServiceError);
-        }
-
-        function _createHostedEventArray(data) {
-            vm.hostedEvents = [];
-            vm.hostedTextualData = [];
-            _.each(data, function (item) {
-
-                if (item.templateType === 'text') {
-                    var textEvent = {
-                        title: item.title,
-                        createdBy: item.eventHostedBy.userName,
-                        createdOn: item.eventHostedBy.createdAt,
-                        status: item.eventStatus,
-                        participantsCount: item.eventParticipants.length,
-                        eventLikedBy: item.eventLikedBy
-                    };
-                    vm.hostedTextualData.push(textEvent);
-                    return;
-                }
-                var event = {
-                    title: item.title,
-                    createdBy: item.eventHostedBy.userName,
-                    createdOn: item.eventHostedBy.createdAt,
-                    status: item.eventStatus,
-                    participantsCount: item.eventParticipants.length,
-                    eventLikedBy: item.eventLikedBy,
-                    optLabels: [],
-                    optData: []
-                };
-                _.each(item.optionTemplate.options, function (i) {
-                    event.optLabels.push(i.label);
-                    event.optData.push(i.optionRespondedBy.length);
-                });
-                vm.hostedEvents.push(event);
-
-            });
-
-            console.log("Hosted Filtered Data");
-            console.log(vm.hostedEvents);
-            console.log("Hosted Textual Filtered Data");
-            console.log(vm.hostedTextualData);
-
-        }
-
-        vm.assignEventStatus = function (eventStatus) {
-            if (eventStatus === 'created') {
-                return 'myEnerzized';
-            } else if (eventStatus === 'open') {
-                return 'myBalanced';
-            } else if (eventStatus === 'closed') {
-                return 'myAssertive';
-            }
-        };
-
-        function _participatedEvents(id) {
-            EventSvc.fetchEvents(id).then(function (data) {
-                console.log("Participated Data ---------- ");
-                console.log(data);
-                vm.participatedData = data;
-                _createParticipatedEventArray(data);
-            }, handleServiceError);
-        }
-
-        function _createParticipatedEventArray(data) {
-            vm.participatedEvents = [];
-            vm.participatedTextualData = [];
-            _.each(data, function (item) {
-
-                if (item.templateType === 'text') {
-                    var textEvent = {
-                        title: item.title,
-                        createdBy: item.eventHostedBy.userName,
-                        createdOn: item.eventHostedBy.createdAt,
-                        status: item.eventStatus,
-                        participantsCount: item.eventParticipants.length,
-                        eventLikedBy: item.eventLikedBy
-                    };
-                    vm.participatedTextualData.push(textEvent);
-                    return;
-                }
-                var event = {
-                    title: item.title,
-                    createdBy: item.eventHostedBy.userName,
-                    createdOn: item.eventHostedBy.createdAt,
-                    status: item.eventStatus,
-                    participantsCount: item.eventParticipants.length,
-                    eventLikedBy: item.eventLikedBy,
-                    optLabels: [],
-                    optData: []
-                };
-                _.each(item.optionTemplate.options, function (i) {
-                    event.optLabels.push(i.label);
-                    event.optData.push(i.optionRespondedBy.length);
-                });
-                vm.participatedEvents.push(event);
-            });
-
-            console.log("Participated Filtered Data");
-            console.log(vm.participatedEvents);
-            console.log("Participated Textual Filtered Data");
-            console.log(vm.participatedTextualData);
         }
 
         function _updateUserInfo() {
@@ -151,12 +39,93 @@
                 console.log(data);
                 $rootScope.userInfo = $localStorage.userInfo = data;
 
+                var deferred = $q.defer();
+                var promises = [];
+
+                promises.push(_hostedEvents($rootScope.userInfo.eventsHosted));
+                promises.push(_participatedEvents($rootScope.userInfo.eventsParticipated));
+
+                $q.all(promises).finally(function () {
+                    vm.hideSpinner = true;
+                });
+
+            }, function () {
+                handleServiceError();
+                vm.hideSpinner = true;
+            });
+        }
+
+        function _hostedEvents(events) {
+            return EventSvc.fetchEvents(events).then(function (data) {
+                _processEventsForDashboard(data, 'host');
             }, handleServiceError);
         }
 
-        function handleServiceError(err) {
-            console.log('ended with error');
+        function _participatedEvents(events) {
+            return EventSvc.fetchEvents(events).then(function (data) {
+                _processEventsForDashboard(data, 'participant');
+            }, handleServiceError);
         }
+
+        function _processEventsForDashboard(data, role) {
+            var events = [], textualEvents = [];
+            _.each(data, function (item) {
+
+                if (item.templateType === 'text') {
+                    var textEvent = {
+                        title: item.title,
+                        createdBy: item.eventHostedBy.userName,
+                        createdOn: item.eventHostedBy.createdAt,
+                        status: item.eventStatus,
+                        participantsCount: item.eventParticipants.length,
+                        eventLikedBy: item.eventLikedBy
+                    };
+                    textualEvents.push(textEvent);
+                    return;
+                }
+                var event = {
+                    title: item.title,
+                    createdBy: item.eventHostedBy.userName,
+                    createdOn: item.eventHostedBy.createdAt,
+                    status: item.eventStatus,
+                    participantsCount: item.eventParticipants.length,
+                    eventLikedBy: item.eventLikedBy,
+                    optLabels: [],
+                    optData: []
+                };
+                _.each(item.optionTemplate.options, function (i) {
+                    event.optLabels.push(i.label);
+                    event.optData.push(i.optionRespondedBy.length);
+                });
+                events.push(event);
+
+            });
+
+            if (role === 'host') {
+                vm.hostedEvents = events;
+                vm.hostedTextualEvents = textualEvents;
+            } else {
+                vm.participatedEvents = events;
+                vm.participatedTextualEvents = textualEvents;
+            }
+
+            console.log("Dashboard Data For " + role);
+            console.log("Filtered Data", events);
+            console.log("Hosted Textual Filtered Data", textualEvents);
+
+        }
+
+        vm.assignEventStatus = function (eventStatus) {
+            if (eventStatus === 'created') {
+                return 'myEnerzized';
+            }
+            if (eventStatus === 'open') {
+                return 'myBalanced';
+            }
+            if (eventStatus === 'closed') {
+                return 'myAssertive';
+            }
+        };
 
         vm.createEvent = function () {
             $ionicHistory.nextViewOptions({
@@ -172,6 +141,11 @@
             }
             $rootScope.$broadcast('showUsersList', users);
         };
+
+        function handleServiceError(err) {
+            console.log('ended with error');
+            iqwerty.toast.Toast('Errors occured with service');
+        }
 
     }
 })();

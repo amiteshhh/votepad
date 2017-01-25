@@ -6,21 +6,23 @@
     <button ng-if="$root.userType === 'host' || $root.userType === true" ng-click="vm.createEvent()" class="button button-icon icon ion-compose"></button>
   </ion-nav-buttons>
   <ion-content>
-
-    <div class="list card" ng-if="vm.participatedEvents.length === 0 && vm.participatedTextualData.length === 0 && vm.hostedEvents.length === 0 && vm.hostedTextualData.length === 0">
+    <div class="text-center" ng-if="!vm.hideSpinner">
+      <ion-spinner></ion-spinner>
+    </div>
+    <div class="list card" ng-if="vm.participatedEvents.length === 0 && vm.participatedTextualEvents.length === 0 && vm.hostedEvents.length === 0 && vm.hostedTextualEvents.length === 0">
       <div class="item item-text-wrap">
-        <h2><strong>It seems you are here for the first time or you haven't created any event !</strong></h2>
-        <p>No events available. </p>
-        <p>If you are not a host then please login as host to create an event.</p>
+        <h2><strong>It seems you are neither participatated in any events nor you have created any event.</strong></h2>
+        <p ng-if="$root.userType !== 'host'">If you want to host an event then please logout and login as Host.</p>
+        <p ng-if="$root.userType === 'host'">You can create an event an start the poll.</p>
       </div>
     </div>
 
-    <div class='list list-inset' ng-if="vm.participatedData.length !== 0">
+    <div class='list list-inset' ng-if="vm.participatedEvents.length || vm.participatedTextualEvents.length">
       <a href="javascript:;" class="item item-icon-right item-dark" ng-click="vm.showParticipatedEventDetails()">
-        <i class="icon" ng-class="vm.isParticipatedEvents ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'"></i> Events Participated
+        <i class="icon" ng-class="vm.isParticipatedEvents ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'"></i>        Events Participated
       </a>
 
-      <div ng-if="vm.isParticipatedEvents && vm.participatedEvents.length !==0" ng-repeat="item in vm.participatedEvents">
+      <div ng-repeat="item in vm.participatedEvents">
 
         <div class="list card">
           <div class="item row" style="border-bottom: white;">
@@ -39,7 +41,8 @@
           </div>
           <div class="item row" style="border-top: white;">
             <div class="col col-67">
-              <canvasx id="pie" style="margin-top: -20px;" class="chart chart-pie" chart-data="item.optData" chart-labels="item.optLabels" chart-options="options"></canvasx>
+              <canvas id="pie" style="margin-top: -20px;" class="chart chart-pie" chart-data="item.optData" chart-labels="item.optLabels"
+                chart-options="options"></canvas>
             </div>
             <div class="col col-33">
               <i style="float: right; margin-right: 10px; background-color: #444444; color: white; border-radius: 7px; height: 60px; width: 60px; text-align: center; line-height: 60px;">
@@ -52,7 +55,7 @@
         </div>
       </div>
 
-      <div ng-if="vm.isParticipatedEvents && vm.participatedTextualData.length !== 0" ng-repeat="item in vm.participatedTextualData">
+      <div ng-repeat="item in vm.participatedTextualEvents">
         <div class="list card">
           <div class="item row" style="border-bottom: white;">
             <div class="col col-67">
@@ -63,7 +66,7 @@
             <div class="col col-33">
               <span class="positive" style="float: right;" ng-click="vm.showRespondedUsersList(item.eventLikedBy)">{{item.eventLikedBy.length}} <i class="icon ion-thumbsup">Like</i></span>
               <br>
-              <i style="float: right; background-color: #33cd5f; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
+              <i ng-class=" vm.assignEventStatus(item.status)" style="float: right; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
                                 {{item.status}}
                             </i>
             </div>
@@ -83,12 +86,13 @@
 
     </div>
 
-    <div class='list list-inset' ng-if="vm.hostedData.length !== 0">
+    <div class='list list-inset' ng-if="vm.hostedEvents.length || vm.hostedTextualEvents.length">
       <a href="javascript:;" class="item item-icon-right item-dark" ng-click="vm.showHostedEventDetails()">
-        <i class="icon" ng-class="vm.isHostedEvents ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'"></i> Events Hosted
+        <i class="icon" ng-class="vm.isHostedEvents ? 'ion-android-arrow-dropup' : 'ion-android-arrow-dropdown'"></i> Events
+        Hosted
       </a>
 
-      <div ng-if="vm.isHostedEvents && vm.hostedEvents.length !==0" ng-repeat="item in vm.hostedEvents">
+      <div ng-repeat="item in vm.hostedEvents">
 
         <div class="list card">
           <div class="item row" style="border-bottom: white;">
@@ -100,7 +104,7 @@
             <div class="col col-33">
               <span class="positive" style="float: right;" ng-click="vm.showRespondedUsersList(item.eventLikedBy)">{{item.eventLikedBy.length}} <i class="icon ion-thumbsup">Like</i></span>
               <br>
-              <i style="float: right; background-color: #33cd5f; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
+              <i ng-class=" vm.assignEventStatus(item.status)" style="float: right; color: white; border-radius: 7px; height: 50px; width: 100%; text-align: center; line-height: 50px;">
                                 {{item.status}}
                             </i>
             </div>
@@ -108,7 +112,8 @@
 
           <div class="item row" style="border-top: white;">
             <div class="col col-67">
-              <canvas id="pie" style="margin-top: -20px;" class="chart chart-pie" chart-data="item.optData" chart-labels="item.optLabels" chart-options="options"></canvas>
+              <canvas id="pie" style="margin-top: -20px;" class="chart chart-pie" chart-data="item.optData" chart-labels="item.optLabels"
+                chart-options="options"></canvas>
             </div>
             <div class="col col-33">
               <i style="float: right; margin-right: 10px; background-color: #444444; color: white; border-radius: 7px; height: 60px; width: 60px; text-align: center; line-height: 60px;">
@@ -121,7 +126,7 @@
         </div>
       </div>
 
-      <div ng-if="vm.isHostedEvents && vm.hostedTextualData.length !== 0" ng-repeat="item in vm.hostedTextualData">
+      <div ng-repeat="item in vm.hostedTextualEvents">
         <div class="list card">
           <div class="item row" style="border-bottom: white;">
             <div class="col col-67">
