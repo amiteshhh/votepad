@@ -11,7 +11,7 @@
     </div>
     <div class="list card" ng-if="vm.participatedEvents.length === 0 && vm.participatedTextualEvents.length === 0 && vm.hostedEvents.length === 0 && vm.hostedTextualEvents.length === 0">
       <div class="item item-text-wrap">
-        <h2><strong>It seems you are neither participatated in any events nor you have created any event.</strong></h2>
+        <h2><strong>It seems that you have neither participatated in any events nor you have created one.</strong></h2>
         <p ng-if="$root.userType !== 'host'">If you want to host an event then please logout and login as Host.</p>
         <p ng-if="$root.userType === 'host'">You can create an event an start the poll.</p>
       </div>
