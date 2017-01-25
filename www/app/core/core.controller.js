@@ -43,27 +43,41 @@
             $state.go('auth');
         };
 
-        var lastChatToId;
+        var lastChatToId, messages = [];
         function receivePrivateMessage(event, data) {
             console.log('private message', data);
             if (data.event) {//public msg\
                 handleEventMessage(data);
                 $rootScope.$broadcast('update-event-status', data.event);
+                lastChatToId = undefined;
+                messages = [];
+                return;
+            }
+
+            if ($state.current.name === 'app.chat') {
+                lastChatToId = undefined;
+                messages = [];
                 return;
             }
             var incomingChatId = data.from.id;
-            if ($state.current.name === 'app.chat'/* && lastChatToId === incomingChatId*/) {
+            if (lastChatToId === incomingChatId) {
+                messages.push(data.msg);
                 return;
             }
+            messages = [data.msg];
+            lastChatToId = incomingChatId;
+
             var confirmPopup = $ionicPopup.confirm({
                 title: 'New message from ' + data.from.user.userName,
-                template: '<p><strong>Message:</strong> ' + data.msg + '</p>' + 'Do You want to chat?'
+                template: '<p><strong>Message:</strong> ' + messages.join('\n') + '</p>' + 'Do You want to chat?'
             });
 
             confirmPopup.then(function (res) {
                 if (res) {
-                    lastChatToId = data.from.id;
-                    $state.go('app.chat', { chatTo: data.from, msg: data.msg });
+                    var msg = messages.length === 1 ? messages[0] : messages.length + ' messages received -'+messages.join(', ');
+                    $state.go('app.chat', { chatTo: data.from, msg: msg });
+                    lastChatToId = undefined;
+                    messages = [];
                 } else {
                     console.log('You are not sure');
                 }

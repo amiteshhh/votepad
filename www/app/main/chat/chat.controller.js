@@ -19,11 +19,11 @@
 
         init();
 
-        function init(){
-            if(msg){
+        function init() {
+            if (msg) {
                 addMessageToConversation(recipientId, myChatId, msg);
             }
-            $timeout(function(){
+            $timeout(function () {
                 document.querySelector('#msg-input').focus();
             }, 100, false);
         }
@@ -63,7 +63,7 @@
                 className: className,
                 updatedAt: new Date()
             });
-            $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);         
+            $ionicScrollDelegate.$getByHandle('mainScroll').scrollBottom(true);
         }
 
         // Handle an incoming private message from the server.
@@ -80,5 +80,24 @@
         }
 
         $scope.$on('socket-private-message', receivePrivateMessage);
+        $scope.$on('socket-remove-user-online', function (event, data) {
+            if (recipientId === data.id) {//same as recipientId
+                vm.userOffline = true;
+                iqwerty.toast.Toast(recipientName + ' is now offline!');//same as recipientName
+                $scope.$apply();
+            }
+        });
+        $scope.$on('socket-new-user-online', function (event, data) {
+            if (chatTo.user.id === data.user.id) {
+                vm.userOffline = false;
+                chatTo = data;
+                recipientId = chatTo.id;
+                recipientName = vm.recipientName = chatTo.user.userName;
+                iqwerty.toast.Toast(recipientName + ' is now online !');
+                $scope.$apply();
+            }
+        });
+
+
     }
 })();

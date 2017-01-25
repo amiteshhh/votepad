@@ -6,8 +6,9 @@
     angular.module(moduleName)
         .config(config);
 
-    config.$inject = ['$provide'];
-    function config($provide) {
+    config.$inject = ['$provide', '$ionicConfigProvider'];
+    function config($provide, $ionicConfigProvider) {
+        $ionicConfigProvider.scrolling.jsScrolling(false);// i.e overflow-scroll="true" --ionic scroll really laggy in redmi
         $provide.decorator('$exceptionHandler', function ($delegate) {
 
             return function (exception, cause) {

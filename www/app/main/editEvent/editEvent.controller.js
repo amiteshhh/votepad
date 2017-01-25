@@ -99,13 +99,13 @@
         }
         function setModalTemplate() {
             if (templateType === 'text') {
-                vm.tempalteLocation = '/app/main/common/templates/configure-text-modal-template.html';
+                vm.tempalteLocation = 'app/main/common/templates/configure-text-modal-template.html';
             }
             else if (templateType === 'yesNo') {
-                vm.tempalteLocation = '/app/main/common/templates/configure-single-select-modal-template.html';
+                vm.tempalteLocation = 'app/main/common/templates/configure-single-select-modal-template.html';
             }
             else if (templateType === 'singleSelect') {
-                vm.tempalteLocation = '/app/main/common/templates/configure-single-select-modal-template.html';
+                vm.tempalteLocation = 'app/main/common/templates/configure-single-select-modal-template.html';
             }
             else if (templateType === 'multiSelect') {
                 vm.tempalteLocation = 'app/main/common/templates/configure-multiple-select-modal-template.html';
@@ -125,8 +125,8 @@
             };
             items.push(tempTextQuest);
             $timeout(function () {
-                document.querySelector('#' + tempTextQuest.cssId).select();
-            }, 50, false);
+                document.querySelector('#' + tempTextQuest.cssId).focus();
+            }, 200, false);
             console.log(vm.event);
 
         };
@@ -187,8 +187,8 @@
             };
             items.push(option);
             $timeout(function () {
-                document.querySelector('#' + option.cssId).select();
-            }, 50, false);
+                document.querySelector('#' + option.cssId).focus();
+            }, 200, false);
             console.log(vm.event);
         };
 

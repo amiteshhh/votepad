@@ -34,8 +34,8 @@
                     <i class="icon ion-checkmark" ng-if="vm.selectedAnswer.id === item.id"></i>
                 </ion-item>
                 <span class="item" ng-if="vm.disableResponse">{{item.label}}
-                    <span class="item-note">
-                        <a href="javascript:;"  ng-click="vm.showRespondedUsersList(item.optionRespondedBy)">Vote Count : {{item.optionRespondedBy.length}}</a>
+                    <span class="item-note positive" ng-click="vm.showRespondedUsersList(item.optionRespondedBy)">
+                        Vote Count : {{item.optionRespondedBy.length}}
                     </span>
                 </span>
             </ion-list>
@@ -43,8 +43,10 @@
             <label class="item item-text-wrap" ng-if="vm.event.optionTemplate.upperRangeLabel">
         <h2>{{vm.event.optionTemplate.upperRangeLabel}} </h2>
       </label>
+      <ion-footer-bar>
             <button class="button button-block button-dark" ng-disabled="vm.disableResponse || !vm.selectedAnswer.id || vm.prevResponseOptionId === vm.selectedAnswer.id"
                 ng-click="vm.saveSingleResponse()">Submit Response</button>
+                </ion-footer-bar>
         </div>
 
         <div class="list list-inset" ng-if="vm.event.templateType === 'multiSelect'">
@@ -73,8 +75,8 @@
                     {{item.label}}
                 </ion-checkbox>
                 <span class="item" ng-if="vm.disableResponse">{{item.label}}
-                    <span class="item-note">
-                        <a href="javascript:;"  ng-click="vm.showRespondedUsersList(item.optionRespondedBy)">Vote Count : {{item.optionRespondedBy.length}}</a>
+                    <span class="item-note positive" ng-click="vm.showRespondedUsersList(item.optionRespondedBy)">
+                        Vote Count : {{item.optionRespondedBy.length}}
                     </span>
                 </span>
             </ion-list>
@@ -95,7 +97,8 @@
       </label>
             <ion-list class="chats">
                 <ion-item ng-class="{'from-them': message.textTemplateCreatedBy.id !== $root.userInfo.id }" ng-repeat="message in vm.messages track by $index">
-                    <h2 class="userName"><span class="positive">{{message.textTemplateCreatedBy.id === $root.userInfo.id ? 'Me' : message.textTemplateCreatedBy.userName}}</span><span style="color:#ccc; font-size:14px;"> at {{message.updatedAt | date : "medium"}}</span>
+                    <h2 class="userName"><span class="positive">{{message.textTemplateCreatedBy.id === $root.userInfo.id ? 'Me' : message.textTemplateCreatedBy.userName}}</span><span
+                            style="color:#ccc; font-size:14px;"> at {{message.updatedAt | date : "medium"}}</span>
 </h2>
 <div ng-class='message.className'>
     <p ng-bind="message.question"></p>

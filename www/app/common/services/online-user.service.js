@@ -195,9 +195,10 @@
                     return;
                 }
                 console.log('user removed!!');
+                var user = onlineUsers[index];
                 onlineUsers.splice(index, 1);
                 $rootScope.$apply();
-                $rootScope.$broadcast('socket-remove-user-online', id);
+                $rootScope.$broadcast('socket-remove-user-online', user);
             }
 
             function receivePrivateMessage(data) {
