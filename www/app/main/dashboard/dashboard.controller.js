@@ -6,26 +6,12 @@
     angular.module(moduleName)
         .controller('DashboardCtrl', DashboardCtrl);
 
-    DashboardCtrl.$inject = ['$scope', '$rootScope', '$injector', '$ionicModal', '$localStorage', '$state', '$ionicHistory', $q];
+    DashboardCtrl.$inject = ['$scope', '$rootScope', '$injector', '$ionicModal', '$localStorage', '$state', '$ionicHistory', '$q'];
     function DashboardCtrl($scope, $rootScope, $injector, $ionicModal, $localStorage, $state, $ionicHistory, $q) {
         var DashboardSvc = $injector.get('DashboardSvc');
         var UpdateUserInfo = $injector.get('UpdateUserInfo');
         var EventSvc = $injector.get('EventSvc');
         var vm = this;
-
-        //vm.labels = ["Open Events", "Closed Events", "Not started"];
-        //vm.data = [6, 8, 10];
-
-        vm.isParticipatedEvents = true;
-        vm.isHostedEvents = true;
-
-        vm.showParticipatedEventDetails = function () {
-            vm.isParticipatedEvents = !vm.isParticipatedEvents;
-        };
-
-        vm.showHostedEventDetails = function () {
-            vm.isHostedEvents = !vm.isHostedEvents;
-        };
 
         init();
 
