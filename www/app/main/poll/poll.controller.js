@@ -36,6 +36,7 @@
         //
         var chatTo = $rootScope.onlineUsers[0];
         //var msg = $stateParams.msg;
+        chatTo = chatTo || $rootScope.myChatSocket;//self
         var recipientId = chatTo.id;
         var recipientName = vm.recipientName = chatTo.user.userName;
 
@@ -229,9 +230,13 @@
                 msg: vm.message,
                 event: vm.event
             };
+            vm.message = undefined;
+            if (recipientId === myChatId) {
+                return;
+            }
             socketInstance.post('/chat/private', data);
             //socketInstance.request({ url: '/chat/private', method: 'POST', data: { to: recipientId, msg: vm.message } });
-            vm.message = undefined;
+
         };
 
         function broadcastPollStart() {
@@ -352,6 +357,13 @@
         }
 
         $scope.$on('socket-private-message', receivePrivateMessage);
+        $scope.$on('socket-new-user-online', function (event, data) {
+            if (recipientId === myChatId) {
+                chatTo = data;
+                recipientId = chatTo.id;
+                recipientName = vm.recipientName = chatTo.user.userName;
+            }
+        });
 
     }
 })();
