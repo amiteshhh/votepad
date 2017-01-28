@@ -6,8 +6,8 @@
     angular.module(moduleName)
         .controller('AppCtrl', Ctrl);
 
-    Ctrl.$inject = ['$scope', '$rootScope', '$injector', '$state', '$stateParams', '$localStorage', '$ionicModal', '$timeout', '$ionicPopup'];
-    function Ctrl($scope, $rootScope, $injector, $state, $stateParams, $localStorage, $ionicModal, $timeout, $ionicPopup) {
+    Ctrl.$inject = ['$scope', '$rootScope', '$injector', '$state', '$stateParams', '$localStorage', '$ionicModal', '$timeout', '$ionicPopup', '$ionicHistory'];
+    function Ctrl($scope, $rootScope, $injector, $state, $stateParams, $localStorage, $ionicModal, $timeout, $ionicPopup, $ionicHistory) {
         var vm = this;
         var OnlineUserSvc = $injector.get('OnlineUserSvc');
         var UpdateUserInfo = $injector.get('UpdateUserInfo');
@@ -39,8 +39,19 @@
 
         vm.logout = function () {
             delete $localStorage.userInfo;
-            delete $localStorage.userType;
-            $state.go('auth');
+            //delete $localStorage.userType;//retain this for next login
+            $state.go('auth', { explicitLogout: true });
+        };
+
+        vm.toggleUserTypeLogin = function () {
+            $rootScope.userType = $localStorage.userType = $localStorage.userType === 'host' ? 'participant' : 'host';
+            //$state.go('app.dashboard', {}, { reload: 'app.dashboard' });
+            // $state.transitionTo('app.dashboard', {}, {
+            //     reload: true, inherit: false, notify: true
+            // });
+            //$state.reload('app.dashboard');
+            vm.routeAndNavClear('app.dashboard');
+            iqwerty.toast.Toast('Successfully Logged In as ' + $rootScope.userType);
         };
 
         var lastChatToId, messages = [];
@@ -74,7 +85,7 @@
 
             confirmPopup.then(function (res) {
                 if (res) {
-                    var msg = messages.length === 1 ? messages[0] : messages.length + ' messages received -'+messages.join(', ');
+                    var msg = messages.length === 1 ? messages[0] : messages.length + ' messages received -' + messages.join(', ');
                     $state.go('app.chat', { chatTo: data.from, msg: msg });
                     lastChatToId = undefined;
                     messages = [];
@@ -136,6 +147,14 @@
             $timeout(function () {
                 vm.usersListModal.remove();
             }, 500);
+        };
+
+        vm.routeAndNavClear = function (state) {
+            $state.go(state);
+            $ionicHistory.nextViewOptions({
+                disableAnimate: true,
+                disableBack: true
+            });
         };
 
         $rootScope.$on('showUsersList', function (event, data) {

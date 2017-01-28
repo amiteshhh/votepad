@@ -9823,6 +9823,9 @@ a.button {
 .text-center {
   text-align: center; }
 
+.circle {
+  border-radius: 50%; }
+
 /*.from-me{
     text-align: left
 }*/
@@ -9837,3 +9840,26 @@ a.button {
 
 .myEnerzized {
   background-color: #ffc900; }
+
+.action-bubble-list {
+  display: flex !important;
+  text-align: center; }
+
+.action-bubble-item {
+  flex: 1;
+  display: flex !important;
+  flex-direction: column; }
+
+.action-bubble-item > div {
+  margin: auto; }
+
+.action-bubble {
+  border-radius: 50%;
+  display: block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 32px;
+  text-align: center;
+  background-color: #f8f8f8;
+  margin: 5px; }

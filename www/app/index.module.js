@@ -16,7 +16,7 @@
             //Dashboard Module
             "app.dashboard",
 
-            // registration module
+            // participents module
             "app.participents",
 
             // home module
@@ -36,6 +36,8 @@
 
             // profile module
             "app.profile",
+            // profile module
+            "app.about",
 
             // settings module
             "app.settings"

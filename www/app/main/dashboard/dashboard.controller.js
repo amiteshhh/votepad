@@ -17,6 +17,8 @@
 
         function init() {
             //_find();
+            vm.firstVisit = $rootScope.firstVisit;
+            delete $rootScope.firstVisit;
             _updateUserInfo();
         }
 

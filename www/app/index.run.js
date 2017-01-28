@@ -27,41 +27,54 @@
   }
 
 
-  function runBlock($rootScope, $state, $localStorage, APP_CONFIG) {
+  function runBlock($rootScope, $state, $localStorage, $cordovaAppVersion, APP_CONFIG) {
     console.log('Index runBlock is called.');
     $rootScope.userInfo = $localStorage.userInfo;
     setupPush();
-    setupSocket(APP_CONFIG, $rootScope.userInfo);
+    populateAppInfo($cordovaAppVersion, $rootScope);
+    setupSocket(APP_CONFIG);
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
       if (toState.name === 'auth') {
         return;
       }
-      var isUserAuth = _isUserAuthenticated();
+      var isUserAuth = _isUserAuthenticated($localStorage);
       console.log('isUserAuth: ', isUserAuth);
       if (!isUserAuth) {
         if (toState.name !== 'auth') {
           event.preventDefault();
           $state.go('auth');
         }
-      } else {
-        console.log('User is authenticated!!');
       }
     });
 
   }
 
-  function _isUserAuthenticated() {
-    return true;//for now
+  function _isUserAuthenticated($localStorage) {
+    return $localStorage.userInfo && $localStorage.userInfo.id;
   }
 
   function setupSocket(APP_CONFIG) {
     var socketBaseUrl = APP_CONFIG.SERVER_URL + APP_CONFIG.REST_ENDPOINT;
-    io.sails.autoConnect = true;
     io.sails.url = socketBaseUrl;
     window.socketInstance = io.sails.connect(socketBaseUrl);//expose global
 
     socketInstance.on('connect', function () {
       console.log('socket connected');
+      //iqwerty.toast.Toast('Successfully connected to socket !!');
+    });
+  }
+
+  function populateAppInfo($cordovaAppVersion, $rootScope) {
+    if (typeof cordova === 'undefined') {//bypass for browser
+      $rootScope.appName = 'Votepad';
+      $rootScope.appVersion = '0.0.1';
+      return;
+    }
+    $cordovaAppVersion.getVersionNumber().then(function (version) {
+      $rootScope.appVersion = version;
+    });
+    $cordovaAppVersion.getAppName().then(function (name) {
+      $rootScope.appName = name;
     });
   }
 

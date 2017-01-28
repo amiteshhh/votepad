@@ -1,7 +1,7 @@
 <ion-modal-view>
     <ion-header-bar class="bar bar-positive">
         <h1 class="title">VotePad</h1>
-        <button class="button button-clear" ng-click="vm.closeSignInModal()">Cancel</button>
+        <button class="button button-clear" ng-click="vm.closeSignInModal()">Sign Up</button>
     </ion-header-bar>
     <ion-content padding="true">
         <div>
@@ -34,12 +34,14 @@
           </label>
                 </ion-list>
                 <div class="button-bar" style="margin-top: 10px;">
-<a class="button" href="javascript:;" ng-class="vm.host && !vm.participant ? 'button-dark' : 'button-stable'" ng-click="vm.setLoginAsHost()">Host</a>
-<a class="button" href="javascript:;" ng-class="vm.participant && !vm.host ? 'button-dark' : 'button-stable'" ng-click="vm.setLoginAsParticipant()">Participant</a>
+<button class="button" ng-disabled="signinForm.$invalid" ng-class="$root.userType === 'host' ? 'button-royal' : 'button-stable'"
+    ng-click="vm.setUserType('host')">Sign In as Host</button>
+<button class="button" ng-disabled="signinForm.$invalid" ng-class="$root.userType === 'participant' ? 'button-royal' : 'button-stable'"
+    ng-click="vm.setUserType('participant')">Sign In as Participant</button>
 </div>
-<button ng-disabled="signinForm.$invalid || !(vm.host || vm.participant)" class="button button-dark button-block" type="submit"
+<!--<button ng-disabled="signinForm.$invalid || !(vm.host || vm.participant)" class="button button-dark button-block" type="submit"
     ng-click="vm.signInUser()">Sign In
-        </button>
+        </button>-->
 </form>
 </div>
 

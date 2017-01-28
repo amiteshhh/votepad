@@ -6,13 +6,26 @@
     angular.module(moduleName)
         .controller('AuthCtrl', AuthCtrl);
 
-    AuthCtrl.$inject = ['$state', '$scope', '$ionicModal', '$localStorage', '$http', '$injector', '$ionicLoading', '$timeout', '$rootScope', 'APP_CONFIG'];
-    function AuthCtrl($state, $scope, $ionicModal, $localStorage, $http, $injector, $ionicLoading, $timeout, $rootScope, APP_CONFIG) {
+    AuthCtrl.$inject = ['$state', '$scope', '$stateParams', '$ionicModal', '$localStorage', '$http', '$injector', '$ionicLoading', '$timeout', '$rootScope', 'APP_CONFIG'];
+    function AuthCtrl($state, $scope, $stateParams, $ionicModal, $localStorage, $http, $injector, $ionicLoading, $timeout, $rootScope, APP_CONFIG) {
         console.log("inside User Registration Controller");
         var vm = this;
         var AuthSvc = $injector.get('AuthSvc');
 
-        vm.openSignInModal = function () {
+        vm.openSignInModal = openSignInModal;
+
+
+        init();
+
+        function init() {
+            $rootScope.userType = $localStorage.userType = $localStorage.userType || 'host';
+            if ($stateParams.explicitLogout || $localStorage.userInfo) {
+                vm.openSignInModal();
+            }
+        }
+
+
+        function openSignInModal() {
             $ionicModal.fromTemplateUrl('app/common/templates/signIn-modal-template.html', {
                 scope: $scope,
                 animation: 'slide-in-up'
@@ -59,7 +72,7 @@
             });
         };
 
-        vm.setLoginAsHost = function () {
+        /*vm.setLoginAsHost = function () {
             vm.host = true;
             vm.participant = false;
         };
@@ -67,10 +80,14 @@
         vm.setLoginAsParticipant = function () {
             vm.host = false;
             vm.participant = true;
+        };*/
+
+        vm.setUserType = function (userType) {
+            $rootScope.userType = $localStorage.userType = userType;
         };
 
         function transitionToNextState(data) {
-            $rootScope.userType = $localStorage.userType = vm.host ? 'host' : 'participant';
+            //$rootScope.userType = $localStorage.userType = vm.host ? 'host' : 'participant';
             $rootScope.userInfo = $localStorage.userInfo = data;
             $state.go('app.dashboard');
         }
@@ -78,10 +95,11 @@
         function createUser() {
             AuthSvc.createUser(vm.signUpForm).then(function (data) {
                 console.log("createUser: " + JSON.stringify(data));
-                if(vm.validateOtpModal){
+                $rootScope.firstVisit = true;
+                if (vm.validateOtpModal) {
                     vm.validateOtpModal.hide();
                 }
-                
+
                 $ionicLoading.hide();
                 iqwerty.toast.Toast('Successfully Registered !');
                 transitionToNextState(data);
@@ -182,7 +200,7 @@
                     // or server returns response with an error status.
                     console.log("validateOTP errorCallback");
                 });*/
-            })
+            });
         };
 
         // Cleanup the modal when we're done with it!

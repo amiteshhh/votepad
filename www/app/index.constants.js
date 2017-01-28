@@ -10,7 +10,12 @@
             REST_ENDPOINT: '',
             OTP_ENABLED: false,
             OTP_URL:'https://www.cognalys.com/api/v1/otp/?app_id=ab2e8e8a22684b6f92b003e&access_token=8e359af247db3d466ee5fdbce2b841bcc180d457&mobile=+91',
-            OTP_VALIDATE_URL: 'https://www.cognalys.com/api/v1/otp/confirm/?app_id=ab2e8e8a22684b6f92b003e&access_token=8e359af247db3d466ee5fdbce2b841bcc180d457&keymatch='
+            OTP_VALIDATE_URL: 'https://www.cognalys.com/api/v1/otp/confirm/?app_id=ab2e8e8a22684b6f92b003e&access_token=8e359af247db3d466ee5fdbce2b841bcc180d457&keymatch=',
+            contact:{
+                mailTo: 'amiteshhh.nitk@gmail.com;',
+                mailBody: '',
+                gitHubIssueLink: 'https://github.com/amiteshhh/votepad/issues/new'
+            }
         });
 
 })();

@@ -8,7 +8,7 @@
     function config($stateProvider) {
         $stateProvider
             .state('auth', {
-                url: '/auth',
+                url: '/auth/:explicitLogout',
                 templateUrl: 'app/auth/login.html',
                 controller: 'AuthCtrl as vm'
             });

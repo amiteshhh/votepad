@@ -18,16 +18,16 @@
           Dashboard
         </ion-item>
         <ion-item ng-if="$root.userType === 'host'" class="item-icon-left" nav-clear menu-close ui-sref="app.createEvent">
-          <i class="icon ion-android-list"></i>
+          <i class="icon icon ion-compose"></i>
           Create Event
         </ion-item>
         <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.event">
-          <i class="icon ion-android-open"></i>
-          View Events 
+          <i class="icon ion-ios-list"></i>
+          {{$root.userType === 'host' ? 'Manage Events' : 'Join Poll'}} 
         </ion-item>
         <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.participents">
-          <i class="icon ion-android-people"></i>
-          Online Users ({{$root.onlineUsers.length || 0}})
+          <i class="icon ion-android-chat"></i>
+          Chat ({{$root.onlineUsers.length || 0}} user online)
         </ion-item>
         <!--<ion-toggle class="item-icon-left" toggle-class="toggle-positive" ng-model="vm.host">
           <i class="icon ion-mouse"></i>
@@ -44,6 +44,14 @@
         <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.settings">
           <i class="icon ion-android-settings"></i>
           Settings
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ui-sref="app.about">
+          <i class="icon ion-ios-help"></i>
+          About and Help
+        </ion-item>
+        <ion-item class="item-icon-left" nav-clear menu-close ng-click="appVm.toggleUserTypeLogin()">
+          <i class="icon ion-log-in"></i>
+          Login as {{$root.userType === 'host' ? 'Participant' : 'Host'}}
         </ion-item>
         <ion-item class="item-icon-left" nav-clear menu-close ng-click="appVm.logout()">
           <i class="icon ion-power"></i>

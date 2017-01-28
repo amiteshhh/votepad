@@ -1,0 +1,53 @@
+<ion-view title="About and Help">
+
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-android-menu"></button>
+    </ion-nav-buttons>
+
+    <ion-content class="has-header padding">
+        <div class="text-center">
+            <img style="height: 100px; width: 100px" class="circle" src="img/logo.png">
+            <h5 style="margin-top: 0" class="dark">{{$root.appName}} - version {{$root.appVersion}} </h5>
+        </div>
+        <div class="list">
+            <div class="item item-text-wrap">
+                This application is work of passion by core team of <strong>SAP Elites</strong>.
+            </div>
+            <div class="item item-avatar item-icon-right item-text-wrap">
+                <img src="img/developer/amitesh.jpg">
+                <h2>Amitesh Kumar</h2>
+                <p>It is easier to port a shell than a shell script.</p>
+                <a target="_system" href="https://www.facebook.com/amiteshhh.nitk"><i class="icon ion-social-facebook positive"></i></a>
+            </div>
+
+            <div class="item item-avatar item-icon-right item-text-wrap">
+                <img src="img/developer/sourav.jpg">
+                <h2>Sourav Sahoo</h2>
+                <p>I feel a great pleasure by doing what people say i can't do.</p>
+                <a target="_system" href="https://www.facebook.com/srvsahoo"><i class="icon ion-social-facebook positive"></i></a>
+            </div>
+
+            <div class="item item-avatar item-icon-right item-text-wrap">
+                <img src="img/developer/pratik.jpg">
+                <h2>Pratik Anand</h2>
+                <p>Be silent, or say something better than silence.</p>
+                <a target="_system" href="https://www.facebook.com/HeyItsMePratik"><i class="icon ion-social-facebook positive"></i></a>
+            </div>
+
+        </div>
+
+        <div class="list">
+
+            <a class="item item-icon-left" ng-href="{{vm.mailUrl}}">
+                <i class="icon ion-ios-email"></i> Email Us
+            </a>
+
+            <a target="_system" class="item item-icon-left" ng-href="{{vm.contact.gitHubIssueLink}}">
+                <i class="icon ion-android-open"></i> Report Issue on Github
+            </a>
+
+        </div>
+
+
+    </ion-content>
+</ion-view>

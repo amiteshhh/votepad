@@ -7,7 +7,7 @@
 
     function routeConfig($stateProvider) {
         $stateProvider.state('app.participents', {
-            url: '/registration',
+            url: '/participents',
             views: {
                 'menuContent': {
                     templateUrl: 'app/main/participents/participents.html',
