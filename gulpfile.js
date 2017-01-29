@@ -6,19 +6,21 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var ngDependencyLint = require('gulp-ng-dependency-lint');
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss'],
+  js: 'www/app/**/*.js'
 };
 
 gulp.task('default', ['sass']);
 
 /* Ionic CLI for v2 sass fix */
-gulp.task('serve:before', ['default','watch']);
+gulp.task('serve:before', ['default', 'watch']);
 gulp.task('run:before', ['default']);
 /* Ionic CLI for v2 sass fix */
 
-gulp.task('sass', function(done) {
+gulp.task('sass', function (done) {
   gulp.src('./scss/ionic.app.scss')
     .pipe(sass())
     .on('error', sass.logError)
@@ -31,18 +33,18 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
-gulp.task('watch', ['sass'], function() {
+gulp.task('watch', ['sass'], function () {
   gulp.watch(paths.sass, ['sass']);
 });
 
-gulp.task('install', ['git-check'], function() {
+gulp.task('install', ['git-check'], function () {
   return bower.commands.install()
-    .on('log', function(data) {
+    .on('log', function (data) {
       gutil.log('bower', gutil.colors.cyan(data.id), data.message);
     });
 });
 
-gulp.task('git-check', function(done) {
+gulp.task('git-check', function (done) {
   if (!sh.which('git')) {
     console.log(
       '  ' + gutil.colors.red('Git is not installed.'),
@@ -53,4 +55,17 @@ gulp.task('git-check', function(done) {
     process.exit(1);
   }
   done();
+});
+
+// to automatically remove 
+gulp.task('ng-di-rm', function () {
+  return gulp.src(paths.js)
+    .pipe(ngDependencyLint({ removeDependency: true }))
+    .pipe(gulp.dest('dist'));
+});
+
+// this will only print unused dependency list
+gulp.task('ng-di-lint', function () {
+  return gulp.src(paths.js)
+    .pipe(ngDependencyLint());
 });

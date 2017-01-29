@@ -6,8 +6,8 @@
     angular.module(moduleName)
         .controller('AppCtrl', Ctrl);
 
-    Ctrl.$inject = ['$scope', '$rootScope', '$injector', '$state', '$stateParams', '$localStorage', '$ionicModal', '$timeout', '$ionicPopup', '$ionicHistory'];
-    function Ctrl($scope, $rootScope, $injector, $state, $stateParams, $localStorage, $ionicModal, $timeout, $ionicPopup, $ionicHistory) {
+    Ctrl.$inject = ['$scope', '$rootScope', '$injector', '$state', '$stateParams', '$localStorage', '$ionicModal', '$timeout', '$ionicPopup', '$ionicHistory', '$cordovaInAppBrowser', '$cordovaEmailComposer'];
+    function Ctrl($scope, $rootScope, $injector, $state, $stateParams, $localStorage, $ionicModal, $timeout, $ionicPopup, $ionicHistory, $cordovaInAppBrowser, $cordovaEmailComposer) {
         var vm = this;
         var OnlineUserSvc = $injector.get('OnlineUserSvc');
         var UpdateUserInfo = $injector.get('UpdateUserInfo');
@@ -156,6 +156,54 @@
                 disableBack: true
             });
         };
+
+        vm.openEXternalUrl = function (url, target) {
+            target = target || '_system';
+            $cordovaInAppBrowser.open(url, target);
+        };
+
+        vm.sendMail = function (email) {
+            if (typeof cordova === 'undefined') {
+                sendMailViaBrowser(email);
+                return;
+            }
+            $cordovaEmailComposer.isAvailable().then(function () {
+                sendMailViaNative(email);
+            }, function () {
+                //https://github.com/katzer/cordova-plugin-email-composer/issues/177
+                //isAvailable return false on API Level 23 #17
+                sendMailViaNative(email, true);
+            });
+        };
+
+        function sendMailViaNative(email, isNotAvailable) {
+            email = {
+                to: email.to,
+                cc: email.cc,
+                bcc: email.bcc,
+                attachments: email.attachments,
+                subject: email.subject,
+                body: email.body,
+                isHtml: email.isHtml
+            };
+
+            $cordovaEmailComposer.open(email).then(null, function () {
+                var msg = isNotAvailable ?
+                    'Error: Unable to send mail. Ensure that you have configured email account in your device.'
+                    : 'Error: Unable to send mail.';
+
+                iqwerty.toast.Toast(msg);
+            });
+        }
+
+        function sendMailViaBrowser(email) {//basic feature supported
+            var mailUrl = "mailto:" + email.to;
+            mailUrl += "?cc=" + (email.cc || '');
+            mailUrl += "&bcc=" + (email.bcc || '');
+            mailUrl += '&subject=' + encodeURIComponent(email.subject || '');
+            mailUrl += '&body=' + encodeURIComponent(email.body || '');
+            vm.openEXternalUrl(mailUrl, '_self');
+        }
 
         $rootScope.$on('showUsersList', function (event, data) {
 
